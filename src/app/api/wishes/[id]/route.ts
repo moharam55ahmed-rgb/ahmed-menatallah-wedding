@@ -28,7 +28,35 @@ export async function PATCH(
       return NextResponse.json({ error: "Wish not found" }, { status: 404 });
     }
 
-    wish.isHidden = !wish.isHidden;
+    let body: Record<string, unknown> = {};
+    try {
+      body = (await req.json()) as Record<string, unknown>;
+    } catch {
+      // Empty body allowed for simple toggle
+    }
+
+    if (typeof body.name === "string" && body.name.trim()) {
+      wish.name = body.name.trim().slice(0, 60);
+    }
+    if (typeof body.message === "string" && body.message.trim()) {
+      wish.message = body.message.trim().slice(0, 400);
+    }
+    if (body.recipient === "groom" || body.recipient === "bride" || body.recipient === "both") {
+      wish.recipient = body.recipient;
+    }
+    if ("sticker" in body) {
+      wish.sticker =
+        typeof body.sticker === "string" && body.sticker.trim()
+          ? body.sticker.trim().slice(0, 40)
+          : undefined;
+    }
+    if (typeof body.isHidden === "boolean") {
+      wish.isHidden = body.isHidden;
+    } else if (Object.keys(body).length === 0) {
+      // Fallback toggle for quick hide/unhide button
+      wish.isHidden = !wish.isHidden;
+    }
+
     await db.set(WISHES_KEY, wishes);
     return NextResponse.json({ wish });
   } catch (err) {

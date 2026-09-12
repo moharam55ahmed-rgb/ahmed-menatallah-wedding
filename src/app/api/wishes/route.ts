@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
 
-    const { name, message, recipient } = (body ?? {}) as Record<string, unknown>;
+    const { name, message, recipient, sticker } = (body ?? {}) as Record<string, unknown>;
 
     // ── Input validation ───────────────────────────────────────────────────
     if (typeof name !== "string" || !name.trim()) {
@@ -69,6 +69,11 @@ export async function POST(req: NextRequest) {
       ? (recipient as "groom" | "bride" | "both")
       : "both";
 
+    const safeSticker =
+      typeof sticker === "string" && sticker.trim()
+        ? sticker.trim().slice(0, 40)
+        : undefined;
+
     if (containsProfanity(name.trim()) || containsProfanity(message.trim())) {
       return NextResponse.json(
         { error: "الرسالة تحتوي على ألفاظ غير لائقة" },
@@ -83,6 +88,7 @@ export async function POST(req: NextRequest) {
       timestamp: new Date().toISOString(),
       isHidden: false,
       recipient: safeRecipient,
+      ...(safeSticker ? { sticker: safeSticker } : {}),
     };
 
     // Atomic read-modify-write (single Redis instance — acceptable for this scale)

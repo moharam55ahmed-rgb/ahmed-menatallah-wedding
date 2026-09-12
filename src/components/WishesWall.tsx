@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { containsProfanity, GuestWish } from "@/config/wedding";
-import { Heart, Send, AlertCircle, Loader2, Sparkles, RefreshCw, MessageCircleHeart } from "lucide-react";
+import { Heart, Send, AlertCircle, Loader2, Sparkles, RefreshCw, MessageCircleHeart, Smile } from "lucide-react";
 import { useAudio } from "./AudioContext";
+import { EmojiPicker, StickerPicker, WishStickerBadge } from "./WishEmbellishments";
 
 interface WishesWallProps {
   wishes?: GuestWish[];
@@ -27,6 +28,9 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
   const [message, setMessage] = useState("");
   const [recipient, setRecipient] = useState<Recipient>("both");
   const [wallFilter, setWallFilter] = useState<FilterType>("all");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showStickerPicker, setShowStickerPicker] = useState(false);
+  const [selectedSticker, setSelectedSticker] = useState<string>("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -113,7 +117,12 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
       const res = await fetch("/api/wishes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: trimmedName, message: trimmedMessage, recipient }),
+        body: JSON.stringify({
+          name: trimmedName,
+          message: trimmedMessage,
+          recipient,
+          sticker: selectedSticker || undefined,
+        }),
       });
 
       if (!res.ok) {
@@ -131,6 +140,9 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
       setName("");
       setMessage("");
       setRecipient("both");
+      setSelectedSticker("");
+      setShowEmojiPicker(false);
+      setShowStickerPicker(false);
       setSubmitting(false);
       setSubmitted(true);
 
@@ -151,6 +163,13 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
       setError("تعذّر الاتصال بالخادم. تأكد من اتصالك بالإنترنت وحاول مجدداً.");
       setSubmitting(false);
     }
+  };
+
+  const handleSelectEmoji = (emoji: string) => {
+    setMessage((prev) => {
+      if (prev.length + emoji.length > 300) return prev;
+      return prev + emoji;
+    });
   };
 
   const recipientLabel = (r?: Recipient) => {
@@ -298,6 +317,68 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                     maxLength={300}
                     className="w-full px-4 py-3 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/35 focus:border-[#B58A48] focus:bg-white focus:ring-2 focus:ring-[#C5A46D]/20 text-sm font-cairo outline-none transition-all resize-none placeholder:text-[#9E978C]"
                   />
+
+                  {/* Emoji & Sticker Action Buttons */}
+                  <div className="relative mt-2 flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      {/* Emoji Picker Trigger */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowEmojiPicker((prev) => !prev);
+                          setShowStickerPicker(false);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#C5A46D]/35 text-xs font-cairo text-[#5C574F] hover:border-[#C5A46D] hover:bg-[#FAF5EE] transition-all cursor-pointer shadow-2xs"
+                        title="إضافة رمز تعبيري"
+                      >
+                        <Smile className="w-3.5 h-3.5 text-[#C5A46D]" />
+                        <span>رمز تعبيري</span>
+                      </button>
+
+                      {/* Sticker Picker Trigger */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowStickerPicker((prev) => !prev);
+                          setShowEmojiPicker(false);
+                        }}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-cairo transition-all cursor-pointer shadow-2xs ${
+                          selectedSticker
+                            ? "bg-[#FAF5EE] border-[#B58A48] text-[#8A6A32] font-semibold"
+                            : "bg-white border-[#C5A46D]/35 text-[#5C574F] hover:border-[#C5A46D] hover:bg-[#FAF5EE]"
+                        }`}
+                        title="إضافة ملصق زفاف"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-[#C5A46D]" />
+                        <span>{selectedSticker ? `الملصق: ${selectedSticker}` : "ملصقات"}</span>
+                      </button>
+                    </div>
+
+                    {selectedSticker && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedSticker("")}
+                        className="text-[11px] font-cairo text-red-600 hover:underline cursor-pointer"
+                      >
+                        إزالة الملصق ✕
+                      </button>
+                    )}
+
+                    {/* Emoji Popover */}
+                    <EmojiPicker
+                      isOpen={showEmojiPicker}
+                      onClose={() => setShowEmojiPicker(false)}
+                      onSelectEmoji={handleSelectEmoji}
+                    />
+
+                    {/* Sticker Popover */}
+                    <StickerPicker
+                      isOpen={showStickerPicker}
+                      onClose={() => setShowStickerPicker(false)}
+                      selectedSticker={selectedSticker}
+                      onSelectSticker={(stk) => setSelectedSticker(stk)}
+                    />
+                  </div>
                 </div>
 
                 {error && (
@@ -438,8 +519,15 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                         </div>
                       </div>
 
+                      {/* Optional Wedding Sticker Emblem */}
+                      {wish.sticker && (
+                        <div className="mt-3 flex items-center">
+                          <WishStickerBadge sticker={wish.sticker} />
+                        </div>
+                      )}
+
                       {/* Message Body with Calligraphic Border */}
-                      <div className="mt-3.5 pr-3.5 border-r-2 border-[#C5A46D]/50">
+                      <div className="mt-3 pr-3.5 border-r-2 border-[#C5A46D]/50">
                         <p className="text-sm sm:text-base font-cairo text-[#2E2822] leading-relaxed">
                           {wish.message}
                         </p>

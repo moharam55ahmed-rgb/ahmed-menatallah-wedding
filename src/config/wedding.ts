@@ -5,7 +5,76 @@ export interface GuestWish {
   timestamp: string;
   isHidden?: boolean;
   recipient?: "groom" | "bride" | "both";
+  sticker?: string;
 }
+
+export interface StickerCategory {
+  nameAr: string;
+  stickers: { id: string; emoji: string; labelAr: string }[];
+}
+
+export const WEDDING_STICKERS: StickerCategory[] = [
+  {
+    nameAr: "قلوب",
+    stickers: [
+      { id: "heart-red", emoji: "❤️", labelAr: "قلب أحمر" },
+      { id: "heart-white", emoji: "🤍", labelAr: "قلب أبيض" },
+      { id: "heart-sparkle", emoji: "💖", labelAr: "قلب متألق" },
+      { id: "heart-ribbon", emoji: "💝", labelAr: "هدية محبة" },
+    ],
+  },
+  {
+    nameAr: "حب",
+    stickers: [
+      { id: "love-hands", emoji: "🫶", labelAr: "قلب باليدين" },
+      { id: "love-smile", emoji: "🥰", labelAr: "محبة وسعادة" },
+      { id: "love-couple", emoji: "💑", labelAr: "عريسان" },
+      { id: "love-dove", emoji: "🕊️", labelAr: "حمامة سلام" },
+    ],
+  },
+  {
+    nameAr: "زفاف",
+    stickers: [
+      { id: "wedding-ring", emoji: "💍", labelAr: "خاتم الزفاف" },
+      { id: "wedding-bride", emoji: "👰", labelAr: "عروسة" },
+      { id: "wedding-groom", emoji: "🤵", labelAr: "عريس" },
+      { id: "wedding-bells", emoji: "💒", labelAr: "قصر الفرح" },
+    ],
+  },
+  {
+    nameAr: "تهنئة",
+    stickers: [
+      { id: "congrats-popper", emoji: "🎉", labelAr: "احتفال" },
+      { id: "congrats-confetti", emoji: "🎊", labelAr: "أفراح" },
+      { id: "congrats-cheers", emoji: "🥂", labelAr: "نخب الفرحة" },
+      { id: "congrats-clap", emoji: "👏", labelAr: "تحية ومباركة" },
+    ],
+  },
+  {
+    nameAr: "ورود",
+    stickers: [
+      { id: "flower-rose", emoji: "🌹", labelAr: "وردة جورية" },
+      { id: "flower-bouquet", emoji: "💐", labelAr: "باقة ورد" },
+      { id: "flower-blossom", emoji: "🌸", labelAr: "زهر ربيعي" },
+      { id: "flower-tulip", emoji: "🌷", labelAr: "توليب أنيق" },
+    ],
+  },
+  {
+    nameAr: "احتفال",
+    stickers: [
+      { id: "sparkle-magic", emoji: "✨", labelAr: "بريق ذهبي" },
+      { id: "sparkle-star", emoji: "⭐", labelAr: "نجمة متلألئة" },
+      { id: "crescent-moon", emoji: "🌙", labelAr: "هلال الخير" },
+      { id: "crown-royal", emoji: "👑", labelAr: "تاج ملكي" },
+    ],
+  },
+];
+
+export const POPULAR_EMOJIS = [
+  "❤️", "🤍", "💍", "🥰", "😍", "🎉", "✨", "🌹", "💐", "🫶",
+  "🎊", "🥂", "🕊️", "💖", "💝", "👰", "🤵", "👑", "🌸", "⭐",
+  "👏", "🤲", "🤗", "😘"
+];
 
 export interface WeddingConfig {
   groom: string;
