@@ -80,7 +80,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative w-full h-full rounded-[28px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_16px_40px_rgba(46,35,28,0.1)] pt-6 xs:pt-8 pb-10 xs:pb-12 px-3.5 xs:px-4 flex flex-col justify-between items-center text-center overflow-hidden"
+          className="relative w-full h-full rounded-[28px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_16px_40px_rgba(46,35,28,0.1)] pt-10 xs:pt-13 pb-8 xs:pb-10 px-3.5 xs:px-4 flex flex-col justify-between items-center text-center overflow-hidden"
           style={{ background: "#FAF7F2" }}
         >
           {/* Authentic High-Res Empty Background Image */}
@@ -102,8 +102,8 @@ export default function HeroSection() {
             />
           </div>
 
-          {/* Top Group: Ornament + Titles + Names + Date + Du'aa */}
-          <div className="relative z-10 w-full flex flex-col items-center pt-2 xs:pt-4">
+          {/* Top Group: Ornament + Titles + Names + Date + Du'aa - Brought down gracefully */}
+          <div className="relative z-10 w-full flex flex-col items-center pt-3 xs:pt-5">
             {/* Top Golden Islamic Rosette */}
             <div className="mb-2 text-[#C5A059] flex items-center justify-center gap-2">
               <span className="w-8 h-[1.5px] bg-gradient-to-r from-transparent to-[#C5A059]/80" />
