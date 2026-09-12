@@ -4,36 +4,18 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { wedding } from "@/config/wedding";
-import { MapPin, Navigation, Car, Copy, Check, Sparkles } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 export default function VenueSection() {
   const [copied, setCopied] = useState(false);
 
   const handleCopyAddress = () => {
-    if (navigator.clipboard) {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(wedding.location.addressAr);
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     }
   };
-
-  const handleOpenUber = () => {
-    // Attempt opening Uber deep link, with fallback
-    const uberUrl = wedding.location.uberUrl || `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(wedding.location.addressAr)}`;
-    window.open(uberUrl, "_blank", "noopener,noreferrer");
-  };
-
-  const handleOpenInDrive = () => {
-    // inDrive: copy address and open search/app
-    handleCopyAddress();
-    if (wedding.location.inDriveUrl) {
-      window.location.href = wedding.location.inDriveUrl;
-    } else {
-      window.open(wedding.location.mapsUrl, "_blank", "noopener,noreferrer");
-    }
-  };
-
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(wedding.location.addressAr)}`;
 
   const handleRideApp = (provider: "careem" | "uber" | "indrive" | "didi") => {
     handleCopyAddress();
@@ -41,57 +23,57 @@ export default function VenueSection() {
     if (provider === "uber") {
       window.open(wedding.location.uberUrl || `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${destination}`, "_blank", "noopener,noreferrer");
     } else if (provider === "careem") {
-      window.open(`https://www.careem.com/`, "_blank", "noopener,noreferrer");
+      window.open("https://www.careem.com/", "_blank", "noopener,noreferrer");
     } else if (provider === "indrive") {
       if (wedding.location.inDriveUrl) {
         window.location.href = wedding.location.inDriveUrl;
       } else {
-        window.open(`https://indrive.com/`, "_blank", "noopener,noreferrer");
+        window.open("https://indrive.com/", "_blank", "noopener,noreferrer");
       }
     } else if (provider === "didi") {
-      window.open(`https://web.didiglobal.com/`, "_blank", "noopener,noreferrer");
+      window.open("https://web.didiglobal.com/", "_blank", "noopener,noreferrer");
     }
   };
 
   return (
-    <section id="venue-section" className="py-12 sm:py-16 px-4 relative overflow-hidden bg-[#F7F1E6]" dir="rtl">
+    <section id="venue-section" className="py-6 sm:py-8 px-4 relative overflow-hidden bg-[#F7F1E6]" dir="rtl">
       <div className="max-w-md mx-auto">
         
         {/* ═══════════════════════════════════════════════════════════════════
             REFERENCE 04: VENUE & LOCATION CARD (الوصول إلى القاعة)
             ═══════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
+          transition={{ duration: 0.6 }}
+          className="p-6 sm:p-7 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
         >
           {/* Top Icon in Circle */}
           <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
-            📍
+            <MapPin className="w-5 h-5 text-[#8A6A32]" />
           </div>
 
           <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
             الوصول إلى القاعة
           </h3>
 
-          <p className="text-xs sm:text-sm font-cairo text-[#A07F47] font-semibold mt-0.5 mb-2">
+          <p className="text-xs sm:text-sm font-cairo text-[#8A6A32] font-semibold mt-0.5 mb-2">
             موقع الحفل
           </p>
 
           <p className="text-base font-amiri font-bold text-[#241D18]">
             {wedding.venueAr}
           </p>
-          <p className="text-xs font-cairo text-[#70735F] mb-4">
-            {wedding.cityAr}
+          <p className="text-xs font-cairo text-[#5C5146] mb-4">
+            شبين القناطر، القليوبية، مصر
           </p>
 
           {/* Interactive / Map Preview Graphic with Pin */}
-          <div className="w-full h-40 sm:h-44 rounded-2xl overflow-hidden relative border border-[#C9A96A]/25 mb-4 shadow-2xs group">
+          <div className="w-full h-36 sm:h-40 rounded-2xl overflow-hidden relative border border-[#C9A96A]/25 mb-4 shadow-2xs group">
             <Image
               src={wedding.venueImage}
-              alt="قصر كازابلانكا"
+              alt="قاعة قصر كازابلانكا"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
@@ -102,7 +84,7 @@ export default function VenueSection() {
                 <MapPin className="w-5 h-5 fill-[#C9A96A]" />
               </div>
             </div>
-            <div className="absolute bottom-2 inset-x-2 py-1 px-2.5 rounded-lg bg-white/90 backdrop-blur-xs text-[11px] font-cairo text-[#241D18] truncate">
+            <div className="absolute bottom-2 inset-x-2 py-1 px-2.5 rounded-lg bg-white/95 backdrop-blur-xs text-[11px] font-cairo text-[#241D18] truncate">
               {wedding.location.addressAr}
             </div>
           </div>
@@ -112,7 +94,7 @@ export default function VenueSection() {
             href={wedding.location.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full py-3.5 px-6 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target border border-[#C9A96A]/40 flex items-center justify-center gap-2 mb-6"
+            className="w-full py-3.5 px-6 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target border border-[#C9A96A]/40 flex items-center justify-center gap-2 mb-5"
           >
             <MapPin className="w-4 h-4 text-[#C9A96A]" />
             <span>افتح الخريطة 📍</span>
@@ -120,7 +102,7 @@ export default function VenueSection() {
 
           {/* Ride Services: اطلب توصيلة */}
           <div className="w-full pt-4 border-t border-[#C9A96A]/20">
-            <p className="text-xs font-cairo font-semibold text-[#70735F] mb-3">
+            <p className="text-xs font-cairo font-semibold text-[#5C5146] mb-3">
               اطلب توصيلة
             </p>
 
@@ -152,7 +134,7 @@ export default function VenueSection() {
                 onClick={() => handleRideApp("indrive")}
                 className="py-2.5 px-3 rounded-xl bg-[#FAF5EE] hover:bg-[#F7F1E6] border border-[#C9A96A]/25 text-xs font-cairo font-semibold text-[#241D18] transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span className="w-4 h-4 rounded-full bg-[#B2D235] text-black text-[9px] font-bold flex items-center justify-center">iD</span>
+                <span className="w-4 h-4 rounded-full bg-[#32CD32] text-white text-[9px] font-bold flex items-center justify-center">iD</span>
                 <span>inDrive</span>
               </button>
 
@@ -172,17 +154,6 @@ export default function VenueSection() {
                 ✓ تم نسخ عنوان القاعة لطلب التوصيلة بسهولة
               </p>
             )}
-          </div>
-        </motion.div>
-
-      </div>
-    </section>
-  );
-}اعة للانتقال عبر تطبيق inDrive بسهولة
-                </p>
-              )}
-            </div>
-
           </div>
         </motion.div>
 

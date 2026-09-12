@@ -2,24 +2,32 @@
 
 @layer base {
   :root {
-    --bg-ivory: #F8F2EA;
-    --text-primary: #231F1A;
-    --gold-accent: #C5A46D;
-    --gold-light: #DFCBA8;
-    --gold-dark: #A07F47;
-    --blush: #EAD7D1;
-    --olive: #70735F;
-    --dark-bg: #151311;
+    /* Master Design Reference Palette */
+    --color-dark-brown: #241D18;
+    --color-warm-brown: #3A2D24;
+    --color-champagne-gold: #C9A96A;
+    --color-soft-champagne: #E8D6AE;
+    --color-ivory: #F7F1E6;
+    --color-cream: #FBF8F1;
+    --color-white: #FFFFFF;
+
+    /* Semantic Tokens */
+    --bg-page: var(--color-ivory);
+    --bg-card: var(--color-cream);
+    --text-primary: var(--color-dark-brown);
+    --text-secondary: var(--color-warm-brown);
+    --accent-gold: var(--color-champagne-gold);
+    --accent-gold-soft: var(--color-soft-champagne);
   }
 
   * {
-    border-color: rgba(197, 164, 109, 0.2);
+    border-color: rgba(201, 169, 106, 0.25);
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: var(--bg-ivory);
-    color: var(--text-primary);
+    background-color: var(--color-ivory);
+    color: var(--color-dark-brown);
     font-family: var(--font-cairo), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 }
@@ -43,40 +51,22 @@
 
 /* Gold Gradient Text */
 .gold-gradient-text {
-  background: linear-gradient(135deg, #B58A48 0%, #E6D0A2 50%, #A87E3E 100%);
+  background: linear-gradient(135deg, #C9A96A 0%, #E8D6AE 50%, #A07F47 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.gold-gradient-text-light {
-  background: linear-gradient(135deg, #DFCBA8 0%, #FFF5E1 50%, #C5A46D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Stationery Luxury Cards */
+.stationery-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(201, 169, 106, 0.35);
+  box-shadow: 0 4px 20px -2px rgba(36, 29, 24, 0.05), 0 2px 6px -1px rgba(201, 169, 106, 0.08);
 }
 
-/* Glassmorphism Luxury Cards */
-.glass-card {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(197, 164, 109, 0.25);
-  box-shadow: 0 10px 35px -5px rgba(35, 31, 26, 0.05), 0 0 1px 1px rgba(197, 164, 109, 0.1);
-}
-
-.glass-card-dark {
-  background: rgba(26, 23, 21, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(197, 164, 109, 0.2);
-  box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.4);
-}
-
-/* Paper Texture Effect */
-.paper-texture {
-  background-color: #F8F2EA;
-  background-image: radial-gradient(rgba(197, 164, 109, 0.08) 1px, transparent 1px), radial-gradient(rgba(112, 115, 95, 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: 0 0, 16px 16px;
+.stationery-card-cream {
+  background-color: #FBF8F1;
+  border: 1px solid rgba(201, 169, 106, 0.35);
+  box-shadow: 0 4px 20px -2px rgba(36, 29, 24, 0.05);
 }
 
 /* Subtle Shimmer Animation */
@@ -90,31 +80,53 @@
 }
 
 .shimmer-gold {
-  background: linear-gradient(90deg, rgba(197, 164, 109, 0) 0%, rgba(223, 203, 168, 0.4) 50%, rgba(197, 164, 109, 0) 100%);
+  background: linear-gradient(90deg, rgba(201, 169, 106, 0) 0%, rgba(232, 214, 174, 0.4) 50%, rgba(201, 169, 106, 0) 100%);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
 
-/* Custom Gold Scrollbar */
+/* Custom Luxury Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8F2EA;
+  background: #F7F1E6;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C5A46D;
+  background: #C9A96A;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A07F47;
+  background: #3A2D24;
 }
 
 /* Minimum Touch Target */
 .touch-target {
   min-height: 44px;
   min-width: 44px;
+}
+
+/* Print Specific Rules for Reference 11 */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.2cm;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #241D18 !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print-page-break-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
 }

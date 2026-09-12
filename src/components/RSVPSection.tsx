@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { CheckCircle2, Heart, Send, UserCheck } from "lucide-react";
+import { CheckCircle2, Heart } from "lucide-react";
 
 export default function RSVPSection() {
   const [name, setName] = useState("");
   const [attendance, setAttendance] = useState<"attending" | "not_attending">("attending");
-  const [guestsCount, setGuestsCount] = useState("0");
+  const [guestsCount, setGuestsCount] = useState("1");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,13 +21,13 @@ export default function RSVPSection() {
         const data = JSON.parse(savedRSVP);
         if (data?.name) {
           setName(data.name);
-          setAttendance(data.attendance);
-          setGuestsCount(data.guestsCount || "0");
+          setAttendance(data.attendance || "attending");
+          setGuestsCount(data.guestsCount || "1");
           setMessage(data.message || "");
           setSubmitted(true);
         }
-      } catch (e) {
-        console.error(e);
+      } catch {
+        // silent
       }
     }
   }, []);
@@ -55,7 +55,6 @@ export default function RSVPSection() {
       // Silent fail — local UX still works
     }
 
-    // Always save locally for same-device UX
     localStorage.setItem("wedding_rsvp_status", JSON.stringify(rsvpData));
     setIsSubmitting(false);
     setSubmitted(true);
@@ -65,7 +64,7 @@ export default function RSVPSection() {
         particleCount: 80,
         spread: 70,
         origin: { y: 0.7 },
-        colors: ["#C5A46D", "#EAD7D1", "#FAF5EE", "#B58A48"],
+        colors: ["#C9A96A", "#E8D6AE", "#FAF5EE", "#241D18"],
       });
     }
   };
@@ -76,29 +75,29 @@ export default function RSVPSection() {
   };
 
   return (
-    <section id="rsvp-section" className="py-12 sm:py-16 px-4 relative overflow-hidden bg-[#FBF8F1]" dir="rtl">
+    <section id="rsvp-section" className="py-6 sm:py-8 px-4 relative overflow-hidden bg-[#F7F1E6]" dir="rtl">
       <div className="max-w-md mx-auto">
         
         {/* ═══════════════════════════════════════════════════════════════════
             REFERENCE 05: RSVP CARD (يشرفنا حضوركم)
             ═══════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
+          transition={{ duration: 0.6 }}
+          className="p-6 sm:p-7 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
         >
           {/* Top Icon in Circle */}
           <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
-            🤎
+            <Heart className="w-5 h-5 text-[#8A6A32] fill-[#8A6A32]" />
           </div>
 
           <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
             يشرفنا حضوركم
           </h3>
 
-          <p className="text-xs sm:text-sm font-cairo text-[#A07F47] font-semibold mt-0.5 mb-6">
+          <p className="text-xs sm:text-sm font-cairo text-[#8A6A32] font-semibold mt-0.5 mb-5">
             يسعدنا أن تشاركونا فرحتنا
           </p>
 
@@ -109,8 +108,8 @@ export default function RSVPSection() {
               animate={{ scale: 1, opacity: 1 }}
               className="text-center py-4 space-y-3 w-full"
             >
-              <div className="w-14 h-14 rounded-full bg-[#FAF5EE] text-[#A07F47] flex items-center justify-center mx-auto border border-[#C9A96A]/40">
-                <CheckCircle2 className="w-7 h-7 text-[#A07F47]" />
+              <div className="w-12 h-12 rounded-full bg-[#FAF5EE] text-[#8A6A32] flex items-center justify-center mx-auto border border-[#C9A96A]/40">
+                <CheckCircle2 className="w-6 h-6 text-[#8A6A32]" />
               </div>
 
               <h4 className="text-2xl font-amiri font-bold text-[#241D18]">
@@ -119,7 +118,7 @@ export default function RSVPSection() {
 
               <p className="text-xs sm:text-sm font-cairo text-[#5C5146] leading-relaxed max-w-xs mx-auto">
                 {attendance === "attending"
-                  ? `أهلًا بك يا ${name}، نتطلع لمشاركتكم أجمل اللحظات يوم 14 أكتوبر 2026 بقاعة قصر كازابلانكا.`
+                  ? `أهلًا بك يا ${name}، يسعدنا ويشرفنا حضوركم ومشاركتكم فرحتنا يوم 14 أكتوبر 2026 بقاعة قصر كازابلانكا.`
                   : `شكرًا لك يا ${name}، يؤسفنا عدم تمكنك من الحضور، ومشاركتكم بمشاعركم الطيبة تصلنا دائمًا.`}
               </p>
 
@@ -127,7 +126,7 @@ export default function RSVPSection() {
                 <button
                   type="button"
                   onClick={handleResetRSVP}
-                  className="text-xs font-cairo text-[#70735F] hover:text-[#241D18] underline transition-colors cursor-pointer"
+                  className="text-xs font-cairo text-[#5C5146] hover:text-[#241D18] underline transition-colors cursor-pointer"
                 >
                   تعديل بيانات الحضور
                 </button>
@@ -135,7 +134,7 @@ export default function RSVPSection() {
             </motion.div>
           ) : (
             /* RSVP Form matching Reference 05 */
-            <form onSubmit={handleSubmit} className="w-full space-y-4 text-right">
+            <form onSubmit={handleSubmit} className="w-full space-y-3.5 text-right">
               
               {/* Attendance Choice Buttons */}
               <div className="space-y-2">
@@ -166,7 +165,7 @@ export default function RSVPSection() {
 
               {/* Number of Guests (عدد الحضور) */}
               <div>
-                <label htmlFor="rsvp-guests" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1.5">
+                <label htmlFor="rsvp-guests" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1">
                   عدد الحضور
                 </label>
                 <select
@@ -184,7 +183,7 @@ export default function RSVPSection() {
 
               {/* Name Field */}
               <div>
-                <label htmlFor="rsvp-name" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1.5">
+                <label htmlFor="rsvp-name" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1">
                   الاسم الكريم <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -200,7 +199,7 @@ export default function RSVPSection() {
 
               {/* Optional Message */}
               <div>
-                <label htmlFor="rsvp-message" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1.5">
+                <label htmlFor="rsvp-message" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1">
                   كلمة للعروسين (اختياري)
                 </label>
                 <textarea
@@ -217,7 +216,7 @@ export default function RSVPSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 px-6 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target border border-[#C9A96A]/40 flex items-center justify-center gap-2 mt-4"
+                className="w-full py-3.5 px-6 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target border border-[#C9A96A]/40 flex items-center justify-center gap-2 mt-2"
               >
                 {isSubmitting ? (
                   <span>جاري التأكيد...</span>

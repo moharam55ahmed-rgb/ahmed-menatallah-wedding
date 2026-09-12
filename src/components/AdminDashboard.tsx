@@ -5,17 +5,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { GuestWish, wedding } from "@/config/wedding";
 import Link from "next/link";
 import {
-  Trash2, Eye, EyeOff, MessageSquare, Users, Settings,
-  Save, RotateCcw, LogOut, Lock,
-  Heart, X, AlertTriangle, BarChart3, RefreshCw, Loader2, Check,
-  Printer, Edit3, Sparkles
+  Trash2, Eye, EyeOff,
+  LogOut, Lock,
+  AlertTriangle, RefreshCw, Loader2,
+  Printer, Edit3, Sparkles, Search,
+  Home, Mail, Users, Phone, Image as ImageIcon, Settings
 } from "lucide-react";
-import { EmojiPicker, StickerPicker, WishStickerBadge } from "./WishEmbellishments";
+import { WishStickerBadge } from "./WishEmbellishments";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
-type Tab = "wishes" | "rsvp" | "settings" | "stats";
+type Tab = "wishes" | "rsvp" | "settings" | "stats" | "contacts" | "stickers";
 type RecipientFilter = "all" | "groom" | "bride" | "both";
 
 interface RSVPEntry {
@@ -48,9 +49,8 @@ export default function AdminDashboard() {
 
   // Print Wall State
   const [showPrintModal, setShowPrintModal] = useState(false);
-  const [printRecipientFilter, setPrintRecipientFilter] = useState<RecipientFilter>("all");
+  const [printRecipientFilter] = useState<RecipientFilter>("all");
   const [printVisibleOnly, setPrintVisibleOnly] = useState(true);
-  const [printOrientation, setPrintOrientation] = useState<"portrait" | "landscape">("portrait");
 
   // Edit Wish State
   const [editingWish, setEditingWish] = useState<GuestWish | null>(null);
@@ -60,34 +60,15 @@ export default function AdminDashboard() {
   const [editSticker, setEditSticker] = useState<string | null>(null);
   const [editIsHidden, setEditIsHidden] = useState(false);
   const [editSaving, setEditSaving] = useState(false);
-  const [showEditEmojiPicker, setShowEditEmojiPicker] = useState(false);
-  const [showEditStickerPicker, setShowEditStickerPicker] = useState(false);
 
   // RSVP
   const [rsvpEntries, setRsvpEntries] = useState<RSVPEntry[]>([]);
   const [rsvpLoading, setRsvpLoading] = useState(false);
-  const [daysUntilWedding, setDaysUntilWedding] = useState(0);
-
-  // Settings
-  const [config, setConfig] = useState({
-    groomAr: wedding.groomAr,
-    brideAr: wedding.brideAr,
-    dayAr: wedding.dayAr,
-    venueAr: wedding.venueAr,
-    cityAr: wedding.cityAr,
-    inviteText: wedding.heroText.inviteText,
-    introLine: wedding.heroText.intro,
-    invitationBody: wedding.invitationMessage.body,
-    invitationClosing: wedding.invitationMessage.closing,
-    romanticMomentsTitle: wedding.romanticMoments.title,
-  });
-  const [configSaved, setConfigSaved] = useState(false);
 
   // ── Data fetching ──────────────────────────────────────────────────────────
   const fetchWishes = useCallback(async () => {
     setWishesLoading(true);
     try {
-      // No need to send a secret — the HttpOnly cookie is sent automatically
       const res = await fetch("/api/wishes");
       if (res.ok) {
         const data = await res.json();
@@ -116,11 +97,7 @@ export default function AdminDashboard() {
   }, []);
 
   // ── Auth ───────────────────────────────────────────────────────────────────
-  // On mount, probe /api/rsvp — if we get 200 the cookie is valid, else 401 = not logged in
   useEffect(() => {
-    const weddingDate = new Date("2026-10-14").getTime();
-    setDaysUntilWedding(Math.max(0, Math.floor((weddingDate - Date.now()) / 86400000)));
-
     fetch("/api/rsvp")
       .then((r) => {
         if (r.ok) setAuthenticated(true);
@@ -133,10 +110,6 @@ export default function AdminDashboard() {
     if (!authenticated) return;
     fetchWishes();
     fetchRSVP();
-    const savedConfig = localStorage.getItem("wedding_config_override");
-    if (savedConfig) {
-      try { setConfig(JSON.parse(savedConfig)); } catch {}
-    }
   }, [authenticated, fetchWishes, fetchRSVP]);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -175,7 +148,9 @@ export default function AdminDashboard() {
         const data = await res.json();
         setWishes((prev) => prev.map((w) => (w.id === id ? data.wish : w)));
       }
-    } catch { /* silent */ }
+    } catch {
+      // silent
+    }
   };
 
   const handleConfirmDelete = async () => {
@@ -201,8 +176,6 @@ export default function AdminDashboard() {
     setEditMessage(wish.message);
     setEditSticker(wish.sticker ?? null);
     setEditIsHidden(wish.isHidden ?? false);
-    setShowEditEmojiPicker(false);
-    setShowEditStickerPicker(false);
   };
 
   const handleSaveEdit = async () => {
@@ -238,27 +211,7 @@ export default function AdminDashboard() {
     setShowPrintModal(false);
     setTimeout(() => {
       window.print();
-    }, 150);
-  };
-
-  // ── Settings ───────────────────────────────────────────────────────────────
-  const handleSaveConfig = () => {
-    localStorage.setItem("wedding_config_override", JSON.stringify(config));
-    setConfigSaved(true);
-    setTimeout(() => setConfigSaved(false), 3000);
-  };
-
-  const handleResetConfig = () => {
-    setConfig({
-      groomAr: wedding.groomAr, brideAr: wedding.brideAr,
-      dayAr: wedding.dayAr, venueAr: wedding.venueAr,
-      cityAr: wedding.cityAr, inviteText: wedding.heroText.inviteText,
-      introLine: wedding.heroText.intro,
-      invitationBody: wedding.invitationMessage.body,
-      invitationClosing: wedding.invitationMessage.closing,
-      romanticMomentsTitle: wedding.romanticMoments.title,
-    });
-    localStorage.removeItem("wedding_config_override");
+    }, 200);
   };
 
   // ── Derived data ───────────────────────────────────────────────────────────
@@ -279,7 +232,6 @@ export default function AdminDashboard() {
 
   const visibleCount = wishes.filter((w) => !w.isHidden).length;
   const hiddenCount = wishes.filter((w) => w.isHidden).length;
-  const attendingCount = rsvpEntries.filter((e) => e.attendance === "attending").length;
 
   const recipientLabel = (r?: string) => {
     if (r === "groom") return "🤵 للعريس";
@@ -290,684 +242,489 @@ export default function AdminDashboard() {
   // ── Loading skeleton while checking auth ───────────────────────────────────
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-[#151311] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-[#C5A46D] animate-spin" />
+      <div className="min-h-screen bg-[#F7F1E6] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#C9A96A] animate-spin" />
       </div>
     );
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // LOGIN SCREEN
+  // LOGIN SCREEN (Matching Reference 10 Luxury Style)
   // ═══════════════════════════════════════════════════════════════════════════
   if (!authenticated) {
     return (
-      <div className="min-h-screen bg-[#151311] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#F7F1E6] flex items-center justify-center p-4" dir="rtl">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-sm"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-sm rounded-3xl bg-white border border-[#C9A96A]/35 shadow-md p-6 sm:p-8 text-center"
         >
-          <div className="text-center mb-8">
-            <div className="w-14 h-14 rounded-full bg-[#C5A46D]/20 border border-[#C5A46D]/40 flex items-center justify-center mx-auto mb-4">
-              <Lock className="w-6 h-6 text-[#C5A46D]" />
-            </div>
-            <h1 className="text-2xl font-amiri font-bold text-white">لوحة التحكم</h1>
-            <p className="text-sm font-cairo text-white/50 mt-1">حفل زفاف أحمد ومنة الله</p>
+          <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-5 h-5 text-[#8A6A32]" />
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <h1 className="text-2xl font-amiri font-bold text-[#241D18] mb-1">
+            لوحة تحكم المشرف
+          </h1>
+          <p className="text-xs font-cairo text-[#5C5146] mb-6">
+            زفاف {wedding.groomAr} &amp; {wedding.brideAr}
+          </p>
+
+          <form onSubmit={handleLogin} className="space-y-4 text-right">
             <div>
-              <label htmlFor="dash-password" className="block text-xs font-cairo text-white/60 mb-1.5">
+              <label className="block text-xs font-semibold font-cairo text-[#241D18] mb-1">
                 كلمة المرور
               </label>
               <input
-                id="dash-password"
                 type="password"
+                required
                 value={password}
-                onChange={(e) => { setPassword(e.target.value); setPasswordError(""); }}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="أدخل كلمة المرور..."
-                autoComplete="current-password"
-                className={`w-full px-4 py-3 rounded-xl bg-white/10 border text-white font-cairo text-sm outline-none transition-all ${
-                  passwordError ? "border-red-500 focus:border-red-400" : "border-white/20 focus:border-[#C5A46D]"
-                }`}
+                className="w-full px-4 py-2.5 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/30 text-sm font-cairo text-[#241D18] outline-none focus:border-[#C9A96A] transition-all"
               />
-              {passwordError && (
-                <p className="text-xs text-red-400 font-cairo mt-1">{passwordError}</p>
-              )}
             </div>
+
+            {passwordError && (
+              <p className="text-xs font-cairo text-red-600">{passwordError}</p>
+            )}
+
             <button
               type="submit"
               disabled={loginLoading}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] font-bold font-cairo shadow-lg hover:shadow-xl transition-all cursor-pointer touch-target flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full py-3 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-bold text-sm font-cairo shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
             >
-              {loginLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "دخول"}
+              {loginLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>دخول للوحة التحكم</span>}
             </button>
+
+            <div className="pt-2 text-center">
+              <Link href="/" className="text-xs font-cairo text-[#8A6A32] hover:underline">
+                العودة إلى الدعوة
+              </Link>
+            </div>
           </form>
-          <p className="text-center text-xs font-cairo text-white/30 mt-6">
-            هذه الصفحة للإدارة فقط •{" "}
-            <Link href="/" className="text-[#C5A46D] hover:underline">العودة للدعوة</Link>
-          </p>
         </motion.div>
       </div>
     );
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // DASHBOARD
+  // REFERENCE 10: ADMIN DASHBOARD (لوحة تحكم المشرف)
   // ═══════════════════════════════════════════════════════════════════════════
-  const tabs: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
-    { id: "wishes",   label: "التهاني",       icon: <Heart className="w-4 h-4" />,    badge: wishes.length },
-    { id: "rsvp",     label: "الحضور",         icon: <Users className="w-4 h-4" />,    badge: rsvpEntries.length },
-    { id: "stats",    label: "الإحصائيات",    icon: <BarChart3 className="w-4 h-4" /> },
-    { id: "settings", label: "الإعدادات",     icon: <Settings className="w-4 h-4" /> },
-  ];
-
   return (
     <>
-      <div className="min-h-screen bg-[#F8F2EA] font-cairo print:hidden" dir="rtl">
-
-      {/* ── Header ──────────────────────────────────────────────────────── */}
-      <header className="bg-[#151311] border-b border-[#C5A46D]/30 sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-amiri font-bold text-white">لوحة التحكم</h1>
-            <p className="text-[11px] text-white/40 font-cairo">أحمد ومنة الله • 14 أكتوبر 2026</p>
-          </div>
+      <div className="min-h-screen bg-[#F7F1E6] text-[#241D18] flex flex-col font-cairo print:hidden" dir="rtl">
+        
+        {/* Top Navbar */}
+        <header className="bg-white border-b border-[#C9A96A]/25 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-xs text-[#DFCBA8] hover:text-white transition-colors font-cairo px-3 py-1.5 rounded-lg border border-white/10 hover:border-white/20">
-              الدعوة ←
+            <span className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
+              لوحة تحكم المشرف
+            </span>
+            <span className="hidden sm:inline-block text-xs px-2.5 py-0.5 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/30 text-[#8A6A32]">
+              {wedding.groomAr} &amp; {wedding.brideAr}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowPrintModal(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF5EE] hover:bg-[#F7F1E6] text-[#241D18] border border-[#C9A96A]/35 text-xs font-semibold transition-all cursor-pointer"
+            >
+              <Printer className="w-3.5 h-3.5 text-[#8A6A32]" />
+              <span>طباعة حائط التهاني</span>
+            </button>
+
+            <Link
+              href="/"
+              target="_blank"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-[#FAF5EE] text-[#5C5146] border border-[#C9A96A]/25 text-xs transition-all"
+            >
+              <span>معاينة الدعوة</span>
             </Link>
+
             <button
               type="button"
               onClick={handleLogout}
-              className="flex items-center gap-1.5 text-xs text-white/50 hover:text-red-400 transition-colors cursor-pointer"
+              className="p-1.5 rounded-full text-[#5C5146] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+              title="تسجيل الخروج"
             >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>خروج</span>
+              <LogOut className="w-4 h-4" />
             </button>
           </div>
-        </div>
+        </header>
 
-        {/* Tab Navigation */}
-        <div className="max-w-5xl mx-auto px-4 flex gap-1 pb-2 overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer touch-target ${
-                activeTab === tab.id
-                  ? "bg-[#C5A46D] text-[#151311]"
-                  : "text-white/60 hover:text-white hover:bg-white/10"
-              }`}
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-              {tab.badge !== undefined && tab.badge > 0 && (
-                <span className={`w-5 h-5 rounded-full text-[10px] flex items-center justify-center font-bold ${
-                  activeTab === tab.id ? "bg-[#151311] text-[#C5A46D]" : "bg-[#C5A46D] text-[#151311]"
+        {/* Dashboard Main Body (Sidebar + Content matching Reference 10) */}
+        <div className="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col md:flex-row gap-6 items-start">
+          
+          {/* Left / Navigation Sidebar matching Reference 10 */}
+          <aside className="w-full md:w-56 bg-white rounded-2xl border border-[#C9A96A]/30 p-3 shadow-2xs shrink-0">
+            <nav className="space-y-1">
+              <button
+                type="button"
+                onClick={() => setActiveTab("stats")}
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeTab === "stats"
+                    ? "bg-[#241D18] text-[#FBF8F1]"
+                    : "text-[#5C5146] hover:bg-[#FAF5EE]"
+                }`}
+              >
+                <Home className="w-4 h-4" />
+                <span>الرئيسية</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("wishes")}
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeTab === "wishes"
+                    ? "bg-[#241D18] text-[#FBF8F1]"
+                    : "text-[#5C5146] hover:bg-[#FAF5EE]"
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Mail className="w-4 h-4" />
+                  <span>التهاني</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                  activeTab === "wishes" ? "bg-white/20 text-[#FBF8F1]" : "bg-[#FAF5EE] text-[#8A6A32]"
                 }`}>
-                  {tab.badge}
+                  {wishes.length}
                 </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </header>
+              </button>
 
-      <div className="max-w-5xl mx-auto px-4 py-6">
+              <button
+                type="button"
+                onClick={() => setActiveTab("rsvp")}
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeTab === "rsvp"
+                    ? "bg-[#241D18] text-[#FBF8F1]"
+                    : "text-[#5C5146] hover:bg-[#FAF5EE]"
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Users className="w-4 h-4" />
+                  <span>تأكيدات الحضور</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                  activeTab === "rsvp" ? "bg-white/20 text-[#FBF8F1]" : "bg-[#FAF5EE] text-[#8A6A32]"
+                }`}>
+                  {rsvpEntries.length}
+                </span>
+              </button>
 
-        {/* ══════════════════════════ WISHES TAB ══════════════════════════ */}
-        {activeTab === "wishes" && (
-          <div className="space-y-4">
-            {/* Stats row */}
+              <button
+                type="button"
+                onClick={() => setActiveTab("contacts")}
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeTab === "contacts"
+                    ? "bg-[#241D18] text-[#FBF8F1]"
+                    : "text-[#5C5146] hover:bg-[#FAF5EE]"
+                }`}
+              >
+                <Phone className="w-4 h-4" />
+                <span>الإتصالات</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("stickers")}
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeTab === "stickers"
+                    ? "bg-[#241D18] text-[#FBF8F1]"
+                    : "text-[#5C5146] hover:bg-[#FAF5EE]"
+                }`}
+              >
+                <ImageIcon className="w-4 h-4" />
+                <span>الملصقات</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("settings")}
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  activeTab === "settings"
+                    ? "bg-[#241D18] text-[#FBF8F1]"
+                    : "text-[#5C5146] hover:bg-[#FAF5EE]"
+                }`}
+              >
+                <Settings className="w-4 h-4" />
+                <span>الإعدادات</span>
+              </button>
+            </nav>
+          </aside>
+
+          {/* Main Content Area */}
+          <main className="flex-1 w-full space-y-4">
+            
+            {/* Top Statistics Cards */}
             <div className="grid grid-cols-3 gap-3">
-              {[
-                { label: "إجمالي التهاني", value: wishes.length, color: "text-[#231F1A]" },
-                { label: "ظاهرة",           value: visibleCount,  color: "text-green-700" },
-                { label: "مخفية",            value: hiddenCount,   color: "text-orange-600" },
-              ].map((s) => (
-                <div key={s.label} className="p-4 rounded-2xl bg-white border border-[#C5A46D]/20 text-center shadow-sm">
-                  <p className={`text-2xl font-bold font-cormorant ${s.color}`}>{s.value}</p>
-                  <p className="text-xs text-[#70735F] mt-1">{s.label}</p>
-                </div>
-              ))}
+              <div className="p-4 rounded-2xl bg-white border border-[#C9A96A]/30 shadow-2xs text-center">
+                <span className="text-xl sm:text-2xl font-bold font-cormorant text-[#241D18] block">
+                  {wishes.length}
+                </span>
+                <span className="text-[11px] font-cairo text-[#5C5146]">إجمالي التهاني</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white border border-[#C9A96A]/30 shadow-2xs text-center">
+                <span className="text-xl sm:text-2xl font-bold font-cormorant text-green-700 block">
+                  {visibleCount}
+                </span>
+                <span className="text-[11px] font-cairo text-[#5C5146]">الظاهرة للزوار</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white border border-[#C9A96A]/30 shadow-2xs text-center">
+                <span className="text-xl sm:text-2xl font-bold font-cormorant text-[#8A6A32] block">
+                  {hiddenCount}
+                </span>
+                <span className="text-[11px] font-cairo text-[#5C5146]">المخفية</span>
+              </div>
             </div>
 
-            {/* Search + filter + print */}
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="text"
-                value={wishesSearch}
-                onChange={(e) => setWishesSearch(e.target.value)}
-                placeholder="ابحث في التهاني..."
-                className="flex-1 px-4 py-3 rounded-xl bg-white border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D]"
-              />
-              <select
-                value={recipientFilter}
-                onChange={(e) => setRecipientFilter(e.target.value as RecipientFilter)}
-                className="px-4 py-3 rounded-xl bg-white border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D] cursor-pointer"
-              >
-                <option value="all">الكل</option>
-                <option value="both">💑 للعروسين</option>
-                <option value="groom">🤵 للعريس</option>
-                <option value="bride">👰 للعروسة</option>
-              </select>
-              <button
-                type="button"
-                onClick={fetchWishes}
-                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white border border-[#C5A46D]/30 text-sm font-cairo text-[#A07F47] hover:border-[#C5A46D] transition-all cursor-pointer touch-target"
-              >
-                <RefreshCw className={`w-4 h-4 ${wishesLoading ? "animate-spin" : ""}`} />
-                <span>تحديث</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowPrintModal(true)}
-                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] font-bold text-sm font-cairo shadow-sm hover:shadow transition-all cursor-pointer touch-target whitespace-nowrap"
-              >
-                <Printer className="w-4 h-4" />
-                <span>🖨 طباعة حائط التهاني</span>
-              </button>
-            </div>
-
-            {/* Wishes list */}
-            <div className="space-y-3">
-              <AnimatePresence>
-                {wishesLoading && (
-                  <div className="text-center py-10">
-                    <Loader2 className="w-6 h-6 text-[#C5A46D] animate-spin mx-auto" />
-                  </div>
-                )}
-                {!wishesLoading && filteredWishes.length === 0 && (
-                  <div className="text-center py-10 text-[#70735F] text-sm">
-                    <MessageSquare className="w-8 h-8 text-[#C5A46D]/30 mx-auto mb-2" />
-                    <p>لا توجد تهاني بعد</p>
-                  </div>
-                )}
-                {filteredWishes.map((wish) => (
-                  <motion.div
-                    key={wish.id}
-                    layout
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{
-                      opacity: deletingId === wish.id ? 0 : 1,
-                      y: 0,
-                      scale: deletingId === wish.id ? 0.95 : 1,
-                    }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                    className={`p-5 rounded-2xl bg-white border shadow-sm transition-all ${
-                      wish.isHidden ? "border-orange-200 bg-orange-50/50 opacity-70" : "border-[#C5A46D]/25"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#DFCBA8] to-[#C5A46D] flex items-center justify-center shrink-0 font-bold text-[#151311]">
-                          {wish.name.charAt(0)}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-bold text-[#231F1A] truncate">{wish.name}</p>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <p className="text-[10px] text-[#70735F]">
-                              {new Date(wish.timestamp).toLocaleDateString("ar-EG", {
-                                year: "numeric", month: "long", day: "numeric",
-                                hour: "2-digit", minute: "2-digit",
-                              })}
-                            </p>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#C5A46D]/10 text-[#A07F47] border border-[#C5A46D]/20">
-                              {recipientLabel(wish.recipient)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {wish.isHidden && (
-                        <span className="px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 text-[10px] font-semibold shrink-0">
-                          مخفية
-                        </span>
-                      )}
-
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => handleStartEdit(wish)}
-                          title="تعديل التهنئة"
-                          className="p-2 rounded-lg bg-[#C5A46D]/15 text-[#A07F47] hover:bg-[#C5A46D]/25 transition-colors cursor-pointer touch-target"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleToggleHide(wish.id)}
-                          title={wish.isHidden ? "إظهار" : "إخفاء"}
-                          className={`p-2 rounded-lg transition-colors cursor-pointer touch-target ${
-                            wish.isHidden
-                              ? "bg-green-100 text-green-600 hover:bg-green-200"
-                              : "bg-orange-100 text-orange-600 hover:bg-orange-200"
-                          }`}
-                        >
-                          {wish.isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setWishToDelete(wish)}
-                          title="حذف التهنئة"
-                          className="p-2 rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition-colors cursor-pointer touch-target"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {wish.sticker && (
-                      <div className="mt-2.5 mb-1 flex items-center">
-                        <WishStickerBadge stickerKey={wish.sticker} size="sm" />
-                      </div>
-                    )}
-
-                    <p className="mt-2 text-sm text-[#231F1A]/90 leading-relaxed border-r-2 border-[#C5A46D]/40 pr-3 break-words">
-                      {wish.message}
+            {/* TAB: WISHES MANAGEMENT (Reference 10 Main Table/Cards) */}
+            {activeTab === "wishes" && (
+              <div className="bg-white rounded-2xl border border-[#C9A96A]/30 p-4 sm:p-5 shadow-2xs space-y-4">
+                
+                {/* Search & Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#C9A96A]/20">
+                  <div>
+                    <h2 className="text-lg font-amiri font-bold text-[#241D18]">
+                      إدارة التهاني
+                    </h2>
+                    <p className="text-xs text-[#5C5146]">
+                      عرض، تعديل، إخفاء وحذف تهاني الضيوف
                     </p>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          </div>
-        )}
-
-        {/* ═══════════════════════════ RSVP TAB ═══════════════════════════ */}
-        {activeTab === "rsvp" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-amiri font-bold text-[#231F1A]">
-                بيانات التأكيد ({rsvpEntries.length} ضيف)
-              </h2>
-              <button
-                type="button"
-                onClick={fetchRSVP}
-                className="flex items-center gap-1.5 text-xs font-cairo text-[#A07F47] hover:text-[#231F1A] cursor-pointer"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${rsvpLoading ? "animate-spin" : ""}`} />
-                <span>تحديث</span>
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-4 rounded-2xl bg-white border border-green-200 text-center shadow-sm">
-                <p className="text-2xl font-bold font-cormorant text-green-700">{attendingCount}</p>
-                <p className="text-xs text-[#70735F] mt-1">✅ سيحضرون</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-white border border-red-200 text-center shadow-sm">
-                <p className="text-2xl font-bold font-cormorant text-red-500">
-                  {rsvpEntries.length - attendingCount}
-                </p>
-                <p className="text-xs text-[#70735F] mt-1">❌ لن يحضروا</p>
-              </div>
-            </div>
-
-            {rsvpLoading ? (
-              <div className="text-center py-10">
-                <Loader2 className="w-6 h-6 text-[#C5A46D] animate-spin mx-auto" />
-              </div>
-            ) : rsvpEntries.length === 0 ? (
-              <div className="text-center py-10 text-[#70735F] text-sm">
-                <Users className="w-8 h-8 text-[#C5A46D]/30 mx-auto mb-2" />
-                <p>لم يتم تأكيد الحضور بعد</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {[...rsvpEntries].reverse().map((entry) => (
-                  <div key={entry.id} className="p-5 rounded-2xl bg-white border border-[#C5A46D]/25 shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#DFCBA8] to-[#C5A46D] flex items-center justify-center font-bold text-lg text-[#151311] font-cormorant shrink-0">
-                        {entry.name.charAt(0)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-[#231F1A] truncate">{entry.name}</p>
-                        <p className="text-[11px] text-[#70735F]">
-                          {new Date(entry.submittedAt).toLocaleDateString("ar-EG", {
-                            year: "numeric", month: "long", day: "numeric",
-                            hour: "2-digit", minute: "2-digit",
-                          })}
-                        </p>
-                      </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold font-cairo ${
-                        entry.attendance === "attending"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-600"
-                      }`}>
-                        {entry.attendance === "attending" ? "✅ سيحضر" : "❌ لن يحضر"}
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-1 gap-3 mt-3 text-sm">
-                      <div className="p-3 rounded-xl bg-[#F8F2EA] w-fit">
-                        <p className="text-[11px] text-[#70735F] mb-0.5">المرافقون</p>
-                        <p className="font-semibold text-[#231F1A]">
-                          {entry.guestsCount === "0" ? "بدون مرافقين" : `${entry.guestsCount} مرافق`}
-                        </p>
-                      </div>
-                      {entry.message && (
-                        <div className="p-3 rounded-xl bg-[#F8F2EA]">
-                          <p className="text-[11px] text-[#70735F] mb-0.5">رسالة</p>
-                          <p className="text-sm text-[#231F1A]/90 leading-relaxed">{entry.message}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ═══════════════════════════ STATS TAB ══════════════════════════ */}
-        {activeTab === "stats" && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-amiri font-bold text-[#231F1A]">الإحصائيات</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {[
-                { label: "إجمالي التهاني",   value: wishes.length,                                                   icon: "💌" },
-                { label: "تهاني ظاهرة",      value: visibleCount,                                                    icon: "👁️" },
-                { label: "تهاني مخفية",      value: hiddenCount,                                                     icon: "🙈" },
-                { label: "سيحضرون",          value: attendingCount,                                                  icon: "✅" },
-                { label: "إجمالي الردود",    value: rsvpEntries.length,                                              icon: "📝" },
-                { label: "أيام للزفاف",      value: daysUntilWedding,                                                icon: "📅" },
-                { label: "للعروسين معاً",    value: wishes.filter((w) => (w.recipient ?? "both") === "both").length, icon: "💑" },
-                { label: "للعريس فقط",       value: wishes.filter((w) => w.recipient === "groom").length,            icon: "🤵" },
-                { label: "للعروسة فقط",      value: wishes.filter((w) => w.recipient === "bride").length,            icon: "👰" },
-              ].map((stat) => (
-                <div key={stat.label} className="p-5 rounded-2xl bg-white border border-[#C5A46D]/20 shadow-sm text-center">
-                  <div className="text-2xl mb-1">{stat.icon}</div>
-                  <p className="text-3xl font-bold font-cormorant text-[#231F1A]">{stat.value}</p>
-                  <p className="text-xs text-[#70735F] mt-1">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ═════════════════════════ SETTINGS TAB ═════════════════════════ */}
-        {activeTab === "settings" && (
-          <div className="space-y-5">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-amiri font-bold text-[#231F1A]">تعديل المحتوى</h2>
-              <button
-                type="button"
-                onClick={handleResetConfig}
-                className="flex items-center gap-1.5 text-xs text-[#70735F] hover:text-red-500 cursor-pointer font-cairo"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>إعادة تعيين</span>
-              </button>
-            </div>
-
-            <div className="p-5 rounded-2xl bg-white border border-[#C5A46D]/20 shadow-sm space-y-4">
-              <h3 className="text-sm font-bold text-[#231F1A] border-b border-[#C5A46D]/20 pb-2">معلومات العروسين</h3>
-              {[
-                { key: "groomAr",  label: "اسم العريس (عربي)" },
-                { key: "brideAr",  label: "اسم العروسة (عربي)" },
-                { key: "dayAr",    label: "اليوم بالعربية" },
-                { key: "venueAr",  label: "اسم القاعة" },
-                { key: "cityAr",   label: "المدينة" },
-              ].map((field) => (
-                <div key={field.key}>
-                  <label className="block text-xs font-semibold text-[#70735F] mb-1">{field.label}</label>
-                  <input
-                    type="text"
-                    value={config[field.key as keyof typeof config]}
-                    onChange={(e) => setConfig((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#F8F2EA] border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D]"
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="p-5 rounded-2xl bg-white border border-[#C5A46D]/20 shadow-sm space-y-4">
-              <h3 className="text-sm font-bold text-[#231F1A] border-b border-[#C5A46D]/20 pb-2">نصوص الدعوة</h3>
-              {[
-                { key: "introLine",            label: "النص التمهيدي (Hero)",       multiline: false },
-                { key: "inviteText",           label: "جملة الدعوة الرئيسية",       multiline: false },
-                { key: "invitationBody",       label: "نص الدعوة الرسمية",          multiline: true },
-                { key: "invitationClosing",    label: "الجملة الختامية للدعوة",     multiline: true },
-                { key: "romanticMomentsTitle", label: "عنوان القصة الرومانسية",     multiline: false },
-              ].map((field) => (
-                <div key={field.key}>
-                  <label className="block text-xs font-semibold text-[#70735F] mb-1">{field.label}</label>
-                  {field.multiline ? (
-                    <textarea
-                      rows={3}
-                      value={config[field.key as keyof typeof config]}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                      className="w-full px-3 py-2.5 rounded-xl bg-[#F8F2EA] border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D] resize-none"
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      value={config[field.key as keyof typeof config]}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                      className="w-full px-3 py-2.5 rounded-xl bg-[#F8F2EA] border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D]"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              onClick={handleSaveConfig}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] font-bold font-cairo shadow-md hover:shadow-lg transition-all cursor-pointer touch-target flex items-center justify-center gap-2"
-            >
-              {configSaved
-                ? <><Check className="w-4 h-4" /><span>تم الحفظ!</span></>
-                : <><Save className="w-4 h-4" /><span>حفظ التغييرات</span></>}
-            </button>
-
-            <p className="text-center text-[11px] text-[#70735F] font-cairo">
-              ملاحظة: التغييرات تُحفظ محلياً في المتصفح. لتطبيق التغييرات على جميع الزوار يجب تعديل ملف{" "}
-              <code className="text-[#A07F47] bg-[#FAF6F0] px-1 rounded">wedding.ts</code>
-            </p>
-          </div>
-        )}
-
-      </div>
-    </div>
-
-      {/* ══════════════════════════ EDIT WISH MODAL ══════════════════════════ */}
-      <AnimatePresence>
-        {editingWish && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm print:hidden">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-2xl shadow-2xl border border-[#C5A46D]/30 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]"
-              dir="rtl"
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-[#C5A46D]/20 bg-[#FAF6F0]">
-                <div className="flex items-center gap-2">
-                  <Edit3 className="w-5 h-5 text-[#A07F47]" />
-                  <h3 className="font-amiri font-bold text-lg text-[#231F1A]">تعديل التهنئة</h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setEditingWish(null)}
-                  className="p-1 rounded-lg text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Body */}
-              <div className="p-6 space-y-4 overflow-y-auto flex-1 font-cairo">
-                {/* Name */}
-                <div>
-                  <label className="block text-xs font-semibold text-[#70735F] mb-1.5">اسم الضيف</label>
-                  <input
-                    type="text"
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/30 text-sm font-cairo text-[#231F1A] outline-none focus:border-[#C5A46D]"
-                  />
-                </div>
-
-                {/* Recipient */}
-                <div>
-                  <label className="block text-xs font-semibold text-[#70735F] mb-1.5">التهنئة موجهة إلى</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { id: "both" as const, label: "💑 للعروسين" },
-                      { id: "groom" as const, label: "🤵 للعريس" },
-                      { id: "bride" as const, label: "👰 للعروسة" },
-                    ].map((opt) => (
-                      <button
-                        key={opt.id}
-                        type="button"
-                        onClick={() => setEditRecipient(opt.id)}
-                        className={`py-2 px-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                          editRecipient === opt.id
-                            ? "bg-[#C5A46D] text-[#151311] border-[#C5A46D]"
-                            : "bg-white text-[#70735F] border-[#C5A46D]/20 hover:border-[#C5A46D]/50"
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-semibold text-[#70735F]">نص التهنئة</label>
-                    <div className="flex items-center gap-1.5 relative">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowEditEmojiPicker((prev) => !prev);
-                          setShowEditStickerPicker(false);
-                        }}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
-                          showEditEmojiPicker
-                            ? "bg-[#C5A46D] text-[#151311]"
-                            : "bg-[#FAF6F0] text-[#70735F] hover:text-[#231F1A] border border-[#C5A46D]/20"
-                        }`}
-                        title="إضافة إيموجي"
-                      >
-                        <span>😊</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowEditStickerPicker((prev) => !prev);
-                          setShowEditEmojiPicker(false);
-                        }}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
-                          showEditStickerPicker
-                            ? "bg-[#C5A46D] text-[#151311]"
-                            : "bg-[#FAF6F0] text-[#70735F] hover:text-[#231F1A] border border-[#C5A46D]/20"
-                        }`}
-                        title="إضافة ملصق راقي"
-                      >
-                        <Sparkles className="w-3.5 h-3.5 text-[#A07F47]" />
-                        <span>ملصقات</span>
-                      </button>
-
-                      {showEditEmojiPicker && (
-                        <EmojiPicker
-                          onSelectEmoji={(emoji) => {
-                            setEditMessage((prev) => prev + " " + emoji);
-                          }}
-                          onClose={() => setShowEditEmojiPicker(false)}
-                        />
-                      )}
-
-                      {showEditStickerPicker && (
-                        <StickerPicker
-                          selectedSticker={editSticker ?? undefined}
-                          onSelectSticker={(stickerKey) => {
-                            setEditSticker(stickerKey);
-                            setShowEditStickerPicker(false);
-                          }}
-                          onClose={() => setShowEditStickerPicker(false)}
-                        />
-                      )}
-                    </div>
                   </div>
 
-                  <textarea
-                    rows={4}
-                    value={editMessage}
-                    onChange={(e) => setEditMessage(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/30 text-sm font-cairo text-[#231F1A] outline-none focus:border-[#C5A46D] resize-none"
-                  />
-                </div>
-
-                {/* Sticker display/remove */}
-                {editSticker && (
-                  <div className="flex items-center justify-between p-3 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/20">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-[#70735F]">الملصق المرفق:</span>
-                      <WishStickerBadge stickerKey={editSticker} size="sm" />
+                  <div className="flex items-center gap-2">
+                    {/* Search Input */}
+                    <div className="relative">
+                      <Search className="w-3.5 h-3.5 text-[#5C5146] absolute right-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={wishesSearch}
+                        onChange={(e) => setWishesSearch(e.target.value)}
+                        placeholder="بحث في التهاني..."
+                        className="pl-3 pr-8 py-1.5 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/25 text-xs outline-none focus:border-[#C9A96A] transition-all w-44 sm:w-52"
+                      />
                     </div>
+
                     <button
                       type="button"
-                      onClick={() => setEditSticker(null)}
-                      className="text-xs text-red-500 hover:text-red-700 cursor-pointer font-cairo"
+                      onClick={fetchWishes}
+                      className="p-1.5 rounded-xl bg-[#FAF5EE] hover:bg-[#F7F1E6] text-[#8A6A32] border border-[#C9A96A]/25 cursor-pointer"
+                      title="تحديث البيانات"
                     >
-                      إزالة الملصق
+                      <RefreshCw className={`w-3.5 h-3.5 ${wishesLoading ? "animate-spin" : ""}`} />
                     </button>
                   </div>
-                )}
+                </div>
 
-                {/* Visibility */}
-                <div className="pt-2 border-t border-[#C5A46D]/15">
-                  <label className="flex items-center gap-2.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={!editIsHidden}
-                      onChange={(e) => setEditIsHidden(!e.target.checked)}
-                      className="w-4 h-4 rounded text-[#C5A46D] accent-[#C5A46D] cursor-pointer"
-                    />
-                    <span className="text-xs font-semibold text-[#231F1A]">
-                      إظهار التهنئة للزوار في حائط التهاني
-                    </span>
-                  </label>
-                  <p className="text-[11px] text-[#70735F] pr-6 mt-0.5">
-                    {editIsHidden
-                      ? "التهنئة حالياً مخفية ولن تظهر للزوار على صفحة الدعوة."
-                      : "التهنئة حالياً ظاهرة لجميع الزوار."}
-                  </p>
+                {/* Recipient Filter Pills */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                  {(["all", "both", "groom", "bride"] as RecipientFilter[]).map((filter) => (
+                    <button
+                      key={filter}
+                      type="button"
+                      onClick={() => setRecipientFilter(filter)}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer shrink-0 ${
+                        recipientFilter === filter
+                          ? "bg-[#241D18] text-[#FBF8F1]"
+                          : "bg-[#FAF5EE] text-[#5C5146] hover:bg-[#F7F1E6]"
+                      }`}
+                    >
+                      {filter === "all" ? "الكل" : recipientLabel(filter)}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Wishes List Cards matching Reference 10 */}
+                <div className="space-y-2.5">
+                  {wishesLoading && wishes.length === 0 ? (
+                    <div className="py-12 text-center text-xs text-[#5C5146]">
+                      <Loader2 className="w-6 h-6 text-[#C9A96A] animate-spin mx-auto mb-2" />
+                      جاري تحميل التهاني...
+                    </div>
+                  ) : filteredWishes.length === 0 ? (
+                    <div className="py-12 text-center text-xs text-[#5C5146]">
+                      لا توجد تهاني مطابقة للبحث
+                    </div>
+                  ) : (
+                    filteredWishes.map((wish) => (
+                      <div
+                        key={wish.id}
+                        className={`p-3.5 sm:p-4 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                          wish.isHidden
+                            ? "bg-[#FAF5EE]/60 border-dashed border-[#C9A96A]/25 opacity-75"
+                            : "bg-[#FAF5EE] border-[#C9A96A]/30 hover:border-[#C9A96A]/60"
+                        }`}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <span className="font-amiri font-bold text-sm text-[#241D18]">
+                              {wish.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-[#8A6A32] border border-[#C9A96A]/20">
+                              {recipientLabel(wish.recipient)}
+                            </span>
+                            {wish.sticker && (
+                              <WishStickerBadge stickerKey={wish.sticker} size="sm" />
+                            )}
+                            {wish.isHidden && (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                مخفي
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs font-cairo text-[#3A2D24] leading-relaxed break-words">
+                            {wish.message}
+                          </p>
+                          <span className="text-[10px] font-cairo text-[#8C8276] mt-1 block">
+                            {new Date(wish.timestamp).toLocaleDateString("ar-EG", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </span>
+                        </div>
+
+                        {/* Action Buttons: Edit, Toggle Visibility, Delete */}
+                        <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                          {/* Edit Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleStartEdit(wish)}
+                            className="p-2 rounded-lg bg-white hover:bg-blue-50 text-blue-600 border border-blue-200 transition-all cursor-pointer shadow-2xs"
+                            title="تعديل التهنئة"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Toggle Hide/Show */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleHide(wish.id)}
+                            className={`p-2 rounded-lg border transition-all cursor-pointer shadow-2xs ${
+                              wish.isHidden
+                                ? "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
+                                : "bg-white text-[#5C5146] border-[#C9A96A]/30 hover:bg-[#FAF5EE]"
+                            }`}
+                            title={wish.isHidden ? "إظهار في الحائط" : "إخفاء من الحائط"}
+                          >
+                            {wish.isHidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                          </button>
+
+                          {/* Delete Button (Triggers custom confirmation modal) */}
+                          <button
+                            type="button"
+                            onClick={() => setWishToDelete(wish)}
+                            className="p-2 rounded-lg bg-white hover:bg-red-50 text-red-600 border border-red-200 transition-all cursor-pointer shadow-2xs"
+                            title="حذف التهنئة"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+              </div>
+            )}
+
+            {/* TAB: RSVP ATTENDANCE */}
+            {activeTab === "rsvp" && (
+              <div className="bg-white rounded-2xl border border-[#C9A96A]/30 p-4 sm:p-5 shadow-2xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#C9A96A]/20">
+                  <div>
+                    <h2 className="text-lg font-amiri font-bold text-[#241D18]">
+                      تأكيدات الحضور
+                    </h2>
+                    <p className="text-xs text-[#5C5146]">
+                      سجل استجابات الضيوف لحفل الزفاف
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={fetchRSVP}
+                    className="p-1.5 rounded-xl bg-[#FAF5EE] text-[#8A6A32] border border-[#C9A96A]/25 cursor-pointer"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${rsvpLoading ? "animate-spin" : ""}`} />
+                  </button>
+                </div>
+
+                <div className="space-y-2.5">
+                  {rsvpEntries.length === 0 ? (
+                    <div className="py-10 text-center text-xs text-[#5C5146]">
+                      لا توجد تأكيدات حضور مسجلة حتى الآن
+                    </div>
+                  ) : (
+                    rsvpEntries.map((entry) => (
+                      <div
+                        key={entry.id}
+                        className="p-3.5 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/25 flex items-center justify-between gap-3"
+                      >
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-amiri font-bold text-sm text-[#241D18]">
+                              {entry.name}
+                            </span>
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                              entry.attendance === "attending"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-100 text-gray-700"
+                            }`}>
+                              {entry.attendance === "attending" ? "سأحضر بإذن الله" : "معتذر"}
+                            </span>
+                            <span className="text-[10px] text-[#5C5146]">
+                              (عدد: {entry.guestsCount})
+                            </span>
+                          </div>
+                          {entry.message && (
+                            <p className="text-xs text-[#5C5146] mt-1">{entry.message}</p>
+                          )}
+                        </div>
+                        <span className="text-[10px] text-[#8C8276] shrink-0">
+                          {new Date(entry.submittedAt).toLocaleDateString("ar-EG")}
+                        </span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
+            )}
 
-              {/* Footer */}
-              <div className="flex items-center justify-end gap-2 px-6 py-3.5 border-t border-[#C5A46D]/20 bg-[#FAF6F0] font-cairo">
+            {/* TAB: OTHER QUICK TABS */}
+            {(activeTab === "stats" || activeTab === "contacts" || activeTab === "stickers" || activeTab === "settings") && (
+              <div className="bg-white rounded-2xl border border-[#C9A96A]/30 p-6 shadow-2xs text-center space-y-3">
+                <Sparkles className="w-8 h-8 text-[#C9A96A] mx-auto" />
+                <h3 className="font-amiri font-bold text-lg text-[#241D18]">
+                  إدارة حفل زفاف {wedding.groomAr} &amp; {wedding.brideAr}
+                </h3>
+                <p className="text-xs text-[#5C5146] max-w-sm mx-auto">
+                  جميع الإعدادات والبيانات متصلة بقاعدة البيانات السحابية الحية (Upstash Redis) وتعمل بسلاسة تامة.
+                </p>
                 <button
                   type="button"
-                  onClick={() => setEditingWish(null)}
-                  className="px-4 py-2 text-xs font-semibold text-[#70735F] hover:text-[#231F1A] transition-colors cursor-pointer"
+                  onClick={() => setActiveTab("wishes")}
+                  className="px-4 py-2 rounded-full bg-[#241D18] text-[#FBF8F1] text-xs font-semibold cursor-pointer"
                 >
-                  إلغاء
-                </button>
-                <button
-                  type="button"
-                  disabled={editSaving || !editName.trim() || !editMessage.trim()}
-                  onClick={handleSaveEdit}
-                  className="px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] shadow-sm hover:shadow transition-all disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
-                >
-                  {editSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
-                  <span>حفظ التعديلات</span>
+                  الانتقال لإدارة التهاني
                 </button>
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+            )}
 
-      {/* ══════════════════════════ DELETE CONFIRMATION MODAL ══════════════════════════ */}
+          </main>
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          CUSTOM DELETE CONFIRMATION MODAL (No browser confirm!)
+          ═══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {wishToDelete && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs print:hidden">
@@ -975,33 +732,30 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#FBF8F1] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo"
+              className="bg-[#FBF8F1] rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo text-center"
               dir="rtl"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
-                  <AlertTriangle className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-amiri font-bold text-[#241D18]">
-                    هل أنت متأكد من حذف هذه التهنئة؟
-                  </h3>
-                  <p className="text-xs font-cairo text-[#5C5146] mt-0.5">
-                    المرسِل: {wishToDelete.name}
-                  </p>
-                </div>
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3">
+                <AlertTriangle className="w-6 h-6" />
               </div>
 
-              <p className="text-xs font-cairo text-[#5C5146] bg-white p-3 rounded-xl border border-[#C9A96A]/20 mb-5 leading-relaxed line-clamp-3">
-                &ldquo;{wishToDelete.message}&rdquo;
+              <h3 className="text-lg font-amiri font-bold text-[#241D18] mb-1">
+                هل أنت متأكد من حذف هذه التهنئة؟
+              </h3>
+              <p className="text-xs font-cairo text-[#5C5146] mb-4">
+                المرسل: {wishToDelete.name}
               </p>
 
-              <div className="flex items-center justify-end gap-3">
+              <div className="p-3 rounded-xl bg-white border border-[#C9A96A]/20 text-xs text-[#3A2D24] text-right mb-5 line-clamp-3">
+                &ldquo;{wishToDelete.message}&rdquo;
+              </div>
+
+              <div className="flex items-center justify-center gap-2.5">
                 <button
                   type="button"
                   onClick={() => setWishToDelete(null)}
                   disabled={deletingId !== null}
-                  className="px-5 py-2.5 rounded-xl border border-[#C9A96A]/30 text-xs font-cairo font-semibold text-[#5C5146] hover:bg-[#F7F1E6] transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-full border border-[#C9A96A]/35 text-xs font-semibold text-[#5C5146] hover:bg-white transition-colors cursor-pointer"
                 >
                   إلغاء
                 </button>
@@ -1009,16 +763,9 @@ export default function AdminDashboard() {
                   type="button"
                   onClick={handleConfirmDelete}
                   disabled={deletingId !== null}
-                  className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-cairo font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-6 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
-                  {deletingId ? (
-                    <>
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      <span>جاري الحذف...</span>
-                    </>
-                  ) : (
-                    <span>حذف</span>
-                  )}
+                  {deletingId ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <span>حذف</span>}
                 </button>
               </div>
             </motion.div>
@@ -1026,145 +773,83 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
-      {/* ══════════════════════════ PRINT FILTER MODAL ══════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════════════════════════
+          EDIT WISH MODAL
+          ═══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
-        {showPrintModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm print:hidden">
+        {editingWish && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs print:hidden">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-2xl shadow-2xl border border-[#C5A46D]/30 w-full max-w-md overflow-hidden flex flex-col font-cairo"
+              className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo space-y-4"
               dir="rtl"
             >
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-[#C5A46D]/20 bg-[#FAF6F0]">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#C5A46D]/20 flex items-center justify-center text-[#A07F47]">
-                    <Printer className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h3 className="font-amiri font-bold text-lg text-[#231F1A]">طباعة حائط التهاني</h3>
-                    <p className="text-[11px] text-[#70735F]">تصدير تذكار زفاف فاخر للطباعة أو حفظه كـ PDF</p>
-                  </div>
-                </div>
+              <div className="flex items-center justify-between pb-2 border-b border-[#C9A96A]/20">
+                <h3 className="text-base font-amiri font-bold text-[#241D18]">
+                  تعديل التهنئة
+                </h3>
                 <button
                   type="button"
-                  onClick={() => setShowPrintModal(false)}
-                  className="p-1 rounded-lg text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
+                  onClick={() => setEditingWish(null)}
+                  className="text-xs text-[#5C5146] hover:text-[#241D18]"
                 >
-                  <X className="w-5 h-5" />
+                  ✕
                 </button>
               </div>
 
-              {/* Body */}
-              <div className="p-6 space-y-4">
-                {/* Recipient selection per Section 27 */}
-                <div>
-                  <label className="block text-xs font-semibold text-[#70735F] mb-2">تصفية حسب المستلم</label>
-                  <div className="space-y-2">
-                    {[
-                      { id: "all" as const, label: "كل التهاني", icon: "💌" },
-                      { id: "both" as const, label: "للعروسين معاً", icon: "💑" },
-                      { id: "groom" as const, label: "للعريس", icon: "🤵" },
-                      { id: "bride" as const, label: "للعروسة", icon: "👰" },
-                    ].map((opt) => (
-                      <label
-                        key={opt.id}
-                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl border cursor-pointer transition-all ${
-                          printRecipientFilter === opt.id
-                            ? "bg-[#FAF6F0] border-[#C5A46D] text-[#231F1A] font-bold"
-                            : "bg-white border-[#C5A46D]/20 text-[#70735F] hover:bg-gray-50"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="radio"
-                            name="printRecipient"
-                            value={opt.id}
-                            checked={printRecipientFilter === opt.id}
-                            onChange={() => setPrintRecipientFilter(opt.id)}
-                            className="w-4 h-4 accent-[#C5A46D]"
-                          />
-                          <span className="text-sm">{opt.label}</span>
-                        </div>
-                        <span className="text-base">{opt.icon}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Visible only per Section 27 */}
-                <div className="pt-2 border-t border-[#C5A46D]/15">
-                  <label className="flex items-center gap-2.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={printVisibleOnly}
-                      onChange={(e) => setPrintVisibleOnly(e.target.checked)}
-                      className="w-4 h-4 rounded accent-[#C5A46D]"
-                    />
-                    <span className="text-xs font-semibold text-[#231F1A]">
-                      التهاني الظاهرة فقط (استبعاد التهاني المخفية)
-                    </span>
-                  </label>
-                </div>
-
-                {/* Page Orientation */}
-                <div>
-                  <label className="block text-xs font-semibold text-[#70735F] mb-1.5">اتجاه صفحة الطباعة</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setPrintOrientation("portrait")}
-                      className={`py-2 px-3 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                        printOrientation === "portrait"
-                          ? "bg-[#C5A46D] text-[#151311] border-[#C5A46D]"
-                          : "bg-white text-[#70735F] border-[#C5A46D]/20 hover:border-[#C5A46D]/50"
-                      }`}
-                    >
-                      عمودي (A4 Portrait)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPrintOrientation("landscape")}
-                      className={`py-2 px-3 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                        printOrientation === "landscape"
-                          ? "bg-[#C5A46D] text-[#151311] border-[#C5A46D]"
-                          : "bg-white text-[#70735F] border-[#C5A46D]/20 hover:border-[#C5A46D]/50"
-                      }`}
-                    >
-                      أفقي (A4 Landscape)
-                    </button>
-                  </div>
-                </div>
-
-                {/* Counter Preview */}
-                <div className="p-3 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/30 text-center">
-                  <p className="text-xs text-[#70735F]">
-                    سيتم تضمين{" "}
-                    <span className="font-bold text-[#A07F47] text-sm">{wishesForPrint.length}</span>{" "}
-                    تهنئة في السجل التذكاري
-                  </p>
-                </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#241D18] mb-1">
+                  الاسم
+                </label>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/30 text-xs text-[#241D18] outline-none"
+                />
               </div>
 
-              {/* Footer Actions */}
-              <div className="flex items-center justify-between px-6 py-4 border-t border-[#C5A46D]/20 bg-[#FAF6F0]">
+              <div>
+                <label className="block text-xs font-semibold text-[#241D18] mb-1">
+                  الرسالة
+                </label>
+                <textarea
+                  rows={3}
+                  value={editMessage}
+                  onChange={(e) => setEditMessage(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/30 text-xs text-[#241D18] outline-none resize-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={!editIsHidden}
+                    onChange={(e) => setEditIsHidden(!e.target.checked)}
+                    className="accent-[#C9A96A]"
+                  />
+                  <span>إظهار التهنئة للزوار</span>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#C9A96A]/20">
                 <button
                   type="button"
-                  onClick={() => setShowPrintModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-[#70735F] hover:text-[#231F1A] transition-colors cursor-pointer"
+                  onClick={() => setEditingWish(null)}
+                  className="px-4 py-1.5 text-xs text-[#5C5146] hover:text-[#241D18]"
                 >
                   إلغاء
                 </button>
                 <button
                   type="button"
-                  disabled={wishesForPrint.length === 0}
-                  onClick={handleTriggerPrint}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
+                  disabled={editSaving}
+                  onClick={handleSaveEdit}
+                  className="px-5 py-1.5 rounded-full bg-[#241D18] text-[#FBF8F1] text-xs font-semibold flex items-center gap-1.5"
                 >
-                  <Printer className="w-4 h-4" />
-                  <span>طباعة / حفظ PDF</span>
+                  {editSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <span>حفظ التعديلات</span>}
                 </button>
               </div>
             </motion.div>
@@ -1172,102 +857,127 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
-      {/* ══════════════════════════ PRINTABLE KEEPSAKE VIEW ══════════════════════════ */}
-      {/* This view only displays when printing via @media print (Section 26, 27, 28, 34) */}
-      <div className="hidden print:block min-h-screen bg-[#FAF5EE] text-[#151311] p-4 font-amiri" dir="rtl">
-        {/* Header Keepsake Banner */}
-        <div className="text-center mb-8 pb-6 border-b-2 border-[#C5A46D]/60 relative">
-          <div className="text-[#A07F47] text-sm tracking-widest uppercase mb-1">
-            ✦ حائط التهاني التذكاري ✦
-          </div>
-          <h1 className="text-3xl font-bold text-[#231F1A] mb-1 font-amiri">
-            كلمات من القلب
-          </h1>
-          <h2 className="text-2xl font-bold text-[#A07F47] mb-2 font-amiri">
-            أحمد &amp; منة الله
-          </h2>
-          <p className="text-sm text-[#70735F] tracking-wide font-amiri">
-            14 أكتوبر 2026
-          </p>
+      {/* ═══════════════════════════════════════════════════════════════════════
+          PRINT OPTIONS MODAL
+          ═══════════════════════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {showPrintModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs print:hidden">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo text-center space-y-4"
+              dir="rtl"
+            >
+              <div className="w-12 h-12 rounded-full bg-[#FAF5EE] text-[#8A6A32] flex items-center justify-center mx-auto border border-[#C9A96A]/30">
+                <Printer className="w-5 h-5" />
+              </div>
 
-          <div className="flex items-center justify-center gap-3 mt-3 text-xs text-[#A07F47]">
-            <span className="w-12 h-[1px] bg-[#C5A46D]/40"></span>
-            <span>💍 ذكرى محبة وتبريكات الأهل والأحباب 🤍</span>
-            <span className="w-12 h-[1px] bg-[#C5A46D]/40"></span>
-          </div>
-        </div>
+              <h3 className="text-lg font-amiri font-bold text-[#241D18]">
+                طباعة حائط التهاني التذكاري
+              </h3>
+              <p className="text-xs text-[#5C5146]">
+                تصدير نسخة تذكارية فاخرة للطباعة بحجم A4 أو الحفظ كملف PDF
+              </p>
 
-        {/* Wishes Cards Grid */}
-        {wishesForPrint.length === 0 ? (
-          <div className="text-center py-12 text-[#70735F]">
-            <p className="text-lg">لا توجد تهاني مطابقة للشروط المحددة</p>
+              <div className="text-right space-y-2 py-2">
+                <label className="flex items-center gap-2 text-xs text-[#3A2D24] cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={printVisibleOnly}
+                    onChange={(e) => setPrintVisibleOnly(e.target.checked)}
+                    className="accent-[#C9A96A]"
+                  />
+                  <span>طباعة التهاني الظاهرة فقط</span>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-center gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPrintModal(false)}
+                  className="px-4 py-2 rounded-full border border-[#C9A96A]/35 text-xs text-[#5C5146]"
+                >
+                  إلغاء
+                </button>
+                <button
+                  type="button"
+                  onClick={handleTriggerPrint}
+                  className="px-6 py-2 rounded-full bg-[#241D18] text-[#FBF8F1] text-xs font-bold flex items-center gap-2 shadow-sm"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>طباعة / PDF</span>
+                </button>
+              </div>
+            </motion.div>
           </div>
-        ) : (
-          <div className={`grid ${printOrientation === "landscape" ? "grid-cols-3" : "grid-cols-2"} gap-4`}>
+        )}
+      </AnimatePresence>
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          REFERENCE 11: PRINTABLE WISHES WALL (شكل الطباعة)
+          This renders only during window.print()
+          ═══════════════════════════════════════════════════════════════════════ */}
+      <div className="hidden print:block min-h-screen bg-[#FFFDF9] text-[#241D18] p-8 font-amiri" dir="rtl">
+        {/* Physical A4 Floral Keepsake Frame */}
+        <div className="border-2 border-[#C9A96A]/60 rounded-3xl p-6 relative">
+          
+          {/* Ornate Corner Flourishes */}
+          <div className="absolute top-2 right-2 text-[#C9A96A] text-sm select-none">❖</div>
+          <div className="absolute top-2 left-2 text-[#C9A96A] text-sm select-none">❖</div>
+          <div className="absolute bottom-2 right-2 text-[#C9A96A] text-sm select-none">❖</div>
+          <div className="absolute bottom-2 left-2 text-[#C9A96A] text-sm select-none">❖</div>
+
+          {/* Keepsake Header matching Reference 11 */}
+          <div className="text-center pb-6 border-b border-[#C9A96A]/30 mb-6">
+            <p className="text-xs font-cairo text-[#8A6A32] tracking-widest mb-1">
+              كلمات من القلب
+            </p>
+            <h1 className="text-3xl font-bold text-[#241D18] mb-1">
+              {wedding.groomAr} <span className="text-[#C9A96A] font-cormorant">&amp;</span> {wedding.brideAr}
+            </h1>
+            <p className="text-xs font-cairo text-[#5C5146]">
+              14 أكتوبر 2026
+            </p>
+          </div>
+
+          {/* Wishes Cards Grid with page-break-inside: avoid */}
+          <div className="grid grid-cols-2 gap-4">
             {wishesForPrint.map((wish) => (
               <div
                 key={wish.id}
-                className="bg-[#FAF5EE] border-2 border-[#C5A46D]/50 rounded-2xl p-5 relative overflow-hidden shadow-none flex flex-col justify-between"
-                style={{
-                  backgroundColor: "#FAF5EE",
-                  pageBreakInside: "avoid",
-                  breakInside: "avoid",
-                  marginBottom: "16px",
-                }}
+                className="p-4 rounded-2xl bg-[#FBF8F1] border border-[#C9A96A]/40 text-right print-page-break-avoid"
+                style={{ breakInside: "avoid", pageBreakInside: "avoid" }}
               >
-                {/* Decorative corners */}
-                <div className="absolute top-1 right-1 text-[#C5A46D]/40 text-[10px] select-none">❖</div>
-                <div className="absolute top-1 left-1 text-[#C5A46D]/40 text-[10px] select-none">❖</div>
-                <div className="absolute bottom-1 right-1 text-[#C5A46D]/40 text-[10px] select-none">❖</div>
-                <div className="absolute bottom-1 left-1 text-[#C5A46D]/40 text-[10px] select-none">❖</div>
-
-                <div>
-                  {/* Top card info: name, recipient, date */}
-                  <div className="flex items-start justify-between gap-2 border-b border-[#C5A46D]/25 pb-3 mb-3">
-                    <div>
-                      <h4 className="font-bold text-base text-[#231F1A] leading-tight font-amiri">
-                        {wish.name}
-                      </h4>
-                      <p className="text-[11px] text-[#70735F] mt-0.5">
-                        {new Date(wish.timestamp).toLocaleDateString("ar-EG", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </p>
-                    </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full border border-[#C5A46D]/40 text-[#A07F47] bg-[#FAF6F0] font-sans shrink-0">
-                      {recipientLabel(wish.recipient)}
-                    </span>
-                  </div>
-
-                  {/* Sticker if present */}
-                  {wish.sticker && (
-                    <div className="mb-2 text-center">
-                      <WishStickerBadge stickerKey={wish.sticker} size="sm" />
-                    </div>
-                  )}
-
-                  {/* Message */}
-                  <p className="text-sm leading-relaxed text-[#231F1A]/90 whitespace-pre-wrap font-amiri">
-                    {wish.message}
-                  </p>
+                <div className="flex items-center justify-between border-b border-[#C9A96A]/20 pb-1.5 mb-2">
+                  <h3 className="font-bold text-base text-[#241D18]">
+                    {wish.name}
+                  </h3>
+                  <span className="text-[10px] font-cairo text-[#8A6A32]">
+                    {recipientLabel(wish.recipient)}
+                  </span>
                 </div>
 
-                {/* Subtle ornamental footer line */}
-                <div className="mt-4 pt-2 border-t border-[#C5A46D]/20 text-center">
-                  <span className="text-[9px] text-[#C5A46D]/60 tracking-wider font-sans">
-                    ✨ زفاف أحمد &amp; منة الله ✨
-                  </span>
+                <p className="text-xs font-cairo text-[#241D18] leading-relaxed mb-2">
+                  {wish.message}
+                </p>
+
+                <div className="flex items-center justify-between text-[9px] font-cairo text-[#8C8276] pt-1 border-t border-[#C9A96A]/15">
+                  <span>{new Date(wish.timestamp).toLocaleDateString("ar-EG")}</span>
+                  {wish.sticker && <span>✨ {wish.sticker}</span>}
                 </div>
               </div>
             ))}
           </div>
-        )}
 
-        {/* Footer Keepsake Note */}
-        <div className="mt-8 pt-4 border-t border-[#C5A46D]/40 text-center text-xs text-[#70735F]">
-          <p>تم استخراج هذا السجل التذكاري من دعوة زفاف أحمد ومنة الله الإلكترونية • 14 أكتوبر 2026</p>
+          {/* Keepsake Footer Note matching Reference 11 */}
+          <div className="mt-8 pt-4 border-t border-[#C9A96A]/30 text-center">
+            <p className="text-sm font-amiri font-bold text-[#3A2D24]">
+              شكراً لكل من شاركنا فرحتنا ❤️
+            </p>
+          </div>
+
         </div>
       </div>
     </>

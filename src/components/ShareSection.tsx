@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Share2, Copy, Check, MessageCircle, Sparkles } from "lucide-react";
+import { Share2, Copy, Check, MessageCircle, Share } from "lucide-react";
 
 export default function ShareSection() {
   const [copied, setCopied] = useState(false);
@@ -51,34 +51,34 @@ export default function ShareSection() {
   };
 
   return (
-    <section id="share-section" className="py-12 sm:py-16 px-4 relative overflow-hidden bg-[#FBF8F1]" dir="rtl">
+    <section id="share-section" className="py-6 sm:py-8 px-4 relative overflow-hidden bg-[#F7F1E6]" dir="rtl">
       <div className="max-w-md mx-auto">
         
         {/* ═══════════════════════════════════════════════════════════════════
             REFERENCE 07: SHARE INVITATION CARD (شارك فرحتنا)
             ═══════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
+          transition={{ duration: 0.6 }}
+          className="p-6 sm:p-7 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
         >
           {/* Top Icon in Circle */}
           <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
-            🔗
+            <Share className="w-5 h-5 text-[#8A6A32]" />
           </div>
 
           <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
             شارك فرحتنا
           </h3>
 
-          <p className="text-xs sm:text-sm font-cairo text-[#70735F] mt-0.5 mb-6">
+          <p className="text-xs sm:text-sm font-cairo text-[#5C5146] mt-0.5 mb-5">
             شارك الدعوة مع من تحب
           </p>
 
           {/* Action Buttons Stack matching Reference 07 */}
-          <div className="w-full space-y-2.5 mb-6">
+          <div className="w-full space-y-2.5 mb-5">
             {/* Button 1: Dark Brown Primary Share */}
             <button
               type="button"
@@ -112,7 +112,7 @@ export default function ShareSection() {
                 </>
               ) : (
                 <>
-                  <Copy className="w-4 h-4 text-[#A07F47]" />
+                  <Copy className="w-4 h-4 text-[#8A6A32]" />
                   <span>نسخ رابط الدعوة</span>
                 </>
               )}
@@ -120,16 +120,16 @@ export default function ShareSection() {
           </div>
 
           {/* Bottom Preview Box from Reference 07 */}
-          <div className="w-full p-4 rounded-2xl bg-[#FAF5EE]/80 border border-[#C9A96A]/25 text-center space-y-1">
+          <div className="w-full p-4 rounded-2xl bg-[#FAF5EE]/90 border border-[#C9A96A]/25 text-center space-y-1">
             <p className="text-xs sm:text-sm font-amiri font-bold text-[#241D18] leading-relaxed">
               يسعدنا دعوتكم لمشاركة فرحتنا
               <br />
               بزفاف أحمد &amp; منة الله ❤️
             </p>
-            <p className="text-[11px] font-cairo text-[#A07F47] font-semibold">
+            <p className="text-[11px] font-cairo text-[#8A6A32] font-semibold">
               14 أكتوبر 2026
             </p>
-            <p className="text-[10px] font-cormorant text-[#8C8276] tracking-wider pt-1 border-t border-[#C9A96A]/20">
+            <p className="text-[10px] font-cormorant text-[#5C5146] tracking-wider pt-1 border-t border-[#C9A96A]/20">
               ahmedandmenatallah.com
             </p>
           </div>
