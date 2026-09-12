@@ -73,14 +73,14 @@ export default function HeroSection() {
       />
 
       {/* ═══════════════════════════════════════════════════════════════════
-          1. MOBILE VERSION - FULL 100dvh HEIGHT
+          1. MOBILE VERSION - FULL 100dvh HEIGHT & MATCHING FIGMA REFERENCE
           ═══════════════════════════════════════════════════════════════════ */}
-      <div className="block sm:hidden w-full h-full max-w-[390px] mx-auto z-10">
+      <div className="block sm:hidden w-full h-full max-w-[400px] mx-auto z-10">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative w-full h-full rounded-[26px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_16px_40px_rgba(46,35,28,0.1)] py-3.5 px-3.5 flex flex-col justify-between items-center text-center overflow-hidden"
+          className="relative w-full h-full rounded-[28px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_16px_40px_rgba(46,35,28,0.1)] pt-8 xs:pt-10 pb-8 xs:pb-10 px-3.5 xs:px-4 flex flex-col justify-between items-center text-center overflow-hidden"
           style={{ background: "#FAF7F2" }}
         >
           {/* Authentic High-Res Empty Background Image */}
@@ -97,16 +97,16 @@ export default function HeroSection() {
             <div
               className="absolute inset-0"
               style={{
-                background: "radial-gradient(ellipse at 50% 36%, rgba(255,253,249,0.86) 0%, rgba(253,250,244,0.50) 60%, rgba(248,242,230,0.15) 100%)",
+                background: "radial-gradient(ellipse at 50% 38%, rgba(255,253,249,0.88) 0%, rgba(253,250,244,0.52) 62%, rgba(248,242,230,0.15) 100%)",
               }}
             />
           </div>
 
-          {/* Top Group: Ornament + Titles + Names + Du'aa */}
-          <div className="relative z-10 w-full flex flex-col items-center pt-1">
+          {/* Top Group: Ornament + Titles + Names + Date + Du'aa */}
+          <div className="relative z-10 w-full flex flex-col items-center">
             {/* Top Golden Islamic Rosette */}
-            <div className="mb-1 text-[#C5A059] flex items-center justify-center gap-2">
-              <span className="w-5 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+            <div className="mb-1.5 text-[#C5A059] flex items-center justify-center gap-2">
+              <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/70" />
               <svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(20, 20)">
                   <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
@@ -117,101 +117,110 @@ export default function HeroSection() {
                   <path d="M9 0 C5 -2.5, 2 -2.5, 0 0 C2 2.5, 5 2.5, 9 0 Z" fill="#C5A059" opacity="0.9" />
                 </g>
               </svg>
-              <span className="w-5 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+              <span className="w-6 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/70" />
             </div>
 
             {/* Eyebrow */}
-            <p className="text-[11px] xs:text-xs font-cairo font-semibold text-[#4A3525] tracking-wide mb-0.5">
+            <p className="text-xs xs:text-sm font-cairo font-semibold text-[#4A3525] tracking-wide mb-0.5">
               يسرنا دعوتكم لحضور حفل زفاف
             </p>
 
-            {/* Couple Names */}
-            <h1 className="text-3xl xs:text-4xl font-ruqaa font-bold text-[#24150C] leading-[1.2] my-0.5 flex items-center justify-center gap-1.5">
+            {/* Couple Names - Larger and Bolder as requested */}
+            <h1 className="text-4xl xs:text-[42px] font-ruqaa font-bold text-[#24150C] leading-[1.25] my-0.5 flex items-center justify-center gap-2">
               <span>{wedding.groomAr}</span>
-              <span className="text-[#C5A059] font-cormorant font-normal text-2xl xs:text-3xl leading-none pt-0.5">
+              <span className="text-[#C5A059] font-cormorant font-normal text-3xl xs:text-4xl leading-none pt-1">
                 &amp;
               </span>
               <span>{wedding.brideAr}</span>
             </h1>
 
             {/* Date below names */}
-            <p className="text-xs xs:text-sm font-cairo font-bold text-[#4A382C] mb-1">
+            <p className="text-sm xs:text-base font-cairo font-bold text-[#3D2B1F] mb-1">
               14 أكتوبر 2026
             </p>
 
             {/* Du'aa */}
-            <p className="text-[10.5px] xs:text-xs font-amiri font-bold text-[#3A281C] leading-snug max-w-xs">
+            <p className="text-xs xs:text-[13px] font-amiri font-bold text-[#3A281C] leading-relaxed max-w-[280px]">
               اللهم بارك لهما وبارك عليهما
               <br />
               واجمع بينهما في خير
             </p>
+
+            {/* Small golden accent knot under Du'aa */}
+            <div className="mt-1.5 text-[#C5A059] flex items-center justify-center gap-1.5">
+              <span className="w-5 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+              <span className="text-[10px]">❖</span>
+              <span className="w-5 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+            </div>
           </div>
 
-          {/* Middle Group: Event Summary Card */}
-          <div className="relative z-10 w-full max-w-[285px] rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/40 px-3.5 py-2.5 xs:py-3 space-y-1.5 text-xs font-cairo text-[#2A1F18] shadow-[0_4px_16px_rgba(46,35,28,0.06)] backdrop-blur-xs my-1">
+          {/* Middle Group: Event Summary Card - Wider with clearer fonts */}
+          <div className="relative z-10 w-full max-w-[310px] xs:max-w-[330px] rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 px-4 py-3 xs:py-3.5 space-y-2 text-xs xs:text-[13px] font-cairo text-[#2A1F18] shadow-[0_6px_20px_rgba(46,35,28,0.06)] backdrop-blur-xs my-1">
             <div className="flex items-center justify-center gap-2">
-              <Calendar className="w-3.5 h-3.5 text-[#8C6D3B] shrink-0" />
-              <span className="font-bold text-[#24150C] text-[11px] xs:text-xs">الأربعاء 14 أكتوبر 2026</span>
+              <Calendar className="w-4 h-4 text-[#8C5828] shrink-0" />
+              <span className="font-bold text-[#24150C]">الأربعاء 14 أكتوبر 2026</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <Clock className="w-3.5 h-3.5 text-[#8C6D3B] shrink-0" />
-              <span className="font-bold text-[#24150C] text-[11px] xs:text-xs">7:00 مساءً</span>
+              <Clock className="w-4 h-4 text-[#8C5828] shrink-0" />
+              <span className="font-bold text-[#24150C]">7:00 مساءً</span>
             </div>
-            <div className="flex items-center justify-center gap-1.5 text-center">
-              <MapPin className="w-3.5 h-3.5 text-[#8C6D3B] shrink-0 mt-0.5" />
+            <div className="flex items-center justify-center gap-2 text-center">
+              <MapPin className="w-4 h-4 text-[#8C5828] shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-[#24150C] text-[11px] xs:text-xs">{wedding.venueAr}</p>
-                <p className="text-[9.5px] xs:text-[10px] font-medium text-[#7A6A5D]">شبين القناطر، القليوبية، مصر</p>
+                <p className="font-bold text-[#24150C]">{wedding.venueAr}</p>
+                <p className="text-[10px] xs:text-[11px] font-medium text-[#7A6A5D]">شبين القناطر، القليوبية، مصر</p>
               </div>
             </div>
           </div>
 
-          {/* Bottom Group: Countdown Section + Down Chevron */}
-          <div className="relative z-10 w-full flex flex-col items-center pb-0.5">
-            {/* Title */}
+          {/* Bottom Group: Countdown Section + Down Chevron - Raised up to give room for bottom artwork */}
+          <div className="relative z-10 w-full flex flex-col items-center">
+            {/* Title with Diamond Accents */}
             <div className="flex items-center justify-center gap-2 mb-2 select-none">
-              <span className="h-[1px] w-7 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
-              <p className="text-[11px] xs:text-xs font-cairo font-bold text-[#4A3525] tracking-wider">
+              <span className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+              <span className="text-[#C5A059] text-[10px]">⋄</span>
+              <p className="text-xs xs:text-sm font-cairo font-bold text-[#4A3525] tracking-wider px-1">
                 باقي علي ليلة العمر
               </p>
-              <span className="h-[1px] w-7 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+              <span className="text-[#C5A059] text-[10px]">⋄</span>
+              <span className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
             </div>
 
             {/* 4 Cards (LTR: Days, Hours, Minutes, Seconds) */}
             {mounted && (
-              <div className="grid grid-cols-4 gap-1.5 xs:gap-2 w-full max-w-[290px] mx-auto" dir="ltr">
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg xs:text-xl font-bold font-cairo text-[#24150C] leading-none">
+              <div className="grid grid-cols-4 gap-2 xs:gap-2.5 w-full max-w-[310px] xs:max-w-[330px] mx-auto" dir="ltr">
+                <div className="py-2.5 xs:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                  <span className="text-xl xs:text-2xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.days}
                   </span>
-                  <span className="text-[9.5px] xs:text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[10px] xs:text-[11px] font-cairo text-[#6E5D4F] mt-1 font-bold">
                     يوم
                   </span>
                 </div>
 
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg xs:text-xl font-bold font-cairo text-[#24150C] leading-none">
+                <div className="py-2.5 xs:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                  <span className="text-xl xs:text-2xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.hours}
                   </span>
-                  <span className="text-[9.5px] xs:text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[10px] xs:text-[11px] font-cairo text-[#6E5D4F] mt-1 font-bold">
                     ساعة
                   </span>
                 </div>
 
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg xs:text-xl font-bold font-cairo text-[#24150C] leading-none">
+                <div className="py-2.5 xs:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                  <span className="text-xl xs:text-2xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.minutes}
                   </span>
-                  <span className="text-[9.5px] xs:text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[10px] xs:text-[11px] font-cairo text-[#6E5D4F] mt-1 font-bold">
                     دقيقة
                   </span>
                 </div>
 
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg xs:text-xl font-bold font-cairo text-[#24150C] leading-none">
+                <div className="py-2.5 xs:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                  <span className="text-xl xs:text-2xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.seconds}
                   </span>
-                  <span className="text-[9.5px] xs:text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[10px] xs:text-[11px] font-cairo text-[#6E5D4F] mt-1 font-bold">
                     ثانية
                   </span>
                 </div>
@@ -222,10 +231,10 @@ export default function HeroSection() {
             <button
               type="button"
               onClick={scrollToNext}
-              className="mt-2 inline-flex items-center justify-center text-[#C5A059] hover:text-[#8C6D3B] transition-colors cursor-pointer"
+              className="mt-2.5 inline-flex items-center justify-center text-[#C5A059] hover:text-[#8C6D3B] transition-colors cursor-pointer"
               aria-label="الانتقال إلى تفاصيل المناسبة"
             >
-              <ChevronDown className="w-4 h-4 xs:w-5 xs:h-5 animate-bounce" />
+              <ChevronDown className="w-5 h-5 animate-bounce" />
             </button>
           </div>
         </motion.div>
