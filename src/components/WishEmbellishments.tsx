@@ -182,6 +182,77 @@ export function StickerPicker({
   );
 }
 
+export function JasmineSticker({ className = "w-10 h-10" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="M18 42 C10 40 8 30 14 24 C20 18 30 24 24 36 Z" fill="#6B8E5F" />
+      <path d="M46 42 C54 40 56 30 50 24 C44 18 34 24 40 36 Z" fill="#7C9F6E" />
+      <path d="M32 50 C26 56 18 54 18 46 C18 38 28 40 32 50 Z" fill="#5F8053" />
+      <path d="M32 50 C38 56 46 54 46 46 C46 38 36 40 32 50 Z" fill="#6B8E5F" />
+      <ellipse cx="32" cy="18" rx="7.5" ry="13" fill="#FAF6EE" stroke="#E3D5C0" strokeWidth="1.2" />
+      <ellipse cx="43" cy="27" rx="7.5" ry="12" transform="rotate(72 43 27)" fill="#FDFCFA" stroke="#E3D5C0" strokeWidth="1.2" />
+      <ellipse cx="39" cy="40" rx="7.5" ry="12" transform="rotate(144 39 40)" fill="#FAF6EE" stroke="#E3D5C0" strokeWidth="1.2" />
+      <ellipse cx="25" cy="40" rx="7.5" ry="12" transform="rotate(216 25 40)" fill="#FDFCFA" stroke="#E3D5C0" strokeWidth="1.2" />
+      <ellipse cx="21" cy="27" rx="7.5" ry="12" transform="rotate(288 21 27)" fill="#FAF6EE" stroke="#E3D5C0" strokeWidth="1.2" />
+      <circle cx="32" cy="31" r="5" fill="#E8B958" />
+      <circle cx="32" cy="31" r="2.8" fill="#D49932" />
+    </svg>
+  );
+}
+
+export function RingSticker({ className = "w-10 h-10" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <circle cx="32" cy="38" r="16" stroke="#D1A757" strokeWidth="5" fill="none" />
+      <circle cx="32" cy="38" r="16" stroke="#F9E2AF" strokeWidth="1.8" strokeDasharray="6 18" fill="none" />
+      <path d="M28 23 L32 17 L36 23 Z" fill="#B08738" />
+      <path d="M26 17 L38 17 L42 10 L22 10 Z" fill="#E8F4F8" stroke="#8DC8DE" strokeWidth="1.2" />
+      <path d="M22 10 L32 3 L42 10 Z" fill="#FFFFFF" stroke="#8DC8DE" strokeWidth="1.2" />
+      <path d="M28 10 L32 17 L36 10 Z" fill="#D1EDF7" />
+      <path d="M44 7 L45.5 3 L47 7 L51 8.5 L47 10 L45.5 14 L44 10 L40 8.5 Z" fill="#F4D068" />
+    </svg>
+  );
+}
+
+export function BouquetSticker({ className = "w-10 h-10" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="M25 36 L32 60 L39 36 Z" fill="#C59B63" stroke="#A67B44" strokeWidth="1.2" />
+      <path d="M21 36 C21 36 32 40 43 36 L35 60 Z" fill="#D9B178" />
+      <path d="M28 46 C32 48 34 48 36 46" stroke="#8C6534" strokeWidth="1.5" />
+      <path d="M16 28 C14 20 22 18 26 24 Z" fill="#5F8053" />
+      <path d="M48 28 C50 20 42 18 38 24 Z" fill="#6B8E5F" />
+      <path d="M24 16 C28 10 36 10 34 18 Z" fill="#7C9F6E" />
+      <circle cx="25" cy="26" r="6.5" fill="#F4A261" stroke="#E76F51" strokeWidth="1" />
+      <circle cx="39" cy="26" r="6.5" fill="#E9C46A" stroke="#D49932" strokeWidth="1" />
+      <circle cx="32" cy="20" r="7" fill="#FAF0CA" stroke="#E3D5C0" strokeWidth="1" />
+      <circle cx="32" cy="28" r="5.5" fill="#F8EDEB" stroke="#E8D5D0" strokeWidth="1" />
+      <circle cx="32" cy="20" r="2.2" fill="#E76F51" />
+    </svg>
+  );
+}
+
+export function WishStickerIllustration({
+  stickerKey,
+  className = "w-10 h-10",
+}: {
+  stickerKey?: string;
+  className?: string;
+}) {
+  if (!stickerKey) return null;
+  const key = stickerKey.toLowerCase();
+  if (key === "jasmine" || key === "flower" || key.includes("🌸") || key.includes("🌼") || key.includes("ورد")) {
+    return <JasmineSticker className={className} />;
+  }
+  if (key === "ring" || key.includes("💍") || key.includes("خاتم")) {
+    return <RingSticker className={className} />;
+  }
+  if (key === "bouquet" || key.includes("💐") || key.includes("بوكيه")) {
+    return <BouquetSticker className={className} />;
+  }
+  return <span className="text-2xl select-none leading-none">{stickerKey}</span>;
+}
+
 interface WishStickerBadgeProps {
   sticker?: string;
   stickerKey?: string;
@@ -198,20 +269,9 @@ export function WishStickerBadge({
   const value = sticker || stickerKey;
   if (!value) return null;
 
-  const sizeClasses = {
-    sm: "px-2 py-0.5 text-sm",
-    md: "px-3 py-1 text-lg",
-    lg: "px-4 py-1.5 text-2xl",
-  };
-
   return (
-    <div
-      className={`inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#FAF5EE] to-[#FDFBFA] border border-[#C5A46D]/35 shadow-xs ${sizeClasses[size] ?? sizeClasses.md} ${className}`}
-    >
-      <span className="leading-none select-none">{value}</span>
-      <span className="text-[10px] font-cairo font-semibold text-[#8A6A32]">
-        ملصق فاخر
-      </span>
+    <div className={`inline-flex items-center justify-center shrink-0 ${className}`}>
+      <WishStickerIllustration stickerKey={value} className={size === "sm" ? "w-8 h-8" : size === "lg" ? "w-12 h-12" : "w-10 h-10"} />
     </div>
   );
 }

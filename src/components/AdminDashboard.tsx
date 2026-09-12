@@ -328,12 +328,19 @@ export default function AdminDashboard() {
           </div>
 
           <div className="flex items-center gap-2">
+            <Link
+              href="/showcase"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF5EE] hover:bg-[#F7F1E6] text-[#432C1E] border border-[#C9A96A]/35 text-xs font-semibold transition-all"
+            >
+              <span>معاينة الشاشات الثلاث (09 - 10 - 11)</span>
+            </Link>
+
             <button
               type="button"
               onClick={() => setShowPrintModal(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF5EE] hover:bg-[#F7F1E6] text-[#241D18] border border-[#C9A96A]/35 text-xs font-semibold transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#432C1E] hover:bg-[#321F14] text-white text-xs font-semibold transition-all cursor-pointer shadow-2xs"
             >
-              <Printer className="w-3.5 h-3.5 text-[#8A6A32]" />
+              <Printer className="w-3.5 h-3.5 text-[#C9A96A]" />
               <span>طباعة حائط التهاني</span>
             </button>
 
@@ -862,52 +869,110 @@ export default function AdminDashboard() {
           ═══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {showPrintModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs print:hidden">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs print:hidden overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo text-center space-y-4"
+              className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo text-center space-y-3.5 my-auto"
               dir="rtl"
             >
-              <div className="w-12 h-12 rounded-full bg-[#FAF5EE] text-[#8A6A32] flex items-center justify-center mx-auto border border-[#C9A96A]/30">
-                <Printer className="w-5 h-5" />
-              </div>
-
-              <h3 className="text-lg font-amiri font-bold text-[#241D18]">
-                طباعة حائط التهاني التذكاري
-              </h3>
-              <p className="text-xs text-[#5C5146]">
-                تصدير نسخة تذكارية فاخرة للطباعة بحجم A4 أو الحفظ كملف PDF
-              </p>
-
-              <div className="text-right space-y-2 py-2">
-                <label className="flex items-center gap-2 text-xs text-[#3A2D24] cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={printVisibleOnly}
-                    onChange={(e) => setPrintVisibleOnly(e.target.checked)}
-                    className="accent-[#C9A96A]"
-                  />
-                  <span>طباعة التهاني الظاهرة فقط</span>
-                </label>
-              </div>
-
-              <div className="flex items-center justify-center gap-2 pt-2">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between border-b border-[#E8DFC8] pb-2">
+                <h3 className="text-base sm:text-lg font-amiri font-bold text-[#241710]">
+                  طباعة حائط التهاني (شكل الطباعة - 11)
+                </h3>
                 <button
                   type="button"
                   onClick={() => setShowPrintModal(false)}
-                  className="px-4 py-2 rounded-full border border-[#C9A96A]/35 text-xs text-[#5C5146]"
+                  className="p-1 rounded-full text-[#7A695A] hover:bg-black/5 text-xs font-bold cursor-pointer"
                 >
-                  إلغاء
+                  ✕
+                </button>
+              </div>
+
+              {/* Certificate Preview matching Screen 11 */}
+              <div className="w-full aspect-[1/1.32] rounded-2xl border-[1.5px] border-[#D4C3A3] p-4 relative flex flex-col justify-between items-center text-center bg-[#FFFDF9] shadow-xs overflow-hidden">
+                {/* Corner Flourishes */}
+                <div className="absolute top-2 right-2 text-[#C5A059] text-xs select-none">❖</div>
+                <div className="absolute top-2 left-2 text-[#C5A059] text-xs select-none">❖</div>
+                <div className="absolute bottom-2 right-2 text-[#C5A059] text-xs select-none">❖</div>
+                <div className="absolute bottom-2 left-2 text-[#C5A059] text-xs select-none">❖</div>
+
+                {/* Laurel Leaves Symmetrical on Sides */}
+                <div className="absolute top-6 bottom-6 right-1 w-3 flex flex-col justify-between text-[#C5A059]/60 select-none text-[8px] pointer-events-none">
+                  <span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span>
+                </div>
+                <div className="absolute top-6 bottom-6 left-1 w-3 flex flex-col justify-between text-[#C5A059]/60 select-none text-[8px] pointer-events-none scale-x-[-1]">
+                  <span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span>
+                </div>
+
+                {/* Header */}
+                <div className="pt-0.5">
+                  <h4 className="font-amiri font-bold text-sm text-[#241710]">
+                    كلمات من القلب
+                  </h4>
+                  <p className="font-cairo text-[10px] text-[#9B8C7E]">
+                    دعوة فرح زفاف
+                  </p>
+                </div>
+
+                {/* Couple Names */}
+                <div className="my-0.5">
+                  <h3 className="text-2xl sm:text-3xl font-bold font-ruqaa text-[#241710]">
+                    {wedding.groomAr} <span className="font-cormorant font-normal text-lg text-[#C5A059]">&amp;</span> {wedding.brideAr}
+                  </h3>
+                  <p className="font-cairo text-[10px] font-bold text-[#5C4533] mt-0.5">
+                    14 أكتوبر 2026
+                  </p>
+                </div>
+
+                {/* Rosette Divider */}
+                <div className="flex items-center justify-center gap-1 text-[#C5A059] text-[9px] select-none">
+                  <span className="w-5 h-[1px] bg-[#C5A059]" />
+                  <span>✦</span>
+                  <span>❖</span>
+                  <span>✦</span>
+                  <span className="w-5 h-[1px] bg-[#C5A059]" />
+                </div>
+
+                {/* Inner Card Preview */}
+                <div className="w-full max-w-[240px] p-2.5 rounded-xl bg-[#FAF7F2] border border-[#E8DFC8] shadow-2xs text-center my-1">
+                  <h5 className="font-cairo font-bold text-xs text-[#241710]">
+                    {wishes[0]?.name || "هاجر عبدالله"}
+                  </h5>
+                  <p className="font-cairo text-[10px] text-[#2E2016] mt-0.5 leading-snug">
+                    {wishes[0]?.message || "ألف مبروك يا أجمل عروسين ربنا يبارك لكم ويجمع بينكم في خير"}
+                  </p>
+                  <div className="text-center mt-1 text-xs">
+                    <span className="text-red-500 select-none">❤️❤️</span>
+                  </div>
+                </div>
+
+                {/* Footer Note */}
+                <div className="pb-0.5">
+                  <p className="font-amiri font-bold text-xs text-[#432C1E]">
+                    شكراً لكل من شاركنا فرحتنا
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowPrintModal(false)}
+                  className="px-4 py-2 rounded-full border border-[#C9A96A]/35 text-xs text-[#5C5146] hover:bg-[#FAF5EE] cursor-pointer"
+                >
+                  إغلاق
                 </button>
                 <button
                   type="button"
                   onClick={handleTriggerPrint}
-                  className="px-6 py-2 rounded-full bg-[#241D18] text-[#FBF8F1] text-xs font-bold flex items-center gap-2 shadow-sm"
+                  className="px-6 py-2 rounded-full bg-[#432C1E] hover:bg-[#321F14] text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer"
                 >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>طباعة / PDF</span>
+                  <Printer className="w-3.5 h-3.5 text-[#C9A96A]" />
+                  <span>طباعة البطاقة التذكارية / PDF</span>
                 </button>
               </div>
             </motion.div>

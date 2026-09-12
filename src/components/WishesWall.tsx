@@ -6,7 +6,7 @@ import confetti from "canvas-confetti";
 import { containsProfanity, GuestWish } from "@/config/wedding";
 import { Send, AlertCircle, Loader2, Sparkles, RefreshCw, Pencil, Heart } from "lucide-react";
 import { useAudio } from "./AudioContext";
-import { EmojiPicker, StickerPicker, WishStickerBadge } from "./WishEmbellishments";
+import { EmojiPicker, StickerPicker, WishStickerBadge, WishStickerIllustration } from "./WishEmbellishments";
 
 interface WishesWallProps {
   wishes?: GuestWish[];
@@ -404,29 +404,29 @@ function formatRelativeTime(timestamp: string, now: number) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="p-6 sm:p-7 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center w-full"
+            className="p-5 sm:p-7 rounded-3xl bg-[#FFFDF9] border border-[#E8DFC8] shadow-[0_10px_30px_rgba(50,40,30,0.05)] text-center flex flex-col items-center w-full"
           >
-            {/* Top Icon in Circle */}
-            <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
-              <Heart className="w-5 h-5 text-[#8A6A32] fill-[#8A6A32]" />
+            {/* Top Brown Heart matching Screen 09 */}
+            <div className="flex items-center justify-center mb-1.5">
+              <Heart className="w-5 h-5 text-[#5C3822] fill-[#5C3822]" />
             </div>
 
-            <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
+            <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241710]">
               حائط التهاني
             </h3>
 
-            <p className="text-xs sm:text-sm font-cairo text-[#5C5146] mt-0.5 mb-5">
+            <p className="text-xs sm:text-sm font-cairo text-[#7A695A] mt-0.5 mb-4">
               أجمل ما قيل في أحمد ومنة الله
             </p>
 
             {/* Filter Tabs & Refresh Bar */}
-            <div className="w-full mb-4 flex items-center justify-between gap-2 p-1.5 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/25">
+            <div className="w-full mb-4 flex items-center justify-between gap-2 p-1.5 rounded-xl bg-[#FAF6F0] border border-[#E8DFC8]">
               <div className="flex items-center gap-1 overflow-x-auto scrollbar-none">
                 <button
                   type="button"
                   onClick={() => setWallFilter("all")}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-cairo font-semibold transition-all cursor-pointer shrink-0 ${
-                    wallFilter === "all" ? "bg-[#241D18] text-[#FBF8F1]" : "text-[#5C5146] hover:bg-white"
+                    wallFilter === "all" ? "bg-[#432C1E] text-[#FFFDF9]" : "text-[#5C4533] hover:bg-white"
                   }`}
                 >
                   الكل ({counts.all})
@@ -435,7 +435,7 @@ function formatRelativeTime(timestamp: string, now: number) {
                   type="button"
                   onClick={() => setWallFilter("both")}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-cairo font-semibold transition-all cursor-pointer shrink-0 ${
-                    wallFilter === "both" ? "bg-[#241D18] text-[#FBF8F1]" : "text-[#5C5146] hover:bg-white"
+                    wallFilter === "both" ? "bg-[#432C1E] text-[#FFFDF9]" : "text-[#5C4533] hover:bg-white"
                   }`}
                 >
                   💑 للعروسين
@@ -444,7 +444,7 @@ function formatRelativeTime(timestamp: string, now: number) {
                   type="button"
                   onClick={() => setWallFilter("groom")}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-cairo font-semibold transition-all cursor-pointer shrink-0 ${
-                    wallFilter === "groom" ? "bg-[#241D18] text-[#FBF8F1]" : "text-[#5C5146] hover:bg-white"
+                    wallFilter === "groom" ? "bg-[#432C1E] text-[#FFFDF9]" : "text-[#5C4533] hover:bg-white"
                   }`}
                 >
                   🤵 للعريس
@@ -453,7 +453,7 @@ function formatRelativeTime(timestamp: string, now: number) {
                   type="button"
                   onClick={() => setWallFilter("bride")}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-cairo font-semibold transition-all cursor-pointer shrink-0 ${
-                    wallFilter === "bride" ? "bg-[#241D18] text-[#FBF8F1]" : "text-[#5C5146] hover:bg-white"
+                    wallFilter === "bride" ? "bg-[#432C1E] text-[#FFFDF9]" : "text-[#5C4533] hover:bg-white"
                   }`}
                 >
                   👰 للعروسة
@@ -470,8 +470,8 @@ function formatRelativeTime(timestamp: string, now: number) {
               </button>
             </div>
 
-            {/* Wishes Cards Scrollable List matching Reference 09 Stationery Look */}
-            <div className="w-full max-h-[460px] overflow-y-auto space-y-3 pr-1 text-right">
+            {/* Wishes Cards matching Screen 09 */}
+            <div className="w-full max-h-[500px] overflow-y-auto space-y-3.5 pr-1 text-right">
               {loading && wishesList.length === 0 ? (
                 <div className="text-center py-10">
                   <Loader2 className="w-6 h-6 text-[#C9A96A] animate-spin mx-auto mb-2" />
@@ -481,21 +481,23 @@ function formatRelativeTime(timestamp: string, now: number) {
                 filteredWishes.map((wish) => (
                   <div
                     key={wish.id}
-                    className="p-4 rounded-2xl bg-[#FAF5EE] border border-[#C9A96A]/25 text-right relative hover:border-[#C9A96A]/50 transition-all shadow-2xs"
+                    className="p-4 sm:p-5 rounded-2xl bg-[#FFFDF9] border border-[#E8DFC8] text-right relative hover:border-[#C5A059]/60 transition-all shadow-[0_2px_8px_rgba(46,35,28,0.03)]"
                   >
                     <div className="flex items-start justify-between gap-2 mb-1.5">
                       <div className="min-w-0">
-                        <span className="font-amiri font-bold text-sm text-[#241D18] block truncate">
+                        <span className="font-cairo font-bold text-sm sm:text-base text-[#241710] block truncate">
                           {wish.name}
                         </span>
-                        <span className="text-[10px] font-cairo text-[#5C5146]">
+                        <span className="text-[11px] font-cairo text-[#9B8C7E]">
                           {formatRelativeTime(wish.timestamp, now)}
                         </span>
                       </div>
 
-                      {/* Sticker Badge if present */}
+                      {/* Sticker Illustration Badge */}
                       {wish.sticker ? (
-                        <WishStickerBadge stickerKey={wish.sticker} size="sm" />
+                        <div className="shrink-0">
+                          <WishStickerIllustration stickerKey={wish.sticker} className="w-9 h-9 sm:w-10 sm:h-10" />
+                        </div>
                       ) : (
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-[#8A6A32] font-cairo border border-[#C9A96A]/20">
                           {recipientLabel(wish.recipient as Recipient)}
@@ -503,9 +505,16 @@ function formatRelativeTime(timestamp: string, now: number) {
                       )}
                     </div>
 
-                    <p className="text-xs sm:text-sm font-cairo text-[#3A2D24] leading-relaxed break-words">
-                      {wish.message}
-                    </p>
+                    <div className="text-center sm:text-right mt-1.5 space-y-0.5">
+                      {wish.message.split("\n").map((line, idx) => (
+                        <p key={idx} className="text-xs sm:text-[13px] font-cairo text-[#2E2016] leading-relaxed">
+                          {line}
+                        </p>
+                      ))}
+                      <div className="text-center mt-1 text-sm">
+                        <span className="text-red-500 select-none">❤️</span>
+                      </div>
+                    </div>
                   </div>
                 ))
               ) : (
