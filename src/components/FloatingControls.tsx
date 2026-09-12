@@ -22,8 +22,8 @@ export default function FloatingControls() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Only show floating controls after the user has opened the invitation
-  if (!hasStarted) return null;
+  // Only show floating controls after scrolling past hero section
+  if (!hasStarted || !showScrollTop) return null;
 
   return (
     <div className="fixed bottom-5 inset-x-0 z-40 px-4 sm:px-6 pointer-events-none flex items-center justify-between" dir="ltr">
