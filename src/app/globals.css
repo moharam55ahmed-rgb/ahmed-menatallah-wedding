@@ -41,6 +41,10 @@
   font-family: var(--font-amiri), serif;
 }
 
+.font-ruqaa {
+  font-family: var(--font-aref-ruqaa), var(--font-amiri), serif;
+}
+
 .font-cormorant {
   font-family: var(--font-cormorant), serif;
 }

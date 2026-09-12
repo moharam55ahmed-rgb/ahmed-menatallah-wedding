@@ -1,6 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo, Amiri, Cormorant_Garamond, Playfair_Display } from "next/font/google";
+import { Cairo, Amiri, Cormorant_Garamond, Playfair_Display, Aref_Ruqaa } from "next/font/google";
 import "./globals.css";
+
+const arefRuqaa = Aref_Ruqaa({
+  subsets: ["arabic", "latin"],
+  variable: "--font-aref-ruqaa",
+  weight: ["400", "700"],
+  display: "swap",
+});
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -80,7 +87,7 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${cairo.variable} ${amiri.variable} ${cormorant.variable} ${playfair.variable} scroll-smooth`}
+      className={`${cairo.variable} ${amiri.variable} ${arefRuqaa.variable} ${cormorant.variable} ${playfair.variable} scroll-smooth`}
     >
       <body className="min-h-screen bg-[#F8F2EA] text-[#231F1A] font-sans antialiased selection:bg-[#C5A46D]/20 selection:text-[#231F1A] overflow-x-hidden">
         {children}
