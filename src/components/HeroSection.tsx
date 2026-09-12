@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { wedding } from "@/config/wedding";
 import { Calendar, Clock, MapPin, ChevronDown } from "lucide-react";
 
@@ -61,10 +62,10 @@ export default function HeroSection() {
       />
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BOTANICAL FOLIAGE SIDE ELEMENTS (MATCHING REFERENCE 02 EXACTLY)
+          BOTANICAL OLIVE FOLIAGE SIDE ELEMENTS (MATCHING REFERENCE EXACTLY)
           ═══════════════════════════════════════════════════════════════════ */}
       {/* Top Right Botanical Branch */}
-      <div className="pointer-events-none absolute top-0 right-0 w-36 sm:w-56 h-44 sm:h-64 opacity-75 z-0">
+      <div className="pointer-events-none absolute top-2 right-1 sm:top-4 sm:right-3 w-32 sm:w-52 h-44 sm:h-64 opacity-75 z-0">
         <svg viewBox="0 0 160 180" fill="none" className="w-full h-full">
           <path d="M160 0 C120 30 75 80 40 135" stroke="#8C7456" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.6" />
           <path d="M140 18 C122 22 115 36 122 50 C134 44 144 32 140 18 Z" fill="#BFA888" fillOpacity="0.65" />
@@ -75,7 +76,7 @@ export default function HeroSection() {
       </div>
 
       {/* Top Left Botanical Branch (Mirrored) */}
-      <div className="pointer-events-none absolute top-0 left-0 w-36 sm:w-56 h-44 sm:h-64 opacity-75 z-0 -scale-x-100">
+      <div className="pointer-events-none absolute top-2 left-1 sm:top-4 sm:left-3 w-32 sm:w-52 h-44 sm:h-64 opacity-75 z-0 -scale-x-100">
         <svg viewBox="0 0 160 180" fill="none" className="w-full h-full">
           <path d="M160 0 C120 30 75 80 40 135" stroke="#8C7456" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.6" />
           <path d="M140 18 C122 22 115 36 122 50 C134 44 144 32 140 18 Z" fill="#BFA888" fillOpacity="0.65" />
@@ -85,51 +86,81 @@ export default function HeroSection() {
         </svg>
       </div>
 
+      {/* Bottom Botanical Leaves for mobile */}
+      <div className="pointer-events-none absolute bottom-4 left-2 w-28 h-36 opacity-60 z-0 sm:hidden">
+        <svg viewBox="0 0 120 140" fill="none" className="w-full h-full">
+          <path d="M0 140 C30 110 55 80 80 40" stroke="#8C7456" strokeWidth="1" strokeOpacity="0.6" />
+          <path d="M25 115 C15 105 18 92 30 92 C38 102 36 112 25 115 Z" fill="#BFA888" fillOpacity="0.6" />
+          <path d="M50 90 C40 80 45 68 58 70 C64 80 60 90 50 90 Z" fill="#9F8766" fillOpacity="0.6" />
+        </svg>
+      </div>
+      <div className="pointer-events-none absolute bottom-4 right-2 w-28 h-36 opacity-60 z-0 sm:hidden -scale-x-100">
+        <svg viewBox="0 0 120 140" fill="none" className="w-full h-full">
+          <path d="M0 140 C30 110 55 80 80 40" stroke="#8C7456" strokeWidth="1" strokeOpacity="0.6" />
+          <path d="M25 115 C15 105 18 92 30 92 C38 102 36 112 25 115 Z" fill="#BFA888" fillOpacity="0.6" />
+          <path d="M50 90 C40 80 45 68 58 70 C64 80 60 90 50 90 Z" fill="#9F8766" fillOpacity="0.6" />
+        </svg>
+      </div>
+
       {/* ═══════════════════════════════════════════════════════════════════
-          MAIN ARCHED PALACE PORTAL CARD (MATCHING REFERENCE 02 EXACTLY)
+          MAIN ARCHED PALACE PORTAL CARD
           ═══════════════════════════════════════════════════════════════════ */}
       <div className="relative max-w-xl sm:max-w-2xl mx-auto z-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative bg-gradient-to-b from-[#FDFBF7] via-[#FAF6EE] to-[#F5ECE0] border-[1.5px] border-[#C5A059]/45 rounded-t-[140px] sm:rounded-t-[190px] md:rounded-t-[230px] rounded-b-[24px] shadow-[0_16px_40px_rgba(46,35,28,0.08),0_2px_6px_rgba(0,0,0,0.02)] pt-12 sm:pt-14 pb-8 sm:pb-10 px-5 sm:px-10 flex flex-col items-center text-center overflow-hidden"
+          className="relative rounded-t-[140px] sm:rounded-t-[190px] md:rounded-t-[230px] rounded-b-[28px] border-[1.5px] border-[#C5A059]/45 shadow-[0_16px_45px_rgba(46,35,28,0.1)] pt-10 sm:pt-14 pb-8 sm:pb-10 px-4 sm:px-10 flex flex-col items-center text-center overflow-hidden"
         >
-          {/* Inner Architectural Molding Arch Line */}
-          <div className="pointer-events-none absolute inset-x-3 sm:inset-x-5 top-3 sm:top-5 bottom-3 sm:bottom-5 rounded-t-[130px] sm:rounded-t-[175px] md:rounded-t-[215px] rounded-b-[18px] border border-[#C5A059]/25" />
-
-          {/* Left & Right Floral Arch Cascades (Illustrative Watercolor Blossoms on Arch sides) */}
-          <div className="pointer-events-none absolute top-12 -left-2 sm:left-1 w-20 sm:w-28 h-64 opacity-80 z-0">
-            <svg viewBox="0 0 100 240" fill="none" className="w-full h-full">
-              {/* Floral Bouquet Cluster along Arch */}
-              <circle cx="35" cy="40" r="14" fill="#FBF6EE" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              <circle cx="28" cy="70" r="16" fill="#F7EFE2" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              <circle cx="38" cy="105" r="13" fill="#FBF6EE" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              <circle cx="25" cy="140" r="15" fill="#F7EFE2" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              {/* Leaves */}
-              <path d="M45 30 C58 24 64 35 55 45 C48 40 45 35 45 30 Z" fill="#BFA888" fillOpacity="0.6" />
-              <path d="M48 60 C62 55 66 68 56 78 C50 72 48 65 48 60 Z" fill="#9F8766" fillOpacity="0.6" />
-              <path d="M52 95 C68 90 70 105 60 114 C52 108 50 100 52 95 Z" fill="#BFA888" fillOpacity="0.6" />
-              <path d="M42 135 C55 130 58 142 50 150 C44 145 42 140 42 135 Z" fill="#9F8766" fillOpacity="0.55" />
-            </svg>
+          {/* ═════════════════════════════════════════════════════════════
+              AUTHENTIC PALACE ARCH BACKGROUND IMAGES
+              - Desktop Background: /images/hero-bg-desktop.jpg (Hidden on small)
+              - Mobile Background: /images/hero-bg-mobile.jpg (Visible on small)
+              ═════════════════════════════════════════════════════════════ */}
+          {/* Desktop Palace Arch Image */}
+          <div className="hidden sm:block absolute inset-0 z-0">
+            <Image
+              src="/images/hero-bg-desktop.jpg"
+              alt="قصر كازابلانكا"
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 768px"
+            />
+            {/* Delicate warm cream radial veil for crystal-clear text contrast */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(ellipse at 50% 35%, rgba(253,251,247,0.88) 0%, rgba(250,245,236,0.85) 60%, rgba(245,236,220,0.92) 100%)",
+              }}
+            />
           </div>
 
-          <div className="pointer-events-none absolute top-12 -right-2 sm:right-1 w-20 sm:w-28 h-64 opacity-80 z-0 -scale-x-100">
-            <svg viewBox="0 0 100 240" fill="none" className="w-full h-full">
-              <circle cx="35" cy="40" r="14" fill="#FBF6EE" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              <circle cx="28" cy="70" r="16" fill="#F7EFE2" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              <circle cx="38" cy="105" r="13" fill="#FBF6EE" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              <circle cx="25" cy="140" r="15" fill="#F7EFE2" stroke="#C5A059" strokeWidth="0.5" strokeOpacity="0.4" />
-              <path d="M45 30 C58 24 64 35 55 45 C48 40 45 35 45 30 Z" fill="#BFA888" fillOpacity="0.6" />
-              <path d="M48 60 C62 55 66 68 56 78 C50 72 48 65 48 60 Z" fill="#9F8766" fillOpacity="0.6" />
-              <path d="M52 95 C68 90 70 105 60 114 C52 108 50 100 52 95 Z" fill="#BFA888" fillOpacity="0.6" />
-              <path d="M42 135 C55 130 58 142 50 150 C44 145 42 140 42 135 Z" fill="#9F8766" fillOpacity="0.55" />
-            </svg>
+          {/* Mobile Palace Arch Image */}
+          <div className="block sm:hidden absolute inset-0 z-0">
+            <Image
+              src="/images/hero-bg-mobile.jpg"
+              alt="قصر كازابلانكا"
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+            {/* Delicate warm cream radial veil for mobile */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(ellipse at 50% 35%, rgba(253,251,247,0.88) 0%, rgba(250,245,236,0.85) 60%, rgba(245,236,220,0.92) 100%)",
+              }}
+            />
           </div>
+
+          {/* Inner Architectural Framing Border Line */}
+          <div className="pointer-events-none absolute inset-x-2.5 sm:inset-x-4 top-2.5 sm:top-4 bottom-2.5 sm:bottom-4 rounded-t-[130px] sm:rounded-t-[178px] md:rounded-t-[218px] rounded-b-[22px] border border-[#C5A059]/30 z-1" />
 
           {/* 1. TOP GOLDEN ISLAMIC ROSETTE / MEDALLION EMBLEM */}
-          <div className="relative z-10 mb-3 text-[#C5A059]">
-            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="relative z-10 mb-2 sm:mb-3 text-[#C5A059]">
+            <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g transform="translate(20, 20)">
                 <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
                 <circle cx="0" cy="0" r="2.5" fill="#FAF6F0" />
@@ -149,13 +180,13 @@ export default function HeroSection() {
             </svg>
           </div>
 
-          {/* 2. EYEBROW TEXT (Exact phrasing from Reference 02) */}
+          {/* 2. EYEBROW TEXT */}
           <p className="relative z-10 text-xs sm:text-sm font-cairo font-semibold text-[#5A4638] tracking-wide mb-1">
             يسرنا دعوتكم لحضور حفل زفاف
           </p>
 
-          {/* 3. ROYAL COUPLE NAMES (Arabic Calligraphy matching Reference) */}
-          <h1 className="relative z-10 text-4xl sm:text-5xl md:text-[54px] font-ruqaa font-bold text-[#2A1F18] leading-[1.25] my-1 sm:my-2 flex items-center justify-center gap-2 sm:gap-3">
+          {/* 3. ROYAL COUPLE NAMES (Arabic Calligraphy matching Reference 100%) */}
+          <h1 className="relative z-10 text-4xl sm:text-5xl md:text-[54px] font-ruqaa font-bold text-[#2A1B12] leading-[1.25] my-1 sm:my-2 flex items-center justify-center gap-2 sm:gap-3">
             <span>{wedding.groomAr}</span>
             <span className="text-[#C5A059] font-cormorant font-normal text-3xl sm:text-4xl leading-none pt-1">
               &amp;
@@ -163,12 +194,12 @@ export default function HeroSection() {
             <span>{wedding.brideAr}</span>
           </h1>
 
-          {/* 4. DATE LINE */}
+          {/* 4. DATE (Prominently placed right below names as in Reference) */}
           <p className="relative z-10 text-sm sm:text-base font-cairo font-bold text-[#5A4638] mb-2 sm:mb-3">
             14 أكتوبر 2026
           </p>
 
-          {/* 5. BLESSING DU'AA (Matching Reference 02) */}
+          {/* 5. BLESSING DU'AA (Exact phrasing from Reference) */}
           <div className="relative z-10 max-w-sm mx-auto mb-5 sm:mb-6">
             <p className="text-xs sm:text-sm font-amiri font-bold text-[#4A3B30] leading-relaxed">
               اللهم بارك لهما وبارك عليهما
@@ -178,23 +209,23 @@ export default function HeroSection() {
             </p>
           </div>
 
-          {/* 6. EVENT SUMMARY CARD (Matching Reference 02 Card Style) */}
-          <div className="relative z-10 w-full max-w-xs sm:max-w-sm rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 px-4 py-3.5 sm:py-4 mb-4 space-y-2 text-xs sm:text-sm font-cairo text-[#2A1F18] shadow-[0_4px_16px_rgba(46,35,28,0.04)]">
+          {/* 6. EVENT SUMMARY CARD (Exact replica of Reference Card) */}
+          <div className="relative z-10 w-full max-w-[290px] xs:max-w-xs sm:max-w-sm rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/40 px-4 py-3.5 sm:py-4 mb-2 space-y-2.5 text-xs sm:text-sm font-cairo text-[#2A1F18] shadow-[0_6px_20px_rgba(46,35,28,0.06)] backdrop-blur-xs">
             {/* Date Row */}
             <div className="flex items-center justify-center gap-2">
-              <span className="text-sm">📅</span>
+              <Calendar className="w-4 h-4 text-[#8C6D3B] shrink-0" />
               <span className="font-bold text-[#2A1F18]">الأربعاء 14 أكتوبر 2026</span>
             </div>
 
             {/* Time Row */}
             <div className="flex items-center justify-center gap-2">
-              <span className="text-sm">⏰</span>
+              <Clock className="w-4 h-4 text-[#8C6D3B] shrink-0" />
               <span className="font-bold text-[#2A1F18]">7:00 مساءً</span>
             </div>
 
             {/* Venue Row */}
-            <div className="flex items-center justify-center gap-1.5 text-center">
-              <span className="text-sm shrink-0">📍</span>
+            <div className="flex items-center justify-center gap-2 text-center">
+              <MapPin className="w-4 h-4 text-[#8C6D3B] shrink-0 mt-0.5" />
               <div>
                 <p className="font-bold text-[#2A1F18]">{wedding.venueAr}</p>
                 <p className="text-[11px] font-medium text-[#7A6A5D]">شبين القناطر، القليوبية، مصر</p>
@@ -204,9 +235,9 @@ export default function HeroSection() {
         </motion.div>
 
         {/* ═══════════════════════════════════════════════════════════════════
-            COUNTDOWN TIMER SECTION (Directly below Arch in Reference 02)
+            COUNTDOWN TIMER SECTION (Directly below Arch in Reference)
             ═══════════════════════════════════════════════════════════════════ */}
-        <div className="w-full mt-6 sm:mt-8 text-center">
+        <div className="w-full mt-7 sm:mt-9 text-center">
           {/* Section Title with Horizontal Wings */}
           <div className="flex items-center justify-center gap-3 mb-4 select-none">
             <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
@@ -220,7 +251,7 @@ export default function HeroSection() {
           {mounted && (
             <div className="grid grid-cols-4 gap-2 sm:gap-3.5 max-w-xs sm:max-w-sm mx-auto">
               {/* Days */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/30 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
                 <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
                   {timeLeft.days}
                 </span>
@@ -230,7 +261,7 @@ export default function HeroSection() {
               </div>
 
               {/* Hours */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/30 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
                 <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
                   {timeLeft.hours}
                 </span>
@@ -240,7 +271,7 @@ export default function HeroSection() {
               </div>
 
               {/* Minutes */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/30 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
                 <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
                   {timeLeft.minutes}
                 </span>
@@ -250,7 +281,7 @@ export default function HeroSection() {
               </div>
 
               {/* Seconds */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/30 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
                 <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
                   {timeLeft.seconds}
                 </span>
@@ -273,7 +304,7 @@ export default function HeroSection() {
         </div>
 
         {/* ═══════════════════════════════════════════════════════════════════
-            EVENT DETAILS SECTION (تفاصيل المناسبة - 3 Cards in Reference 02)
+            EVENT DETAILS SECTION (تفاصيل المناسبة - 3 Cards in Reference)
             ═══════════════════════════════════════════════════════════════════ */}
         <div id="event-details" className="mt-8 sm:mt-12 flex flex-col items-center text-center">
           {/* Islamic Rosette Ornament Divider */}
@@ -298,7 +329,7 @@ export default function HeroSection() {
             تفاصيل المناسبة
           </h2>
 
-          {/* 3 Detail Cards (Matching Reference 02) */}
+          {/* 3 Detail Cards (Matching Reference Exactly) */}
           <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
             {/* Card 1: التاريخ */}
             <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_16px_rgba(46,35,28,0.04)] flex flex-col items-center text-center hover:border-[#C5A059] transition-all">
