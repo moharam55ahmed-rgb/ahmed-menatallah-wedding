@@ -384,8 +384,8 @@ export default function HeroSection() {
             )}
           </div>
 
-          {/* Bottom Group: Event Details 3 Cards */}
-          <div id="event-details" className="relative z-10 w-full pt-1 pb-1 flex flex-col items-center text-center">
+          {/* Bottom Group: Event Details 3 Cards - Raised UP with bottom margin */}
+          <div id="event-details" className="relative z-10 w-full pt-1 pb-1 mb-8 md:mb-12 lg:mb-14 flex flex-col items-center text-center">
             {/* Middle Golden Rosette Accent */}
             <div className="mb-1 text-[#C5A059] flex items-center justify-center gap-2">
               <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
