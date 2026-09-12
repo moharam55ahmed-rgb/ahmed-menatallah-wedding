@@ -49,8 +49,79 @@ export default function AdminDashboard() {
 
   // Print Wall State
   const [showPrintModal, setShowPrintModal] = useState(false);
+  const [selectedWishForPrint, setSelectedWishForPrint] = useState<GuestWish | null>(null);
   const [printRecipientFilter] = useState<RecipientFilter>("all");
   const [printVisibleOnly, setPrintVisibleOnly] = useState(true);
+
+  // Site Content Settings State (تعديل كامل نصوص ومحتوى الموقع)
+  const [siteSettings, setSiteSettings] = useState({
+    groomAr: wedding.groomAr,
+    brideAr: wedding.brideAr,
+    groomEn: wedding.groom,
+    brideEn: wedding.bride,
+    date: wedding.date,
+    dayAr: wedding.dayAr,
+    timeAr: "7:00 مساءً",
+    venueAr: wedding.venueAr,
+    cityAr: wedding.cityAr,
+    addressAr: wedding.location.addressAr,
+    mapsUrl: wedding.location.mapsUrl,
+    heroIntro: wedding.heroText.intro,
+    heroSubline: wedding.heroText.subline,
+    heroInviteText: wedding.heroText.inviteText,
+    basmala: wedding.invitationMessage.basmala,
+    invitationBody: wedding.invitationMessage.body,
+    invitationClosing: wedding.invitationMessage.closing,
+  });
+  const [settingsSaved, setSettingsSaved] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("wedding_custom_settings");
+      if (saved) {
+        setSiteSettings((prev) => ({ ...prev, ...JSON.parse(saved) }));
+      }
+    } catch {}
+  }, []);
+
+  const handleSaveSettings = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      localStorage.setItem("wedding_custom_settings", JSON.stringify(siteSettings));
+      setSettingsSaved(true);
+      setTimeout(() => setSettingsSaved(false), 3000);
+    } catch (err) {
+      console.error("Failed to save settings", err);
+    }
+  };
+
+  const handleResetSettings = () => {
+    const defaults = {
+      groomAr: wedding.groomAr,
+      brideAr: wedding.brideAr,
+      groomEn: wedding.groom,
+      brideEn: wedding.bride,
+      date: wedding.date,
+      dayAr: wedding.dayAr,
+      timeAr: "7:00 مساءً",
+      venueAr: wedding.venueAr,
+      cityAr: wedding.cityAr,
+      addressAr: wedding.location.addressAr,
+      mapsUrl: wedding.location.mapsUrl,
+      heroIntro: wedding.heroText.intro,
+      heroSubline: wedding.heroText.subline,
+      heroInviteText: wedding.heroText.inviteText,
+      basmala: wedding.invitationMessage.basmala,
+      invitationBody: wedding.invitationMessage.body,
+      invitationClosing: wedding.invitationMessage.closing,
+    };
+    setSiteSettings(defaults);
+    try {
+      localStorage.removeItem("wedding_custom_settings");
+    } catch {}
+    setSettingsSaved(true);
+    setTimeout(() => setSettingsSaved(false), 2000);
+  };
 
   // Edit Wish State
   const [editingWish, setEditingWish] = useState<GuestWish | null>(null);
@@ -328,12 +399,6 @@ export default function AdminDashboard() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link
-              href="/showcase"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF5EE] hover:bg-[#F7F1E6] text-[#432C1E] border border-[#C9A96A]/35 text-xs font-semibold transition-all"
-            >
-              <span>معاينة الشاشات الثلاث (09 - 10 - 11)</span>
-            </Link>
 
             <button
               type="button"
@@ -599,8 +664,21 @@ export default function AdminDashboard() {
                           </span>
                         </div>
 
-                        {/* Action Buttons: Edit, Toggle Visibility, Delete */}
+                        {/* Action Buttons: Print, Edit, Toggle Visibility, Delete */}
                         <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                          {/* Print Single Wish on Blank Certificate */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedWishForPrint(wish);
+                              setShowPrintModal(true);
+                            }}
+                            className="p-2 rounded-lg bg-white hover:bg-[#FAF5EE] text-[#8A6A32] border border-[#C9A96A]/35 transition-all cursor-pointer shadow-2xs"
+                            title="طباعة هذه التهنئة منفردة على الكارت الملكي الفاخر"
+                          >
+                            <Printer className="w-3.5 h-3.5 text-[#8A6A32]" />
+                          </button>
+
                           {/* Edit Button */}
                           <button
                             type="button"
@@ -706,14 +784,14 @@ export default function AdminDashboard() {
             )}
 
             {/* TAB: OTHER QUICK TABS */}
-            {(activeTab === "stats" || activeTab === "contacts" || activeTab === "stickers" || activeTab === "settings") && (
+            {(activeTab === "stats" || activeTab === "contacts" || activeTab === "stickers") && (
               <div className="bg-white rounded-2xl border border-[#C9A96A]/30 p-6 shadow-2xs text-center space-y-3">
                 <Sparkles className="w-8 h-8 text-[#C9A96A] mx-auto" />
                 <h3 className="font-amiri font-bold text-lg text-[#241D18]">
-                  إدارة حفل زفاف {wedding.groomAr} &amp; {wedding.brideAr}
+                  إدارة حفل زفاف {siteSettings.groomAr} &amp; {siteSettings.brideAr}
                 </h3>
                 <p className="text-xs text-[#5C5146] max-w-sm mx-auto">
-                  جميع الإعدادات والبيانات متصلة بقاعدة البيانات السحابية الحية (Upstash Redis) وتعمل بسلاسة تامة.
+                  جميع الإعدادات والبيانات متصلة بقاعدة البيانات وتعمل بسلاسة تامة.
                 </p>
                 <button
                   type="button"
@@ -722,6 +800,212 @@ export default function AdminDashboard() {
                 >
                   الانتقال لإدارة التهاني
                 </button>
+              </div>
+            )}
+
+            {/* TAB: SETTINGS & SITE CONTENT MANAGEMENT (تعديل كامل نصوص ومحتوى الموقع) */}
+            {activeTab === "settings" && (
+              <div className="bg-white rounded-2xl border border-[#C9A96A]/30 p-5 sm:p-6 shadow-2xs space-y-6">
+                <div className="flex items-center justify-between pb-3 border-b border-[#C9A96A]/20">
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-amiri font-bold text-[#241D18]">
+                      إعدادات نصوص ومحتوى الدعوة
+                    </h2>
+                    <p className="text-xs text-[#5C5146] mt-0.5">
+                      تعديل نصوص الدعوة، أسماء العروسين، الموعد، القاعة ورسائل الترحيب
+                    </p>
+                  </div>
+                  {settingsSaved && (
+                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full animate-in fade-in">
+                      ✓ تم حفظ التعديلات بنجاح
+                    </span>
+                  )}
+                </div>
+
+                <form onSubmit={handleSaveSettings} className="space-y-5 text-right">
+                  {/* 1. أسماء العروسين */}
+                  <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E8DFC8] space-y-3">
+                    <h3 className="font-amiri font-bold text-base text-[#241D18] flex items-center gap-2">
+                      <span>👰🤵</span>
+                      <span>بيانات وأسماء العروسين</span>
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">اسم العريس (بالعربي)</label>
+                        <input
+                          type="text"
+                          value={siteSettings.groomAr}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, groomAr: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">اسم العروسة (بالعربي)</label>
+                        <input
+                          type="text"
+                          value={siteSettings.brideAr}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, brideAr: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">اسم العريس (English)</label>
+                        <input
+                          type="text"
+                          value={siteSettings.groomEn}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, groomEn: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">اسم العروسة (English)</label>
+                        <input
+                          type="text"
+                          value={siteSettings.brideEn}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, brideEn: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. الموعد والتوقيت */}
+                  <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E8DFC8] space-y-3">
+                    <h3 className="font-amiri font-bold text-base text-[#241D18] flex items-center gap-2">
+                      <span>📅</span>
+                      <span>تاريخ وموعد حفل الزفاف</span>
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">التاريخ</label>
+                        <input
+                          type="text"
+                          value={siteSettings.date}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, date: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">يوم المناسبة</label>
+                        <input
+                          type="text"
+                          value={siteSettings.dayAr}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, dayAr: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">توقيت الحفل</label>
+                        <input
+                          type="text"
+                          value={siteSettings.timeAr}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, timeAr: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 3. مكان وقاعة الحفل */}
+                  <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E8DFC8] space-y-3">
+                    <h3 className="font-amiri font-bold text-base text-[#241D18] flex items-center gap-2">
+                      <span>📍</span>
+                      <span>مكان وقاعة الزفاف</span>
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">اسم القاعة</label>
+                        <input
+                          type="text"
+                          value={siteSettings.venueAr}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, venueAr: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">المدينة والمحافظة</label>
+                        <input
+                          type="text"
+                          value={siteSettings.cityAr}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, cityAr: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">العنوان التفصيلي</label>
+                        <input
+                          type="text"
+                          value={siteSettings.addressAr}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, addressAr: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 4. نصوص الترحيب وبطاقة الدعوة */}
+                  <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E8DFC8] space-y-3">
+                    <h3 className="font-amiri font-bold text-base text-[#241D18] flex items-center gap-2">
+                      <span>✨</span>
+                      <span>نصوص الترحيب والدعوة</span>
+                    </h3>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">شارة الترحيب في الهيرو</label>
+                        <input
+                          type="text"
+                          value={siteSettings.heroIntro}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, heroIntro: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">نص الدعوة الرئيسي</label>
+                        <input
+                          type="text"
+                          value={siteSettings.heroInviteText}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, heroInviteText: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">متن رسالة الدعوة</label>
+                        <textarea
+                          rows={2}
+                          value={siteSettings.invitationBody}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, invitationBody: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A] resize-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#4A3222] mb-1">خاتمة رسالة الدعوة</label>
+                        <textarea
+                          rows={2}
+                          value={siteSettings.invitationClosing}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, invitationClosing: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl bg-white border border-[#C9A96A]/35 text-xs text-[#241D18] outline-none focus:border-[#C9A96A] resize-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center justify-between pt-3 border-t border-[#C9A96A]/20">
+                    <button
+                      type="button"
+                      onClick={handleResetSettings}
+                      className="px-4 py-2 rounded-full border border-red-200 text-red-600 hover:bg-red-50 text-xs font-semibold cursor-pointer transition-colors"
+                    >
+                      استعادة النصوص الافتراضية
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 rounded-full bg-[#432C1E] hover:bg-[#321F14] text-white text-xs font-bold shadow-md cursor-pointer transition-all"
+                    >
+                      حفظ جميع التعديلات
+                    </button>
+                  </div>
+                </form>
               </div>
             )}
 
@@ -867,184 +1151,222 @@ export default function AdminDashboard() {
       {/* ═══════════════════════════════════════════════════════════════════════
           PRINT OPTIONS MODAL
           ═══════════════════════════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════════════════════════
+          PRINT OPTIONS MODAL - USING USER'S AUTHENTIC BLANK BACKGROUND
+          ═══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
-        {showPrintModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs print:hidden overflow-y-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo text-center space-y-3.5 my-auto"
-              dir="rtl"
-            >
-              {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-[#E8DFC8] pb-2">
-                <h3 className="text-base sm:text-lg font-amiri font-bold text-[#241710]">
-                  طباعة حائط التهاني (شكل الطباعة - 11)
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => setShowPrintModal(false)}
-                  className="p-1 rounded-full text-[#7A695A] hover:bg-black/5 text-xs font-bold cursor-pointer"
-                >
-                  ✕
-                </button>
-              </div>
+        {showPrintModal && (() => {
+          const activeWish = selectedWishForPrint || wishes[0] || {
+            id: "sample",
+            name: "هاجر عبدالله",
+            message: "ألف مبروك يا أجمل عروسين\nربنا يبارك لكم ويجمع بينكم في خير",
+            timestamp: new Date().toISOString(),
+            recipient: "both",
+          };
 
-              {/* Certificate Preview matching Screen 11 */}
-              <div className="w-full aspect-[1/1.32] rounded-2xl border-[1.5px] border-[#D4C3A3] p-4 relative flex flex-col justify-between items-center text-center bg-[#FFFDF9] shadow-xs overflow-hidden">
-                {/* Corner Flourishes */}
-                <div className="absolute top-2 right-2 text-[#C5A059] text-xs select-none">❖</div>
-                <div className="absolute top-2 left-2 text-[#C5A059] text-xs select-none">❖</div>
-                <div className="absolute bottom-2 right-2 text-[#C5A059] text-xs select-none">❖</div>
-                <div className="absolute bottom-2 left-2 text-[#C5A059] text-xs select-none">❖</div>
+          const currentIndex = wishes.findIndex((w) => w.id === activeWish.id);
 
-                {/* Laurel Leaves Symmetrical on Sides */}
-                <div className="absolute top-6 bottom-6 right-1 w-3 flex flex-col justify-between text-[#C5A059]/60 select-none text-[8px] pointer-events-none">
-                  <span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span>
-                </div>
-                <div className="absolute top-6 bottom-6 left-1 w-3 flex flex-col justify-between text-[#C5A059]/60 select-none text-[8px] pointer-events-none scale-x-[-1]">
-                  <span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span>
-                </div>
-
-                {/* Header */}
-                <div className="pt-0.5">
-                  <h4 className="font-amiri font-bold text-sm text-[#241710]">
-                    كلمات من القلب
-                  </h4>
-                  <p className="font-cairo text-[10px] text-[#9B8C7E]">
-                    دعوة فرح زفاف
-                  </p>
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-xs print:hidden overflow-y-auto">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo text-center space-y-3.5 my-auto"
+                dir="rtl"
+              >
+                {/* Modal Header */}
+                <div className="flex items-center justify-between border-b border-[#E8DFC8] pb-2.5">
+                  <div className="text-right">
+                    <h3 className="text-base sm:text-lg font-amiri font-bold text-[#241710]">
+                      طباعة حائط التهاني على الكارت الملكي الفاخر
+                    </h3>
+                    <p className="text-[11px] text-[#7A695A]">
+                      طباعة كل تهنئة منفردة على التصميم الأصلي عالي الدقة
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPrintModal(false)}
+                    className="p-1 rounded-full text-[#7A695A] hover:bg-black/5 text-xs font-bold cursor-pointer"
+                  >
+                    ✕
+                  </button>
                 </div>
 
-                {/* Couple Names */}
-                <div className="my-0.5">
-                  <h3 className="text-2xl sm:text-3xl font-bold font-ruqaa text-[#241710]">
-                    {wedding.groomAr} <span className="font-cormorant font-normal text-lg text-[#C5A059]">&amp;</span> {wedding.brideAr}
-                  </h3>
-                  <p className="font-cairo text-[10px] font-bold text-[#5C4533] mt-0.5">
-                    14 أكتوبر 2026
-                  </p>
-                </div>
+                {/* Wish Selector & Navigation */}
+                {wishes.length > 0 && (
+                  <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-[#FAF6F0] border border-[#E8DFC8]">
+                    <button
+                      type="button"
+                      disabled={currentIndex <= 0}
+                      onClick={() => setSelectedWishForPrint(wishes[currentIndex - 1])}
+                      className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#432C1E] hover:bg-white disabled:opacity-30 cursor-pointer transition-colors"
+                    >
+                      &larr; السابقة
+                    </button>
 
-                {/* Rosette Divider */}
-                <div className="flex items-center justify-center gap-1 text-[#C5A059] text-[9px] select-none">
-                  <span className="w-5 h-[1px] bg-[#C5A059]" />
-                  <span>✦</span>
-                  <span>❖</span>
-                  <span>✦</span>
-                  <span className="w-5 h-[1px] bg-[#C5A059]" />
-                </div>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="text-xs font-bold text-[#432C1E] truncate">
+                        {activeWish.name}
+                      </span>
+                      <span className="text-[10px] text-[#7A695A] shrink-0">
+                        ({currentIndex >= 0 ? currentIndex + 1 : 1} من {wishes.length})
+                      </span>
+                    </div>
 
-                {/* Inner Card Preview */}
-                <div className="w-full max-w-[240px] p-2.5 rounded-xl bg-[#FAF7F2] border border-[#E8DFC8] shadow-2xs text-center my-1">
-                  <h5 className="font-cairo font-bold text-xs text-[#241710]">
-                    {wishes[0]?.name || "هاجر عبدالله"}
-                  </h5>
-                  <p className="font-cairo text-[10px] text-[#2E2016] mt-0.5 leading-snug">
-                    {wishes[0]?.message || "ألف مبروك يا أجمل عروسين ربنا يبارك لكم ويجمع بينكم في خير"}
-                  </p>
-                  <div className="text-center mt-1 text-xs">
-                    <span className="text-red-500 select-none">❤️❤️</span>
+                    <button
+                      type="button"
+                      disabled={currentIndex >= wishes.length - 1}
+                      onClick={() => setSelectedWishForPrint(wishes[currentIndex + 1])}
+                      className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#432C1E] hover:bg-white disabled:opacity-30 cursor-pointer transition-colors"
+                    >
+                      التالية &rarr;
+                    </button>
+                  </div>
+                )}
+
+                {/* Live Certificate Preview on the User's Blank Background Image */}
+                <div className="relative aspect-[682/1024] w-full max-w-[340px] sm:max-w-[360px] mx-auto rounded-2xl overflow-hidden shadow-xl border border-[#E8DFC8] bg-[#FFFDF9]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/wish-print-bg.png"
+                    alt="كارت طباعة التهنئة"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0"
+                  />
+
+                  {/* Top Section */}
+                  <div className="absolute top-[13%] left-[12%] right-[12%] text-center z-10">
+                    <p className="font-amiri font-bold text-xs sm:text-sm text-[#241710] tracking-wide">
+                      كلمات من القلب
+                    </p>
+                    <p className="font-cairo text-[9px] sm:text-[10px] text-[#8C7A6B] mt-0.5 font-medium">
+                      دعوة فرح زفاف
+                    </p>
+                    <h3 className="text-2xl sm:text-3xl font-bold font-ruqaa text-[#241710] my-0.5 sm:my-1">
+                      {siteSettings.groomAr} <span className="font-cormorant font-normal text-lg text-[#C5A059]">&amp;</span> {siteSettings.brideAr}
+                    </h3>
+                    <p className="font-cairo text-[10px] sm:text-xs font-bold text-[#432C1E]">
+                      14 أكتوبر 2026
+                    </p>
+                  </div>
+
+                  {/* Inner Box Section - Aligned with the card box drawn on the background */}
+                  <div className="absolute top-[40%] bottom-[16%] left-[13%] right-[13%] flex flex-col items-center justify-center text-center px-4 z-10">
+                    <h4 className="font-cairo font-bold text-xs sm:text-sm text-[#241710] mb-1.5">
+                      {activeWish.name}
+                    </h4>
+                    <div className="space-y-0.5 mb-2 max-w-[220px]">
+                      {activeWish.message.split("\n").map((line, idx) => (
+                        <p key={idx} className="font-cairo font-semibold text-[10px] sm:text-[11px] text-[#2E2016] leading-relaxed">
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                    <div className="text-xs sm:text-sm">
+                      <span className="text-red-500 select-none">❤️❤️</span>
+                    </div>
+                  </div>
+
+                  {/* Bottom Section */}
+                  <div className="absolute bottom-[6.5%] left-0 right-0 text-center z-10">
+                    <p className="font-amiri font-bold text-[11px] sm:text-xs text-[#432C1E]">
+                      شكراً لكل من شاركنا فرحتنا
+                    </p>
                   </div>
                 </div>
 
-                {/* Footer Note */}
-                <div className="pb-0.5">
-                  <p className="font-amiri font-bold text-xs text-[#432C1E]">
-                    شكراً لكل من شاركنا فرحتنا
-                  </p>
+                {/* Print Action Buttons */}
+                <div className="flex items-center justify-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setShowPrintModal(false)}
+                    className="px-4 py-2 rounded-full border border-[#C9A96A]/35 text-xs text-[#5C5146] hover:bg-[#FAF5EE] cursor-pointer"
+                  >
+                    إغلاق
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleTriggerPrint}
+                    className="px-6 py-2.5 rounded-full bg-[#432C1E] hover:bg-[#321F14] text-white text-xs font-bold flex items-center gap-2 shadow-md cursor-pointer transition-all"
+                  >
+                    <Printer className="w-3.5 h-3.5 text-[#C9A96A]" />
+                    <span>طباعة هذه التهنئة منفردة (Print / PDF)</span>
+                  </button>
                 </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-center gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setShowPrintModal(false)}
-                  className="px-4 py-2 rounded-full border border-[#C9A96A]/35 text-xs text-[#5C5146] hover:bg-[#FAF5EE] cursor-pointer"
-                >
-                  إغلاق
-                </button>
-                <button
-                  type="button"
-                  onClick={handleTriggerPrint}
-                  className="px-6 py-2 rounded-full bg-[#432C1E] hover:bg-[#321F14] text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer"
-                >
-                  <Printer className="w-3.5 h-3.5 text-[#C9A96A]" />
-                  <span>طباعة البطاقة التذكارية / PDF</span>
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
+              </motion.div>
+            </div>
+          );
+        })()}
       </AnimatePresence>
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          REFERENCE 11: PRINTABLE WISHES WALL (شكل الطباعة)
-          This renders only during window.print()
+          PRINTABLE CONTAINER (Renders only during window.print())
+          Exact 1:1 replica on the authentic blank background (wish-print-bg.png)
           ═══════════════════════════════════════════════════════════════════════ */}
-      <div className="hidden print:block min-h-screen bg-[#FFFDF9] text-[#241D18] p-8 font-amiri" dir="rtl">
-        {/* Physical A4 Floral Keepsake Frame */}
-        <div className="border-2 border-[#C9A96A]/60 rounded-3xl p-6 relative">
-          
-          {/* Ornate Corner Flourishes */}
-          <div className="absolute top-2 right-2 text-[#C9A96A] text-sm select-none">❖</div>
-          <div className="absolute top-2 left-2 text-[#C9A96A] text-sm select-none">❖</div>
-          <div className="absolute bottom-2 right-2 text-[#C9A96A] text-sm select-none">❖</div>
-          <div className="absolute bottom-2 left-2 text-[#C9A96A] text-sm select-none">❖</div>
+      {(() => {
+        const printWish = selectedWishForPrint || wishes[0] || {
+          id: "sample",
+          name: "هاجر عبدالله",
+          message: "ألف مبروك يا أجمل عروسين\nربنا يبارك لكم ويجمع بينكم في خير",
+          timestamp: new Date().toISOString(),
+          recipient: "both",
+        };
 
-          {/* Keepsake Header matching Reference 11 */}
-          <div className="text-center pb-6 border-b border-[#C9A96A]/30 mb-6">
-            <p className="text-xs font-cairo text-[#8A6A32] tracking-widest mb-1">
-              كلمات من القلب
-            </p>
-            <h1 className="text-3xl font-bold text-[#241D18] mb-1">
-              {wedding.groomAr} <span className="text-[#C9A96A] font-cormorant">&amp;</span> {wedding.brideAr}
-            </h1>
-            <p className="text-xs font-cairo text-[#5C5146]">
-              14 أكتوبر 2026
-            </p>
-          </div>
+        return (
+          <div className="hidden print:flex fixed inset-0 w-screen h-screen bg-white items-center justify-center p-0 m-0 z-[999999]" dir="rtl">
+            <div className="relative w-[190mm] h-[285mm] max-h-screen aspect-[682/1024] mx-auto overflow-hidden">
+              {/* Authentic Blank Background Image */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/wish-print-bg.png"
+                alt="شهادة التهنئة"
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+              />
 
-          {/* Wishes Cards Grid with page-break-inside: avoid */}
-          <div className="grid grid-cols-2 gap-4">
-            {wishesForPrint.map((wish) => (
-              <div
-                key={wish.id}
-                className="p-4 rounded-2xl bg-[#FBF8F1] border border-[#C9A96A]/40 text-right print-page-break-avoid"
-                style={{ breakInside: "avoid", pageBreakInside: "avoid" }}
-              >
-                <div className="flex items-center justify-between border-b border-[#C9A96A]/20 pb-1.5 mb-2">
-                  <h3 className="font-bold text-base text-[#241D18]">
-                    {wish.name}
-                  </h3>
-                  <span className="text-[10px] font-cairo text-[#8A6A32]">
-                    {recipientLabel(wish.recipient)}
-                  </span>
-                </div>
-
-                <p className="text-xs font-cairo text-[#241D18] leading-relaxed mb-2">
-                  {wish.message}
+              {/* Top Section */}
+              <div className="absolute top-[13%] left-[12%] right-[12%] text-center z-10">
+                <p className="font-amiri font-bold text-2xl text-[#241710] tracking-wide">
+                  كلمات من القلب
                 </p>
+                <p className="font-cairo text-sm text-[#8C7A6B] mt-0.5">
+                  دعوة فرح زفاف
+                </p>
+                <h2 className="text-5xl font-bold font-ruqaa text-[#241710] my-2">
+                  {siteSettings.groomAr} <span className="font-cormorant font-normal text-3xl text-[#C5A059]">&amp;</span> {siteSettings.brideAr}
+                </h2>
+                <p className="font-cairo text-base font-bold text-[#432C1E]">
+                  14 أكتوبر 2026
+                </p>
+              </div>
 
-                <div className="flex items-center justify-between text-[9px] font-cairo text-[#8C8276] pt-1 border-t border-[#C9A96A]/15">
-                  <span>{new Date(wish.timestamp).toLocaleDateString("ar-EG")}</span>
-                  {wish.sticker && <span>✨ {wish.sticker}</span>}
+              {/* Inner Box Section */}
+              <div className="absolute top-[40%] bottom-[16%] left-[14%] right-[14%] flex flex-col items-center justify-center text-center px-8 z-10">
+                <h3 className="font-cairo font-bold text-2xl text-[#241710] mb-3">
+                  {printWish.name}
+                </h3>
+                <div className="space-y-1.5 mb-4 max-w-[340px]">
+                  {printWish.message.split("\n").map((line, idx) => (
+                    <p key={idx} className="font-cairo font-bold text-base text-[#2E2016] leading-relaxed">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+                <div className="text-2xl">
+                  <span className="text-red-500">❤️❤️</span>
                 </div>
               </div>
-            ))}
-          </div>
 
-          {/* Keepsake Footer Note matching Reference 11 */}
-          <div className="mt-8 pt-4 border-t border-[#C9A96A]/30 text-center">
-            <p className="text-sm font-amiri font-bold text-[#3A2D24]">
-              شكراً لكل من شاركنا فرحتنا ❤️
-            </p>
+              {/* Bottom Section */}
+              <div className="absolute bottom-[6.5%] left-0 right-0 text-center z-10">
+                <p className="font-amiri font-bold text-lg text-[#432C1E]">
+                  شكراً لكل من شاركنا فرحتنا
+                </p>
+              </div>
+            </div>
           </div>
-
-        </div>
-      </div>
+        );
+      })()}
     </>
   );
 }
