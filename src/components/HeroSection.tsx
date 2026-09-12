@@ -248,7 +248,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative w-full h-full max-h-[97dvh] rounded-[32px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_20px_50px_rgba(46,35,28,0.1)] bg-[#FAF7F2] p-4 md:p-5 flex flex-col justify-between items-center text-center overflow-hidden"
+          className="relative h-full max-h-[96dvh] aspect-[685/1024] max-w-full rounded-[32px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_24px_60px_rgba(46,35,28,0.12)] bg-[#FAF7F2] p-3.5 md:p-4 lg:p-5 flex flex-col justify-between items-center text-center overflow-hidden"
         >
           {/* Authentic High-Res Empty Background Image Covering THE ENTIRE DESKTOP CARD */}
           <div className="absolute inset-0 z-0">
@@ -257,14 +257,14 @@ export default function HeroSection() {
               alt="قصر كازابلانكا"
               fill
               priority
-              className="object-cover object-top"
-              sizes="660px"
+              className="object-cover object-center"
+              sizes="685px"
             />
             {/* Subtle glow for text clarity across the whole card */}
             <div
               className="absolute inset-0"
               style={{
-                background: "radial-gradient(ellipse at 50% 36%, rgba(255,253,249,0.85) 0%, rgba(253,250,244,0.50) 60%, rgba(248,242,230,0.15) 100%)",
+                background: "radial-gradient(ellipse at 50% 36%, rgba(255,253,249,0.75) 0%, rgba(253,250,244,0.35) 55%, transparent 100%)",
               }}
             />
           </div>
