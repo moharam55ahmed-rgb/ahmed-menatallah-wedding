@@ -243,63 +243,36 @@ export default function HeroSection() {
       {/* ═══════════════════════════════════════════════════════════════════
           2. DESKTOP VERSION - FULL 100dvh HEIGHT & EXACT FIGMA DESIGN
           ═══════════════════════════════════════════════════════════════════ */}
-      <div className="hidden sm:flex flex-col items-center justify-center w-full h-full max-w-[600px] lg:max-w-[640px] mx-auto z-10 py-1 md:py-2">
+      <div className="hidden sm:flex flex-col items-center justify-center w-full h-full max-w-[620px] lg:max-w-[660px] mx-auto z-10 py-1 md:py-2">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative w-full h-full max-h-[97dvh] rounded-[32px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_20px_50px_rgba(46,35,28,0.1)] bg-[#FAF7F2] p-3.5 md:p-4 lg:p-5 flex flex-col justify-between items-center text-center overflow-hidden"
+          className="relative w-full h-full max-h-[97dvh] rounded-[32px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_20px_50px_rgba(46,35,28,0.1)] bg-[#FAF7F2] p-4 md:p-5 flex flex-col justify-between items-center text-center overflow-hidden"
         >
-          {/* Decorative Corner Golden Leaves (Left & Right) */}
-          <div className="pointer-events-none absolute -bottom-4 -left-4 w-28 h-28 opacity-40 z-0">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 90 Q30 70 50 80 T80 50" stroke="#C5A059" strokeWidth="1.5" fill="none" />
-              <ellipse cx="30" cy="72" rx="10" ry="5" transform="rotate(-30 30 72)" fill="#D8C29D" opacity="0.6" />
-              <ellipse cx="48" cy="65" rx="11" ry="5" transform="rotate(35 48 65)" fill="#C5A059" opacity="0.5" />
-              <ellipse cx="65" cy="52" rx="12" ry="6" transform="rotate(-20 65 52)" fill="#D8C29D" opacity="0.7" />
-              <ellipse cx="78" cy="40" rx="10" ry="5" transform="rotate(40 78 40)" fill="#C5A059" opacity="0.6" />
-            </svg>
+          {/* Authentic High-Res Empty Background Image Covering THE ENTIRE DESKTOP CARD */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/hero-bg-desktop.jpg"
+              alt="قصر كازابلانكا"
+              fill
+              priority
+              className="object-cover object-top"
+              sizes="660px"
+            />
+            {/* Subtle glow for text clarity across the whole card */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(ellipse at 50% 36%, rgba(255,253,249,0.85) 0%, rgba(253,250,244,0.50) 60%, rgba(248,242,230,0.15) 100%)",
+              }}
+            />
           </div>
-          <div className="pointer-events-none absolute -bottom-4 -right-4 w-28 h-28 opacity-40 z-0 transform scale-x-[-1]">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 90 Q30 70 50 80 T80 50" stroke="#C5A059" strokeWidth="1.5" fill="none" />
-              <ellipse cx="30" cy="72" rx="10" ry="5" transform="rotate(-30 30 72)" fill="#D8C29D" opacity="0.6" />
-              <ellipse cx="48" cy="65" rx="11" ry="5" transform="rotate(35 48 65)" fill="#C5A059" opacity="0.5" />
-              <ellipse cx="65" cy="52" rx="12" ry="6" transform="rotate(-20 65 52)" fill="#D8C29D" opacity="0.7" />
-              <ellipse cx="78" cy="40" rx="10" ry="5" transform="rotate(40 78 40)" fill="#C5A059" opacity="0.6" />
-            </svg>
-          </div>
 
-          {/* ══════════════════════════════════════════════════════════════
-              Upper Palace Arch Container with Background Image
-              Extends ALL THE WAY DOWN to include the countdown section
-              just above 'تفاصيل المناسبة' matching Figma design
-              ══════════════════════════════════════════════════════════════ */}
-          <div className="relative w-full rounded-t-[200px] lg:rounded-t-[240px] rounded-b-[22px] border border-[#D8C29D]/50 shadow-[0_4px_16px_rgba(46,35,28,0.03)] pt-5 md:pt-6 lg:pt-7 pb-3.5 md:pb-4 px-4 flex flex-col items-center text-center overflow-hidden z-10">
-            {/* Desktop Palace Arch Background covering all the way to details section */}
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/images/hero-bg-desktop.jpg"
-                alt="قصر كازابلانكا"
-                fill
-                priority
-                className="object-cover object-top"
-                sizes="640px"
-              />
-              {/* Radial gradient for clean typography contrast while preserving floral columns */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: "radial-gradient(ellipse at 50% 40%, rgba(255,253,249,0.88) 0%, rgba(253,250,244,0.52) 65%, rgba(248,242,230,0.18) 100%)",
-                }}
-              />
-            </div>
-
-            {/* Inner Arch Line Molding wrapping typography and countdown */}
-            <div className="pointer-events-none absolute inset-x-2 top-2 bottom-2 rounded-t-[192px] lg:rounded-t-[232px] rounded-b-[18px] border border-[#C5A059]/30 z-1" />
-
+          {/* Top Group: Rosette + Titles + Names + Du'aa + Event Info */}
+          <div className="relative z-10 w-full flex flex-col items-center pt-2 md:pt-3">
             {/* Top Golden Rosette Ornament */}
-            <div className="relative z-10 mb-1 text-[#C5A059] flex items-center justify-center gap-2">
+            <div className="mb-1 text-[#C5A059] flex items-center justify-center gap-2">
               <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/70" />
               <svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(20, 20)">
@@ -315,12 +288,12 @@ export default function HeroSection() {
             </div>
 
             {/* Eyebrow */}
-            <p className="relative z-10 text-xs md:text-sm font-cairo font-semibold text-[#4A3525] tracking-wide mb-0.5">
+            <p className="text-xs md:text-sm font-cairo font-semibold text-[#4A3525] tracking-wide mb-0.5">
               يسرنا دعوتكم لحضور حفل زفاف
             </p>
 
             {/* Couple Names */}
-            <h1 className="relative z-10 text-3xl md:text-4xl lg:text-5xl font-ruqaa font-bold text-[#24150C] leading-[1.25] my-0.5 flex items-center justify-center gap-2">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-ruqaa font-bold text-[#24150C] leading-[1.25] my-0.5 flex items-center justify-center gap-2">
               <span>{wedding.groomAr}</span>
               <span className="text-[#C5A059] font-cormorant font-normal text-2xl md:text-3xl lg:text-4xl leading-none pt-1">
                 &amp;
@@ -329,12 +302,12 @@ export default function HeroSection() {
             </h1>
 
             {/* Du'aa */}
-            <p className="relative z-10 text-xs md:text-sm font-amiri font-bold text-[#3A281C] leading-snug max-w-sm mx-auto mb-1.5">
+            <p className="text-xs md:text-sm font-amiri font-bold text-[#3A281C] leading-snug max-w-sm mx-auto mb-1.5">
               اللهم بارك لهما وبارك عليهما واجمع بينهما في خير
             </p>
 
             {/* Event Summary Lines Directly On Arch Floor */}
-            <div className="relative z-10 w-full flex flex-col items-center gap-1 text-xs md:text-[13px] font-cairo text-[#2A1F18] my-1">
+            <div className="w-full flex flex-col items-center gap-1 text-xs md:text-[13px] font-cairo text-[#2A1F18] my-1">
               {/* Date */}
               <div className="flex items-center justify-center gap-2">
                 <span className="font-bold text-[#24150C]">الأربعاء 14 أكتوبر 2026</span>
@@ -354,67 +327,65 @@ export default function HeroSection() {
                 <MapPin className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#8C5828] shrink-0 mt-0.5" />
               </div>
             </div>
-
-            {/* Middle Countdown Section - NOW INSIDE THE ARCH BACKGROUND */}
-            <div className="relative z-10 w-full mt-2.5 md:mt-3 text-center">
-              {/* Countdown Title with Diamond Accent */}
-              <div className="flex items-center justify-center gap-2 mb-1.5 md:mb-2 select-none">
-                <span className="h-[1px] w-8 md:w-12 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
-                <span className="text-[#C5A059] text-xs">⋄</span>
-                <p className="text-xs md:text-sm font-cairo font-bold text-[#4A3525] tracking-wider px-1">
-                  باقي علي ليلة العمر
-                </p>
-                <span className="text-[#C5A059] text-xs">⋄</span>
-                <span className="h-[1px] w-8 md:w-12 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
-              </div>
-
-              {/* 4 Cards (LTR order matching design: Days, Hours, Minutes, Seconds) */}
-              {mounted && (
-                <div className="grid grid-cols-4 gap-2 md:gap-3 max-w-[420px] md:max-w-[460px] mx-auto" dir="ltr">
-                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
-                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                      {timeLeft.days}
-                    </span>
-                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                      يوم
-                    </span>
-                  </div>
-
-                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
-                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                      {timeLeft.hours}
-                    </span>
-                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                      ساعة
-                    </span>
-                  </div>
-
-                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
-                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                      {timeLeft.minutes}
-                    </span>
-                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                      دقيقة
-                    </span>
-                  </div>
-
-                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
-                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                      {timeLeft.seconds}
-                    </span>
-                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                      ثانية
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
 
-          {/* ══════════════════════════════════════════════════════════════
-              Bottom Event Details 3 Cards (Reference 02 Desktop Cards)
-              ══════════════════════════════════════════════════════════════ */}
-          <div id="event-details" className="w-full pt-1 flex flex-col items-center text-center z-10">
+          {/* Middle Group: Countdown Section */}
+          <div className="relative z-10 w-full my-2 text-center">
+            {/* Title with Diamond Accent */}
+            <div className="flex items-center justify-center gap-2 mb-1.5 md:mb-2 select-none">
+              <span className="h-[1px] w-8 md:w-12 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+              <span className="text-[#C5A059] text-xs">⋄</span>
+              <p className="text-xs md:text-sm font-cairo font-bold text-[#4A3525] tracking-wider px-1">
+                باقي علي ليلة العمر
+              </p>
+              <span className="text-[#C5A059] text-xs">⋄</span>
+              <span className="h-[1px] w-8 md:w-12 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+            </div>
+
+            {/* 4 Cards (LTR: Days, Hours, Minutes, Seconds) */}
+            {mounted && (
+              <div className="grid grid-cols-4 gap-2 md:gap-3 max-w-[420px] md:max-w-[460px] mx-auto" dir="ltr">
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                    {timeLeft.days}
+                  </span>
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                    يوم
+                  </span>
+                </div>
+
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                    {timeLeft.hours}
+                  </span>
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                    ساعة
+                  </span>
+                </div>
+
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                    {timeLeft.minutes}
+                  </span>
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                    دقيقة
+                  </span>
+                </div>
+
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                    {timeLeft.seconds}
+                  </span>
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                    ثانية
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Group: Event Details 3 Cards */}
+          <div id="event-details" className="relative z-10 w-full pt-1 pb-1 flex flex-col items-center text-center">
             {/* Middle Golden Rosette Accent */}
             <div className="mb-1 text-[#C5A059] flex items-center justify-center gap-2">
               <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
@@ -435,10 +406,10 @@ export default function HeroSection() {
               تفاصيل المناسبة
             </h2>
 
-            {/* 3 Large Cards (RTL: Date, Time, Location) with Cognac Badges matching Figma reference */}
+            {/* 3 Large Cards (RTL: Date, Time, Location) with Cognac Badges */}
             <div className="w-full grid grid-cols-3 gap-2.5 max-w-[480px] md:max-w-[520px] mx-auto">
               {/* 01. Date Card */}
-              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center text-center">
+              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] backdrop-blur-xs flex flex-col items-center text-center">
                 <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#8C5828] text-white flex items-center justify-center mb-1.5 shadow-xs">
                   <Calendar className="w-4 h-4 text-[#FFFDF9]" />
                 </div>
@@ -448,7 +419,7 @@ export default function HeroSection() {
               </div>
 
               {/* 02. Time Card */}
-              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center text-center">
+              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] backdrop-blur-xs flex flex-col items-center text-center">
                 <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#8C5828] text-white flex items-center justify-center mb-1.5 shadow-xs">
                   <Clock className="w-4 h-4 text-[#FFFDF9]" />
                 </div>
@@ -458,7 +429,7 @@ export default function HeroSection() {
               </div>
 
               {/* 03. Venue Card */}
-              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center text-center">
+              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] backdrop-blur-xs flex flex-col items-center text-center">
                 <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#8C5828] text-white flex items-center justify-center mb-1.5 shadow-xs">
                   <MapPin className="w-4 h-4 text-[#FFFDF9]" />
                 </div>
