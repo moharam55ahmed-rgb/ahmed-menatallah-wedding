@@ -1,23 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isProduction } from "@/lib/redis";
 
-const DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD ?? "ahmed2026";
+function getExpectedPassword(): string | null {
+  const envPassword = process.env.DASHBOARD_PASSWORD;
+  if (envPassword && envPassword.trim() && envPassword !== "change_me_before_deploying") {
+    return envPassword.trim();
+  }
+  // In local development only, allow local testing fallback if unset
+  if (!isProduction) {
+    return "ahmed2026";
+  }
+  return null;
+}
 
 /**
  * POST /api/admin/verify
  * Body: { password: string }
- * Returns: { ok: true } on success, 401 on failure.
+ * Returns: { ok: true } on success, 401 on failure, 503 if unconfigured in production.
  *
  * The admin secret key (x-admin-key) is NEVER sent to the client.
- * Instead, the client sends the dashboard password, and this route
- * issues a short-lived signed token (stored in an HttpOnly cookie).
- * For simplicity we use a session token stored server-side in Redis.
+ * The client provides the dashboard password, and upon validation, this route
+ * issues a secure HttpOnly session cookie (`admin_session`).
  */
 export async function POST(req: NextRequest) {
   try {
+    const expectedPassword = getExpectedPassword();
+    if (!expectedPassword) {
+      return NextResponse.json(
+        { error: "DASHBOARD_PASSWORD is not configured in production environment variables." },
+        { status: 503 }
+      );
+    }
+
     const body = await req.json();
     const { password } = body as { password?: string };
 
-    if (!password || password !== DASHBOARD_PASSWORD) {
+    if (!password || password !== expectedPassword) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 

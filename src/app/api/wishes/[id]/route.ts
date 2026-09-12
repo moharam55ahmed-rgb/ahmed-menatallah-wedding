@@ -33,8 +33,12 @@ export async function PATCH(
     return NextResponse.json({ wish });
   } catch (err) {
     console.error("[PATCH /api/wishes/:id]", err);
-    const status = (err as Error).message?.includes("not configured") ? 503 : 500;
-    return NextResponse.json({ error: "Failed to update wish" }, { status });
+    const msg = (err as Error).message ?? "";
+    const isConfigError = msg.includes("Upstash Redis is required");
+    return NextResponse.json(
+      { error: isConfigError ? msg : "Failed to update wish" },
+      { status: isConfigError ? 503 : 500 }
+    );
   }
 }
 
@@ -68,7 +72,11 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("[DELETE /api/wishes/:id]", err);
-    const status = (err as Error).message?.includes("not configured") ? 503 : 500;
-    return NextResponse.json({ error: "Failed to delete wish" }, { status });
+    const msg = (err as Error).message ?? "";
+    const isConfigError = msg.includes("Upstash Redis is required");
+    return NextResponse.json(
+      { error: isConfigError ? msg : "Failed to delete wish" },
+      { status: isConfigError ? 503 : 500 }
+    );
   }
 }

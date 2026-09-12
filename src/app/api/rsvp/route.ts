@@ -24,11 +24,18 @@ export async function GET(req: NextRequest) {
   try {
     const db = requireRedis();
     const raw = await db.get<RSVPEntry[]>(RSVP_KEY);
-    return NextResponse.json({ entries: Array.isArray(raw) ? raw : [] });
+    return NextResponse.json(
+      { entries: Array.isArray(raw) ? raw : [] },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   } catch (err) {
     console.error("[GET /api/rsvp]", err);
-    const status = (err as Error).message?.includes("not configured") ? 503 : 500;
-    return NextResponse.json({ error: "Failed to load RSVP data" }, { status });
+    const msg = (err as Error).message ?? "";
+    const isConfigError = msg.includes("Upstash Redis is required");
+    return NextResponse.json(
+      { error: isConfigError ? msg : "Failed to load RSVP data" },
+      { status: isConfigError ? 503 : 500 }
+    );
   }
 }
 
@@ -86,10 +93,17 @@ export async function POST(req: NextRequest) {
     }
 
     await db.set(RSVP_KEY, entries);
-    return NextResponse.json({ entry }, { status: 201 });
+    return NextResponse.json(
+      { entry },
+      { status: 201, headers: { "Cache-Control": "no-store" } }
+    );
   } catch (err) {
     console.error("[POST /api/rsvp]", err);
-    const status = (err as Error).message?.includes("not configured") ? 503 : 500;
-    return NextResponse.json({ error: "Failed to save RSVP" }, { status });
+    const msg = (err as Error).message ?? "";
+    const isConfigError = msg.includes("Upstash Redis is required");
+    return NextResponse.json(
+      { error: isConfigError ? msg : "Failed to save RSVP" },
+      { status: isConfigError ? 503 : 500 }
+    );
   }
 }

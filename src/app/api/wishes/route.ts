@@ -17,11 +17,22 @@ export async function GET(req: NextRequest) {
     const raw = await db.get<GuestWish[]>(WISHES_KEY);
     const wishes: GuestWish[] = Array.isArray(raw) ? raw : [];
     const result = admin ? wishes : wishes.filter((w) => !w.isHidden);
-    return NextResponse.json({ wishes: result });
+    return NextResponse.json(
+      { wishes: result },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      }
+    );
   } catch (err) {
     console.error("[GET /api/wishes]", err);
-    const status = (err as Error).message?.includes("not configured") ? 503 : 500;
-    return NextResponse.json({ error: "Failed to load wishes" }, { status });
+    const msg = (err as Error).message ?? "";
+    const isConfigError = msg.includes("Upstash Redis is required");
+    return NextResponse.json(
+      { error: isConfigError ? msg : "Failed to load wishes" },
+      { status: isConfigError ? 503 : 500 }
+    );
   }
 }
 
@@ -80,10 +91,20 @@ export async function POST(req: NextRequest) {
     wishes.push(newWish);
     await db.set(WISHES_KEY, wishes);
 
-    return NextResponse.json({ wish: newWish }, { status: 201 });
+    return NextResponse.json(
+      { wish: newWish },
+      {
+        status: 201,
+        headers: { "Cache-Control": "no-store" },
+      }
+    );
   } catch (err) {
     console.error("[POST /api/wishes]", err);
-    const status = (err as Error).message?.includes("not configured") ? 503 : 500;
-    return NextResponse.json({ error: "Failed to save wish" }, { status });
+    const msg = (err as Error).message ?? "";
+    const isConfigError = msg.includes("Upstash Redis is required");
+    return NextResponse.json(
+      { error: isConfigError ? msg : "Failed to save wish" },
+      { status: isConfigError ? 503 : 500 }
+    );
   }
 }

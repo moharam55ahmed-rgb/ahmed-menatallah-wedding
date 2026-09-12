@@ -1,77 +1,70 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AudioProvider } from "@/components/AudioContext";
 import OpeningExperience from "@/components/OpeningExperience";
 import HeroSection from "@/components/HeroSection";
 import PersonalizedGreeting from "@/components/PersonalizedGreeting";
-import SaveTheDate from "@/components/SaveTheDate";
-import Countdown from "@/components/Countdown";
 import InvitationMessage from "@/components/InvitationMessage";
-import RomanticMoments from "@/components/RomanticMoments";
+import SaveTheDate from "@/components/SaveTheDate";
 import VenueSection from "@/components/VenueSection";
+import Countdown from "@/components/Countdown";
+import RomanticMoments from "@/components/RomanticMoments";
+import WishesWall from "@/components/WishesWall";
 import RSVPSection from "@/components/RSVPSection";
 import ZaghareetButton from "@/components/ZaghareetButton";
-import WishesWall, { loadWishes } from "@/components/WishesWall";
 import FinalScene from "@/components/FinalScene";
 import FloatingControls from "@/components/FloatingControls";
 import CelebrationSparkles from "@/components/CelebrationSparkles";
-import { GuestWish } from "@/config/wedding";
 
 export default function WeddingPage() {
-  const [wishes, setWishes] = useState<GuestWish[]>([]);
-
-  useEffect(() => {
-    setWishes(loadWishes());
-  }, []);
-
   return (
     <AudioProvider>
-      <main className="relative min-h-screen bg-[#F8F2EA] text-[#231F1A] overflow-x-hidden">
+      <main className="relative min-h-screen bg-[#F8F2EA] text-[#231F1A] overflow-x-hidden selection:bg-[#C5A46D]/30">
 
-        {/* Ambient celebratory sparkles */}
+        {/* Ambient celebratory sparkles across viewport */}
         <CelebrationSparkles />
 
-        {/* Opening envelope experience */}
+        {/* 1. Cinematic Opening Envelope & Royal Seal Experience */}
         <OpeningExperience />
 
-        {/* Main invitation experience */}
+        {/* Main invitation storytelling flow */}
         <div>
-          {/* 1. Hero */}
+          {/* 2. Hero: The Royal Announcement & Couple Names */}
           <HeroSection />
 
-          {/* 2. Personalized guest greeting */}
+          {/* 3. Personalized Guest Greeting */}
           <PersonalizedGreeting />
 
-          {/* 3. Save the date + calendar download */}
-          <SaveTheDate />
-
-          {/* 4. Live countdown */}
-          <Countdown />
-
-          {/* 5. Formal Arabic invitation message */}
+          {/* 4. Formal Arabic Royal Invitation Letter */}
           <InvitationMessage />
 
-          {/* 6. Romantic story moments */}
-          <RomanticMoments />
+          {/* 5. Wedding Date & Calendar Integration */}
+          <SaveTheDate />
 
-          {/* 7. Venue + transport links */}
+          {/* 6. Venue & Transportation Guide */}
           <VenueSection />
 
-          {/* 8. RSVP attendance form */}
+          {/* 7. Live Wedding Countdown */}
+          <Countdown />
+
+          {/* 8. Romantic Moments & Evening Program Timeline */}
+          <RomanticMoments />
+
+          {/* 9. Global Wishes & Blessings Wall */}
+          <WishesWall />
+
+          {/* 10. RSVP Attendance Confirmation */}
           <RSVPSection />
 
-          {/* 9. Zaghareet celebration button */}
+          {/* 11. Cultural Zaghareet Sound Effect Celebration */}
           <ZaghareetButton />
 
-          {/* 10. Wishes wall */}
-          <WishesWall wishes={wishes} setWishes={setWishes} />
-
-          {/* 11. Final emotional closing scene */}
+          {/* 12. Emotional Closing Royal Blessing */}
           <FinalScene />
         </div>
 
-        {/* Floating music & scroll-to-top controls */}
+        {/* Floating Audio & Navigation Controls */}
         <FloatingControls />
 
       </main>
