@@ -38,102 +38,65 @@ const CONTACTS: ContactItem[] = [
 
 export default function ContactSection() {
   return (
-    <section className="py-20 px-4 relative overflow-hidden bg-[#FAF6F0]" dir="rtl">
-      {/* Delicate background ambiance */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle,#C5A46D_1px,transparent_1px)] [background-size:24px_24px]" />
-
-      <div className="max-w-5xl mx-auto relative z-10">
-        {/* Section Header */}
+    <section id="contact-section" className="py-12 sm:py-16 px-4 relative overflow-hidden bg-[#F7F1E6]" dir="rtl">
+      <div className="max-w-md mx-auto">
+        
+        {/* ═══════════════════════════════════════════════════════════════════
+            REFERENCE 06: CONTACT / HELP CARD (للاستفسار والمساعدة)
+            ═══════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#C5A46D]/15 border border-[#C5A46D]/30 mb-3">
-            <HeartHandshake className="w-3.5 h-3.5 text-[#A07F47]" />
-            <span className="text-xs uppercase tracking-[0.25em] text-[#70735F] font-cormorant">
-              Guest Assistance
-            </span>
+          {/* Top Icon in Circle */}
+          <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
+            📞
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-amiri font-bold text-[#241D18]">
-            محتاج مساعدة؟
-          </h2>
+          <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
+            للاستفسار والمساعدة
+          </h3>
 
-          <p className="text-xs sm:text-sm font-cairo text-[#70735F] mt-2 max-w-md mx-auto">
-            إذا احتجت أي مساعدة للوصول أو الاستفسار عن المناسبة، يمكنكم التواصل معنا.
+          <p className="text-xs sm:text-sm font-cairo text-[#70735F] mt-0.5 mb-6">
+            في حال احتجت للمساعدة أو الاستفسار عن الوصول
           </p>
 
-          <div className="flex items-center justify-center gap-3 mt-4 text-[#C5A46D]/60">
-            <span className="w-10 h-[1px] bg-[#C5A46D]/40" />
-            <Sparkles className="w-3.5 h-3.5 text-[#C5A46D]" />
-            <span className="w-10 h-[1px] bg-[#C5A46D]/40" />
-          </div>
-        </motion.div>
-
-        {/* Contacts Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {CONTACTS.map((contact, idx) => (
-            <motion.div
-              key={contact.phone}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.15 }}
-              className="group relative rounded-2xl bg-[#FBF8F1] border border-[#C5A46D]/30 p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
-            >
-              {/* Top Accent line */}
-              <div className="absolute top-0 inset-x-6 h-[2px] bg-gradient-to-r from-transparent via-[#C5A46D]/50 to-transparent" />
-
-              <div>
-                {/* Badge */}
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[11px] font-cairo font-semibold text-[#A07F47] px-2.5 py-0.5 rounded-full bg-[#C5A46D]/10 border border-[#C5A46D]/20">
-                    {contact.badge}
-                  </span>
-                  <span className="text-xs text-[#70735F] font-cairo">
+          {/* 3 Contact Rows */}
+          <div className="w-full space-y-3">
+            {CONTACTS.map((contact) => (
+              <div
+                key={contact.phone}
+                className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF5EE] border border-[#C9A96A]/25 flex items-center justify-between gap-3 text-right hover:border-[#C9A96A]/50 transition-all"
+              >
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-sm sm:text-base font-amiri font-bold text-[#241D18] truncate">
+                    {contact.name}
+                  </h4>
+                  <p className="text-[11px] font-cairo text-[#70735F]">
                     {contact.relation}
-                  </span>
+                  </p>
                 </div>
 
-                {/* Contact Name */}
-                <h3 className="text-xl font-amiri font-bold text-[#241D18] mb-1">
-                  {contact.name}
-                </h3>
-
-                {/* Relationship line */}
-                <p className="text-xs text-[#70735F] font-cairo mb-4">
-                  {contact.relation}
-                </p>
-
-                {/* Decorative Separator */}
-                <div className="w-full h-[1px] bg-[#C5A46D]/20 mb-4" />
-
-                {/* Phone Number Display - kept in LTR for clean readability */}
-                <div className="text-center py-2 px-3 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/20 mb-4">
-                  <span
-                    className="text-base font-cormorant font-bold text-[#241D18] tracking-widest"
-                    dir="ltr"
-                    style={{ unicodeBidi: "isolate" }}
-                  >
+                {/* Call CTA with Phone Link */}
+                <a
+                  href={contact.tel}
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-white hover:bg-[#241D18] text-[#241D18] hover:text-[#FBF8F1] border border-[#C9A96A]/35 text-xs font-cairo font-semibold shadow-2xs transition-all cursor-pointer touch-target group shrink-0"
+                  dir="ltr"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 text-[#C9A96A] group-hover:text-[#FBF8F1]" />
+                  <span className="font-cormorant font-bold text-xs tracking-wider">
                     {contact.phone}
                   </span>
-                </div>
+                </a>
               </div>
+            ))}
+          </div>
 
-              {/* Call Action Button */}
-              <a
-                href={contact.tel}
-                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] text-xs sm:text-sm font-semibold font-cairo shadow-sm hover:shadow transition-all duration-200 cursor-pointer touch-target group-hover:border-[#C5A46D]/50 border border-transparent"
-              >
-                <PhoneCall className="w-3.5 h-3.5 text-[#C9A96A] transition-transform group-hover:scale-110" />
-                <span>اتصل الآن</span>
-              </a>
-            </motion.div>
-          ))}
-        </div>
+        </motion.div>
+
       </div>
     </section>
   );

@@ -51,94 +51,91 @@ export default function ShareSection() {
   };
 
   return (
-    <section id="share-section" className="py-20 px-4 relative overflow-hidden text-center bg-[#FBF8F1]" dir="rtl">
-      {/* Background Ambience */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle,#C5A46D_1px,transparent_1px)] [background-size:24px_24px]" />
-
-      <div className="max-w-xl mx-auto relative z-10">
-        {/* Section Header */}
+    <section id="share-section" className="py-12 sm:py-16 px-4 relative overflow-hidden bg-[#FBF8F1]" dir="rtl">
+      <div className="max-w-md mx-auto">
+        
+        {/* ═══════════════════════════════════════════════════════════════════
+            REFERENCE 07: SHARE INVITATION CARD (شارك فرحتنا)
+            ═══════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-8"
+          className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#C5A46D]/15 border border-[#C5A46D]/30 mb-3">
-            <Share2 className="w-3.5 h-3.5 text-[#A07F47]" />
-            <span className="text-xs uppercase tracking-[0.25em] text-[#70735F] font-cormorant font-semibold">
-              Share the Joy
-            </span>
+          {/* Top Icon in Circle */}
+          <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
+            🔗
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-amiri font-bold text-[#241D18]">
+          <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
             شارك فرحتنا
-          </h2>
+          </h3>
 
-          <p className="text-xs sm:text-sm font-cairo text-[#70735F] mt-2">
+          <p className="text-xs sm:text-sm font-cairo text-[#70735F] mt-0.5 mb-6">
             شارك الدعوة مع من تحب
           </p>
 
-          <div className="flex items-center justify-center gap-3 mt-3 text-[#C5A46D]/60">
-            <span className="w-10 h-[1px] bg-[#C5A46D]/40" />
-            <Sparkles className="w-3.5 h-3.5 text-[#C5A46D]" />
-            <span className="w-10 h-[1px] bg-[#C5A46D]/40" />
-          </div>
-        </motion.div>
-
-        {/* Share Card */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="p-6 sm:p-8 rounded-3xl bg-white/90 border border-[#C5A46D]/30 shadow-xs space-y-4"
-        >
-          <p className="text-sm font-cairo text-[#3A2D24] leading-relaxed">
-            فرحتنا تكبر بوجودكم ومشاركتكم الدعوة مع الأهل والأصدقاء والأحباب
-          </p>
-
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            {/* Primary Share CTA */}
+          {/* Action Buttons Stack matching Reference 07 */}
+          <div className="w-full space-y-2.5 mb-6">
+            {/* Button 1: Dark Brown Primary Share */}
             <button
               type="button"
               onClick={handleShare}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer touch-target border border-[#C9A96A]/40"
+              className="w-full py-3.5 px-6 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target border border-[#C9A96A]/40 flex items-center justify-center gap-2"
             >
               <Share2 className="w-4 h-4 text-[#C9A96A]" />
               <span>مشاركة الدعوة</span>
             </button>
 
-            {/* WhatsApp Share Button */}
+            {/* Button 2: WhatsApp Share */}
             <button
               type="button"
               onClick={handleWhatsAppShare}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-white hover:bg-[#FAF5EE] text-[#241D18] border border-[#C9A96A]/35 text-xs sm:text-sm font-cairo font-semibold shadow-2xs hover:shadow-xs transition-all cursor-pointer touch-target"
+              className="w-full py-3 px-6 rounded-full bg-[#FAF5EE] hover:bg-[#F7F1E6] text-[#241D18] font-cairo font-semibold text-xs sm:text-sm shadow-2xs hover:shadow-xs transition-all cursor-pointer touch-target border border-[#C9A96A]/30 flex items-center justify-center gap-2"
             >
               <MessageCircle className="w-4 h-4 text-[#25D366]" />
-              <span>واتساب</span>
+              <span>مشاركة عبر واتساب</span>
             </button>
 
-            {/* Copy Link Button */}
+            {/* Button 3: Copy Link */}
             <button
               type="button"
               onClick={handleCopyLink}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-white hover:bg-[#FAF5EE] text-[#241D18] border border-[#C9A96A]/35 text-xs sm:text-sm font-cairo font-semibold shadow-2xs hover:shadow-xs transition-all cursor-pointer touch-target"
+              className="w-full py-3 px-6 rounded-full bg-[#FAF5EE] hover:bg-[#F7F1E6] text-[#241D18] font-cairo font-semibold text-xs sm:text-sm shadow-2xs hover:shadow-xs transition-all cursor-pointer touch-target border border-[#C9A96A]/30 flex items-center justify-center gap-2"
             >
               {copied ? (
                 <>
                   <Check className="w-4 h-4 text-green-600" />
-                  <span className="text-green-700">تم نسخ الرابط!</span>
+                  <span className="text-green-700">تم نسخ الرابط بنجاح!</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-4 h-4 text-[#A07F47]" />
-                  <span>نسخ الرابط</span>
+                  <span>نسخ رابط الدعوة</span>
                 </>
               )}
             </button>
           </div>
+
+          {/* Bottom Preview Box from Reference 07 */}
+          <div className="w-full p-4 rounded-2xl bg-[#FAF5EE]/80 border border-[#C9A96A]/25 text-center space-y-1">
+            <p className="text-xs sm:text-sm font-amiri font-bold text-[#241D18] leading-relaxed">
+              يسعدنا دعوتكم لمشاركة فرحتنا
+              <br />
+              بزفاف أحمد &amp; منة الله ❤️
+            </p>
+            <p className="text-[11px] font-cairo text-[#A07F47] font-semibold">
+              14 أكتوبر 2026
+            </p>
+            <p className="text-[10px] font-cormorant text-[#8C8276] tracking-wider pt-1 border-t border-[#C9A96A]/20">
+              ahmedandmenatallah.com
+            </p>
+          </div>
+
         </motion.div>
+
       </div>
     </section>
   );

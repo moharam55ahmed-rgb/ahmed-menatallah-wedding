@@ -76,77 +76,115 @@ export default function RSVPSection() {
   };
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden bg-gradient-to-b from-[#FAF6F0] via-[#F8F2EA] to-[#F3EDE3]">
-      <div className="max-w-xl mx-auto">
+    <section id="rsvp-section" className="py-12 sm:py-16 px-4 relative overflow-hidden bg-[#FBF8F1]" dir="rtl">
+      <div className="max-w-md mx-auto">
         
-        {/* Section Header */}
+        {/* ═══════════════════════════════════════════════════════════════════
+            REFERENCE 05: RSVP CARD (يشرفنا حضوركم)
+            ═══════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A46D]/15 border border-[#C5A46D]/30 mb-3">
-            <Heart className="w-3.5 h-3.5 text-[#A07F47] fill-[#A07F47]/20" />
-            <span className="text-xs uppercase tracking-[0.3em] text-[#70735F] font-cormorant">
-              RSVP
-            </span>
+          {/* Top Icon in Circle */}
+          <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
+            🤎
           </div>
-          <h2 className="text-4xl sm:text-5xl font-amiri font-bold text-[#231F1A]">
+
+          <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
             يشرفنا حضوركم
-          </h2>
-          <p className="text-sm sm:text-base font-cairo text-[#70735F] mt-2">
+          </h3>
+
+          <p className="text-xs sm:text-sm font-cairo text-[#A07F47] font-semibold mt-0.5 mb-6">
             يسعدنا أن تشاركونا فرحتنا
           </p>
-        </motion.div>
 
-        {/* RSVP Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9 }}
-          className="relative p-8 sm:p-10 rounded-3xl glass-card shadow-xl border border-[#C5A46D]/40"
-        >
           {submitted ? (
             /* Success State */
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="text-center py-6 space-y-4"
+              className="text-center py-4 space-y-3 w-full"
             >
-              <div className="w-16 h-16 rounded-full bg-[#C5A46D]/20 text-[#A07F47] flex items-center justify-center mx-auto border border-[#C5A46D]/40">
-                <CheckCircle2 className="w-8 h-8 text-[#A07F47]" />
+              <div className="w-14 h-14 rounded-full bg-[#FAF5EE] text-[#A07F47] flex items-center justify-center mx-auto border border-[#C9A96A]/40">
+                <CheckCircle2 className="w-7 h-7 text-[#A07F47]" />
               </div>
 
-              <h3 className="text-3xl font-amiri font-bold text-[#231F1A]">
+              <h4 className="text-2xl font-amiri font-bold text-[#241D18]">
                 {attendance === "attending" ? "تم تأكيد حضوركم ❤️" : "شكرًا لتواصلكم اللطيف"}
-              </h3>
+              </h4>
 
-              <p className="text-sm sm:text-base font-cairo text-[#231F1A]/80 leading-relaxed max-w-sm mx-auto">
+              <p className="text-xs sm:text-sm font-cairo text-[#5C5146] leading-relaxed max-w-xs mx-auto">
                 {attendance === "attending"
-                  ? `أهلًا بك يا ${name}، نتطلع لمشاركتكم أجمل اللحظات يوم 14 أكتوبر 2026 بقاعة قصر كازبلانكا.`
+                  ? `أهلًا بك يا ${name}، نتطلع لمشاركتكم أجمل اللحظات يوم 14 أكتوبر 2026 بقاعة قصر كازابلانكا.`
                   : `شكرًا لك يا ${name}، يؤسفنا عدم تمكنك من الحضور، ومشاركتكم بمشاعركم الطيبة تصلنا دائمًا.`}
               </p>
 
-              <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
+              <div className="pt-2">
                 <button
                   type="button"
                   onClick={handleResetRSVP}
-                  className="text-xs font-cairo text-[#70735F] hover:text-[#231F1A] underline transition-colors cursor-pointer py-2"
+                  className="text-xs font-cairo text-[#70735F] hover:text-[#241D18] underline transition-colors cursor-pointer"
                 >
                   تعديل بيانات الحضور
                 </button>
               </div>
             </motion.div>
           ) : (
-            /* RSVP Form */
-            <form onSubmit={handleSubmit} className="space-y-6">
+            /* RSVP Form matching Reference 05 */
+            <form onSubmit={handleSubmit} className="w-full space-y-4 text-right">
               
+              {/* Attendance Choice Buttons */}
+              <div className="space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setAttendance("attending")}
+                  className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full border text-xs sm:text-sm font-cairo font-bold transition-all cursor-pointer ${
+                    attendance === "attending"
+                      ? "bg-[#241D18] text-[#FBF8F1] border-[#241D18] shadow-xs"
+                      : "bg-[#FAF5EE] text-[#241D18] border-[#C9A96A]/30 hover:border-[#C9A96A]"
+                  }`}
+                >
+                  <span>نعم، بإذن الله ❤️</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setAttendance("not_attending")}
+                  className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full border text-xs sm:text-sm font-cairo font-bold transition-all cursor-pointer ${
+                    attendance === "not_attending"
+                      ? "bg-[#241D18] text-[#FBF8F1] border-[#241D18] shadow-xs"
+                      : "bg-[#FAF5EE] text-[#241D18] border-[#C9A96A]/30 hover:border-[#C9A96A]"
+                  }`}
+                >
+                  <span>أعتذر عن الحضور</span>
+                </button>
+              </div>
+
+              {/* Number of Guests (عدد الحضور) */}
+              <div>
+                <label htmlFor="rsvp-guests" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1.5">
+                  عدد الحضور
+                </label>
+                <select
+                  id="rsvp-guests"
+                  value={guestsCount}
+                  onChange={(e) => setGuestsCount(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/30 text-xs sm:text-sm font-cairo text-[#241D18] outline-none transition-all cursor-pointer"
+                >
+                  <option value="1">1 (فرد واحد)</option>
+                  <option value="2">2 (فردين)</option>
+                  <option value="3">3 (ثلاثة أفراد)</option>
+                  <option value="4">4 أفراد أو أكثر</option>
+                </select>
+              </div>
+
               {/* Name Field */}
               <div>
-                <label htmlFor="rsvp-name" className="block text-sm font-semibold font-cairo text-[#231F1A] mb-2">
+                <label htmlFor="rsvp-name" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1.5">
                   الاسم الكريم <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -155,80 +193,23 @@ export default function RSVPSection() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="أدخل اسمك بالكامل..."
-                  className="w-full px-4 py-3 rounded-xl bg-white/80 border border-[#C5A46D]/30 focus:border-[#C5A46D] focus:ring-2 focus:ring-[#C5A46D]/20 text-sm font-cairo outline-none transition-all touch-target"
+                  placeholder="أدخل اسمك الكريم..."
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/30 text-xs sm:text-sm font-cairo text-[#241D18] outline-none focus:border-[#C9A96A] transition-all"
                 />
               </div>
 
-              {/* Attendance Choice */}
-              <div>
-                <label className="block text-sm font-semibold font-cairo text-[#231F1A] mb-2">
-                  تأكيد الحضور <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setAttendance("attending")}
-                    className={`flex items-center justify-center gap-2 p-3.5 rounded-xl border text-xs sm:text-sm font-cairo font-semibold transition-all touch-target cursor-pointer ${
-                      attendance === "attending"
-                        ? "bg-[#231F1A] text-[#F8F2EA] border-[#231F1A] shadow-md"
-                        : "bg-white/60 text-[#231F1A] border-[#C5A46D]/30 hover:border-[#C5A46D]"
-                    }`}
-                  >
-                    <UserCheck className="w-4 h-4 text-[#C5A46D]" />
-                    <span>نعم، بإذن الله ❤️</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setAttendance("not_attending")}
-                    className={`flex items-center justify-center gap-2 p-3.5 rounded-xl border text-xs sm:text-sm font-cairo font-semibold transition-all touch-target cursor-pointer ${
-                      attendance === "not_attending"
-                        ? "bg-[#231F1A] text-[#F8F2EA] border-[#231F1A] shadow-md"
-                        : "bg-white/60 text-[#231F1A] border-[#C5A46D]/30 hover:border-[#C5A46D]"
-                    }`}
-                  >
-                    <span>أعتذر عن الحضور</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Number of Companions (Visible only if attending) */}
-              {attendance === "attending" && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-2"
-                >
-                  <label htmlFor="rsvp-guests" className="block text-sm font-semibold font-cairo text-[#231F1A]">
-                    عدد المرافقين
-                  </label>
-                  <select
-                    id="rsvp-guests"
-                    value={guestsCount}
-                    onChange={(e) => setGuestsCount(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-white/80 border border-[#C5A46D]/30 focus:border-[#C5A46D] focus:ring-2 focus:ring-[#C5A46D]/20 text-sm font-cairo outline-none transition-all touch-target cursor-pointer"
-                  >
-                    <option value="0">بدون مرافقين (فرد واحد)</option>
-                    <option value="1">مرافق واحد (+1)</option>
-                    <option value="2">مرافقان (+2)</option>
-                    <option value="3">3 مرافقين أو أكثر</option>
-                  </select>
-                </motion.div>
-              )}
-
               {/* Optional Message */}
               <div>
-                <label htmlFor="rsvp-message" className="block text-sm font-semibold font-cairo text-[#231F1A] mb-2">
-                  رسالة اختيارية للعروسين
+                <label htmlFor="rsvp-message" className="block text-xs font-semibold font-cairo text-[#241D18] mb-1.5">
+                  كلمة للعروسين (اختياري)
                 </label>
                 <textarea
                   id="rsvp-message"
-                  rows={3}
+                  rows={2}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="اكتب تهنئة أو كلمة طيبة للعروسين..."
-                  className="w-full px-4 py-3 rounded-xl bg-white/80 border border-[#C5A46D]/30 focus:border-[#C5A46D] focus:ring-2 focus:ring-[#C5A46D]/20 text-sm font-cairo outline-none transition-all resize-none"
+                  placeholder="تهنئة لطيفة أو دعوة من القلب..."
+                  className="w-full px-4 py-2 rounded-xl bg-[#FAF5EE] border border-[#C9A96A]/30 text-xs sm:text-sm font-cairo text-[#241D18] outline-none focus:border-[#C9A96A] transition-all resize-none"
                 />
               </div>
 
@@ -236,15 +217,12 @@ export default function RSVPSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-[#B58A48] via-[#DFCBA8] to-[#B58A48] text-[#151311] font-bold text-base font-cairo shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] cursor-pointer touch-target flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-6 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target border border-[#C9A96A]/40 flex items-center justify-center gap-2 mt-4"
               >
                 {isSubmitting ? (
                   <span>جاري التأكيد...</span>
                 ) : (
-                  <>
-                    <Send className="w-4 h-4 text-[#151311]" />
-                    <span>تأكيد الحضور</span>
-                  </>
+                  <span>تأكيد الحضور</span>
                 )}
               </button>
 

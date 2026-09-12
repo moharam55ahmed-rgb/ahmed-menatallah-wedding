@@ -124,43 +124,91 @@ export default function SaveTheDate() {
           </div>
         </motion.div>
 
-        {/* Action Buttons: أضف إلى التقويم */}
+        {/* ═══════════════════════════════════════════════════════════════════
+            REFERENCE 03: ADD TO CALENDAR CARD (أضف إلى التقويم)
+            ═══════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="w-full max-w-md mx-auto p-6 sm:p-8 rounded-3xl bg-white border border-[#C9A96A]/35 shadow-sm text-center flex flex-col items-center"
         >
-          {/* Main Download ICS / Apple / Android */}
+          {/* Top Icon in Circle */}
+          <div className="w-12 h-12 rounded-full bg-[#FAF5EE] border border-[#C9A96A]/40 flex items-center justify-center text-xl mb-3 shadow-2xs">
+            📅
+          </div>
+
+          <h3 className="text-xl sm:text-2xl font-amiri font-bold text-[#241D18]">
+            أضف إلى التقويم
+          </h3>
+
+          <p className="text-xs sm:text-sm font-cairo text-[#A07F47] font-semibold mt-0.5 mb-1">
+            احفظوا الموعد في تقويمكم
+          </p>
+
+          <p className="text-xs font-cairo text-[#70735F] mb-6">
+            أضف المناسبة إلى تقويمك لتصلك تذكير
+          </p>
+
+          {/* Primary CTA Button */}
           <button
             type="button"
             onClick={handleDownloadICS}
-            className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] border border-[#C9A96A]/40 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target"
+            className="w-full py-3.5 px-6 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-cairo font-bold text-sm shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target border border-[#C9A96A]/40 flex items-center justify-center gap-2 mb-6"
           >
             {downloaded ? (
               <>
                 <Check className="w-4 h-4 text-green-400" />
-                <span className="font-cairo text-sm font-semibold">تمت إضافة الموعد بنجاح!</span>
+                <span>تم تحميل ملف التقويم!</span>
               </>
             ) : (
               <>
                 <CalendarPlus className="w-4 h-4 text-[#C9A96A]" />
-                <span className="font-cairo text-sm font-semibold">أضف إلى التقويم</span>
+                <span>أضف إلى التقويم</span>
               </>
             )}
           </button>
 
-          {/* Google Calendar Direct Link */}
-          <a
-            href={googleCalendarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FAF5EE] text-[#3A2D24] border border-[#C9A96A]/35 text-sm font-cairo font-semibold shadow-2xs hover:shadow-xs transition-all cursor-pointer touch-target"
-          >
-            <span>Google Calendar</span>
-            <ExternalLink className="w-3.5 h-3.5 text-[#C9A96A]" />
-          </a>
+          {/* 3 Provider Options from Reference 03 */}
+          <div className="w-full grid grid-cols-3 gap-2 pt-2 border-t border-[#C9A96A]/20">
+            {/* 1. Google Calendar */}
+            <a
+              href={googleCalendarUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded-xl bg-[#FAF5EE] hover:bg-[#F7F1E6] border border-[#C9A96A]/25 transition-all flex flex-col items-center justify-center gap-1 cursor-pointer group"
+            >
+              <span className="text-base">🌐</span>
+              <span className="text-[10px] font-cairo font-semibold text-[#241D18] group-hover:text-[#A07F47]">
+                Google Calendar
+              </span>
+            </a>
+
+            {/* 2. Apple Calendar */}
+            <button
+              type="button"
+              onClick={handleDownloadICS}
+              className="p-2.5 rounded-xl bg-[#FAF5EE] hover:bg-[#F7F1E6] border border-[#C9A96A]/25 transition-all flex flex-col items-center justify-center gap-1 cursor-pointer group"
+            >
+              <span className="text-base">🍏</span>
+              <span className="text-[10px] font-cairo font-semibold text-[#241D18] group-hover:text-[#A07F47]">
+                Apple Calendar
+              </span>
+            </button>
+
+            {/* 3. ICS File */}
+            <button
+              type="button"
+              onClick={handleDownloadICS}
+              className="p-2.5 rounded-xl bg-[#FAF5EE] hover:bg-[#F7F1E6] border border-[#C9A96A]/25 transition-all flex flex-col items-center justify-center gap-1 cursor-pointer group"
+            >
+              <span className="text-base">📑</span>
+              <span className="text-[10px] font-cairo font-semibold text-[#241D18] group-hover:text-[#A07F47]">
+                ملف ICS
+              </span>
+            </button>
+          </div>
         </motion.div>
 
       </div>

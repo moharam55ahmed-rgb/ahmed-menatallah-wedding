@@ -143,25 +143,53 @@ export default function OpeningExperience({ onOpen }: OpeningExperienceProps) {
           </div>
 
           {/* ═══════════════════════════════════════════════════════════════════
+              CORNER BOTANICAL FLOURISHES (Matching Reference 01)
+              ═══════════════════════════════════════════════════════════════════ */}
+          <div className="pointer-events-none absolute top-2 right-2 sm:top-4 sm:right-4 w-20 h-20 sm:w-28 sm:h-28 text-[#C9A96A]/25 select-none">
+            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <path d="M100 0 C70 10, 40 40, 20 80 M80 20 C60 25, 45 45, 30 70 M60 10 C50 30, 35 45, 10 50 M90 40 C75 45, 60 60, 50 85" strokeLinecap="round" />
+              <circle cx="80" cy="20" r="2" fill="currentColor" />
+              <circle cx="60" cy="10" r="1.5" fill="currentColor" />
+            </svg>
+          </div>
+          <div className="pointer-events-none absolute top-2 left-2 sm:top-4 sm:left-4 w-20 h-20 sm:w-28 sm:h-28 text-[#C9A96A]/25 select-none -scale-x-100">
+            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <path d="M100 0 C70 10, 40 40, 20 80 M80 20 C60 25, 45 45, 30 70 M60 10 C50 30, 35 45, 10 50 M90 40 C75 45, 60 60, 50 85" strokeLinecap="round" />
+              <circle cx="80" cy="20" r="2" fill="currentColor" />
+              <circle cx="60" cy="10" r="1.5" fill="currentColor" />
+            </svg>
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════════════
               CENTER ENVELOPE + CTA COMPOSITION
               ═══════════════════════════════════════════════════════════════════ */}
           <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center px-4 -mt-1 sm:-mt-2">
-            {/* Above Envelope Titles as specified in Section 2 & 40 */}
+            {/* Above Envelope Titles as specified in Reference 01 */}
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="text-center mb-3 sm:mb-4 flex flex-col items-center select-none"
             >
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-0.5 rounded-full bg-[#FAF5EE]/90 border border-[#C9A96A]/35 mb-1 shadow-2xs">
-                <span className="text-[11px] sm:text-xs font-cairo font-semibold text-[#A07F47] tracking-wider">
-                  دعوة زفاف
+              <div className="flex items-center justify-center gap-2 mb-1.5">
+                <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C9A96A]/60" />
+                <span className="text-xs sm:text-sm font-amiri font-bold text-[#A07F47] tracking-widest">
+                  دعوة . زفاف
                 </span>
+                <span className="w-6 h-[1px] bg-gradient-to-l from-transparent to-[#C9A96A]/60" />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-amiri font-bold text-[#241D18] leading-tight">
-                أحمد &amp; منة الله
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-amiri font-bold text-[#241D18] leading-none my-1 tracking-tight">
+                {wedding.groomAr} <span className="text-[#C9A96A] font-cormorant font-normal">&amp;</span> {wedding.brideAr}
               </h1>
-              <p className="text-[11px] sm:text-xs font-cairo text-[#70735F] mt-0.5">
+
+              <div className="flex items-center justify-center gap-3 my-1 text-[#C9A96A]">
+                <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent via-[#C9A96A]/60 to-transparent" />
+                <span className="text-[10px]">✦</span>
+                <span className="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent via-[#C9A96A]/60 to-transparent" />
+              </div>
+
+              <p className="text-xs sm:text-sm font-cairo text-[#5C5146] font-medium">
                 14 أكتوبر 2026
               </p>
             </motion.div>
@@ -403,6 +431,11 @@ export default function OpeningExperience({ onOpen }: OpeningExperienceProps) {
                   {phase === "opening" ? "جاري فتح الدعوة..." : "افتح الدعوة ✨"}
                 </span>
               </button>
+
+              {/* Subtitle from Reference 01 */}
+              <p className="mt-3.5 text-xs sm:text-sm font-cairo text-[#5C5146] tracking-wide select-none">
+                بداية حكايتنا الجديدة .. بحضوركم أجمل
+              </p>
             </motion.div>
           </div>
 

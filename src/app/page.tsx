@@ -4,15 +4,11 @@ import React from "react";
 import { AudioProvider } from "@/components/AudioContext";
 import OpeningExperience from "@/components/OpeningExperience";
 import HeroSection from "@/components/HeroSection";
-import PersonalizedGreeting from "@/components/PersonalizedGreeting";
-import InvitationMessage from "@/components/InvitationMessage";
-import Countdown from "@/components/Countdown";
 import SaveTheDate from "@/components/SaveTheDate";
 import VenueSection from "@/components/VenueSection";
 import RSVPSection from "@/components/RSVPSection";
 import ContactSection from "@/components/ContactSection";
 import ShareSection from "@/components/ShareSection";
-import RomanticMoments from "@/components/RomanticMoments";
 import WishesWall from "@/components/WishesWall";
 import ZaghareetButton from "@/components/ZaghareetButton";
 import FinalScene from "@/components/FinalScene";
@@ -27,46 +23,36 @@ export default function WeddingPage() {
         {/* Ambient celebratory sparkles across viewport */}
         <CelebrationSparkles />
 
-        {/* 1. Opening Experience (Envelope, couple names, date, افتح الدعوة ✨) */}
+        {/* 01. Opening Experience (Reference 01) */}
         <OpeningExperience />
 
-        {/* Main invitation storytelling flow */}
-        <div>
-          {/* 2. Main Hero (Couple names, wedding blessing, concise date/time/venue) */}
+        {/* Main invitation storytelling flow (Reference 17 Section Order) */}
+        <div className="space-y-1 sm:space-y-2">
+          {/* 02. Main Hero + Countdown (Reference 02) */}
           <HeroSection />
 
-          {/* 3. Personalized Guest Greeting & Formal Invitation Letter */}
-          <PersonalizedGreeting />
-          <InvitationMessage />
-
-          {/* 4. Live Wedding Countdown (باقي على ليلة العمر) */}
-          <Countdown />
-
-          {/* 5. Event Details & Add to Calendar (تفاصيل المناسبة / احفظوا الموعد) */}
+          {/* 03. Add to Calendar (Reference 03) */}
           <SaveTheDate />
 
-          {/* 6. Location & Ride Options (الوصول إلى القاعة / افتح الخريطة) */}
+          {/* 04. Venue / Location (Reference 04) */}
           <VenueSection />
 
-          {/* 7. RSVP Attendance (يشرفنا حضوركم / نعم، بإذن الله ❤️ / أعتذر عن الحضور) */}
+          {/* 05. RSVP Attendance (Reference 05) */}
           <RSVPSection />
 
-          {/* 8. Family Contact & Assistance (محتاج مساعدة؟ / اتصل الآن) */}
+          {/* 06. Contact / Help (Reference 06) */}
           <ContactSection />
 
-          {/* 9. Share Invitation (شارك فرحتنا / مشاركة الدعوة) */}
+          {/* 07. Share Invitation (Reference 07) */}
           <ShareSection />
 
-          {/* 10. Evening Timeline & Romantic Moments */}
-          <RomanticMoments />
-
-          {/* 11. Wishes Wall & Guestbook (كلمات من القلب / أرسل تهنئتك ❤️) */}
+          {/* 08 + 09. Wishes Form + Wishes Wall (Reference 08 & 09) */}
           <WishesWall />
 
-          {/* 12. Cultural Zaghareet Sound Effect Celebration */}
+          {/* Cultural Zaghareet Sound Effect Celebration */}
           <ZaghareetButton />
 
-          {/* 13. Minimal Elegant Footer */}
+          {/* Final Closing Scene */}
           <FinalScene />
         </div>
 
