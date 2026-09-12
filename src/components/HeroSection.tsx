@@ -47,7 +47,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero-section"
-      className="relative w-full bg-[#FAF7F2] text-[#2A1F18] pt-4 sm:pt-8 pb-12 sm:pb-16 px-3 sm:px-6 overflow-hidden select-none"
+      className="relative w-full bg-[#FAF7F2] text-[#2A1F18] pt-3 sm:pt-6 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden select-none flex flex-col items-center"
       dir="rtl"
     >
       {/* ═══════════════════════════════════════════════════════════════════
@@ -62,253 +62,67 @@ export default function HeroSection() {
       />
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BOTANICAL OLIVE FOLIAGE SIDE ELEMENTS (MATCHING REFERENCE EXACTLY)
+          MASTER INVITATION CARD CONTAINER (EXACT PROPORTIONS AS IN FIGMA)
+          Max width: 440px on mobile, 520px on desktop
           ═══════════════════════════════════════════════════════════════════ */}
-      {/* Top Right Botanical Branch */}
-      <div className="pointer-events-none absolute top-2 right-1 sm:top-4 sm:right-3 w-32 sm:w-52 h-44 sm:h-64 opacity-75 z-0">
-        <svg viewBox="0 0 160 180" fill="none" className="w-full h-full">
-          <path d="M160 0 C120 30 75 80 40 135" stroke="#8C7456" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.6" />
-          <path d="M140 18 C122 22 115 36 122 50 C134 44 144 32 140 18 Z" fill="#BFA888" fillOpacity="0.65" />
-          <path d="M96 45 C78 42 70 54 78 68 C90 64 98 56 96 45 Z" fill="#9F8766" fillOpacity="0.7" />
-          <path d="M68 85 C50 86 45 100 52 114 C65 108 72 96 68 85 Z" fill="#BFA888" fillOpacity="0.6" />
-          <path d="M42 125 C28 128 25 140 32 152 C42 146 48 136 42 125 Z" fill="#9F8766" fillOpacity="0.55" />
-        </svg>
-      </div>
-
-      {/* Top Left Botanical Branch (Mirrored) */}
-      <div className="pointer-events-none absolute top-2 left-1 sm:top-4 sm:left-3 w-32 sm:w-52 h-44 sm:h-64 opacity-75 z-0 -scale-x-100">
-        <svg viewBox="0 0 160 180" fill="none" className="w-full h-full">
-          <path d="M160 0 C120 30 75 80 40 135" stroke="#8C7456" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.6" />
-          <path d="M140 18 C122 22 115 36 122 50 C134 44 144 32 140 18 Z" fill="#BFA888" fillOpacity="0.65" />
-          <path d="M96 45 C78 42 70 54 78 68 C90 64 98 56 96 45 Z" fill="#9F8766" fillOpacity="0.7" />
-          <path d="M68 85 C50 86 45 100 52 114 C65 108 72 96 68 85 Z" fill="#BFA888" fillOpacity="0.6" />
-          <path d="M42 125 C28 128 25 140 32 152 C42 146 48 136 42 125 Z" fill="#9F8766" fillOpacity="0.55" />
-        </svg>
-      </div>
-
-      {/* Bottom Botanical Leaves for mobile */}
-      <div className="pointer-events-none absolute bottom-4 left-2 w-28 h-36 opacity-60 z-0 sm:hidden">
-        <svg viewBox="0 0 120 140" fill="none" className="w-full h-full">
-          <path d="M0 140 C30 110 55 80 80 40" stroke="#8C7456" strokeWidth="1" strokeOpacity="0.6" />
-          <path d="M25 115 C15 105 18 92 30 92 C38 102 36 112 25 115 Z" fill="#BFA888" fillOpacity="0.6" />
-          <path d="M50 90 C40 80 45 68 58 70 C64 80 60 90 50 90 Z" fill="#9F8766" fillOpacity="0.6" />
-        </svg>
-      </div>
-      <div className="pointer-events-none absolute bottom-4 right-2 w-28 h-36 opacity-60 z-0 sm:hidden -scale-x-100">
-        <svg viewBox="0 0 120 140" fill="none" className="w-full h-full">
-          <path d="M0 140 C30 110 55 80 80 40" stroke="#8C7456" strokeWidth="1" strokeOpacity="0.6" />
-          <path d="M25 115 C15 105 18 92 30 92 C38 102 36 112 25 115 Z" fill="#BFA888" fillOpacity="0.6" />
-          <path d="M50 90 C40 80 45 68 58 70 C64 80 60 90 50 90 Z" fill="#9F8766" fillOpacity="0.6" />
-        </svg>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════════════════
-          MAIN ARCHED PALACE PORTAL CARD
-          ═══════════════════════════════════════════════════════════════════ */}
-      <div className="relative max-w-xl sm:max-w-2xl mx-auto z-10">
+      <div className="relative w-full max-w-[420px] sm:max-w-[480px] md:max-w-[510px] mx-auto z-10 flex flex-col items-center">
+        
+        {/* ═════════════════════════════════════════════════════════════════
+            1. THE PALACE ARCH CARD (WITH VIVID REAL ARCH & FLOWERS)
+            ═════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative rounded-t-[140px] sm:rounded-t-[190px] md:rounded-t-[230px] rounded-b-[28px] border-[1.5px] border-[#C5A059]/45 shadow-[0_16px_45px_rgba(46,35,28,0.1)] pt-10 sm:pt-14 pb-8 sm:pb-10 px-4 sm:px-10 flex flex-col items-center text-center overflow-hidden"
+          transition={{ duration: 0.6 }}
+          className="relative w-full rounded-t-[140px] sm:rounded-t-[190px] md:rounded-t-[220px] rounded-b-[24px] border-[1.5px] border-[#D8C29D]/60 shadow-[0_14px_38px_rgba(46,35,28,0.08)] pt-10 sm:pt-14 pb-7 sm:pb-9 px-4 sm:px-7 flex flex-col items-center text-center overflow-hidden"
+          style={{
+            background: "#FBF8F2",
+          }}
         >
-          {/* ═════════════════════════════════════════════════════════════
-              AUTHENTIC PALACE ARCH BACKGROUND IMAGES
-              - Desktop Background: /images/hero-bg-desktop.jpg (Hidden on small)
-              - Mobile Background: /images/hero-bg-mobile.jpg (Visible on small)
-              ═════════════════════════════════════════════════════════════ */}
-          {/* Desktop Palace Arch Image */}
+          {/* Authentic High-Res Palace Arch Background Image */}
+          {/* Desktop Version: /images/hero-bg-desktop.jpg */}
           <div className="hidden sm:block absolute inset-0 z-0">
             <Image
               src="/images/hero-bg-desktop.jpg"
               alt="قصر كازابلانكا"
               fill
               priority
-              className="object-cover object-center"
-              sizes="(max-width: 1024px) 100vw, 768px"
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 540px"
             />
-            {/* Delicate warm cream radial veil for crystal-clear text contrast */}
+            {/* Gentle translucent center radiance so flowers & marble are vivid while text is crisp */}
             <div
               className="absolute inset-0"
               style={{
-                background: "radial-gradient(ellipse at 50% 35%, rgba(253,251,247,0.88) 0%, rgba(250,245,236,0.85) 60%, rgba(245,236,220,0.92) 100%)",
+                background: "radial-gradient(circle at 50% 45%, rgba(255,253,249,0.78) 0%, rgba(253,250,244,0.45) 55%, rgba(248,242,230,0.2) 100%)",
               }}
             />
           </div>
 
-          {/* Mobile Palace Arch Image */}
+          {/* Mobile Version: /images/hero-bg-mobile.jpg */}
           <div className="block sm:hidden absolute inset-0 z-0">
             <Image
               src="/images/hero-bg-mobile.jpg"
               alt="قصر كازابلانكا"
               fill
               priority
-              className="object-cover object-center"
+              className="object-cover object-top"
               sizes="100vw"
             />
-            {/* Delicate warm cream radial veil for mobile */}
+            {/* Gentle translucent center radiance for mobile */}
             <div
               className="absolute inset-0"
               style={{
-                background: "radial-gradient(ellipse at 50% 35%, rgba(253,251,247,0.88) 0%, rgba(250,245,236,0.85) 60%, rgba(245,236,220,0.92) 100%)",
+                background: "radial-gradient(circle at 50% 45%, rgba(255,253,249,0.78) 0%, rgba(253,250,244,0.45) 55%, rgba(248,242,230,0.2) 100%)",
               }}
             />
           </div>
 
-          {/* Inner Architectural Framing Border Line */}
-          <div className="pointer-events-none absolute inset-x-2.5 sm:inset-x-4 top-2.5 sm:top-4 bottom-2.5 sm:bottom-4 rounded-t-[130px] sm:rounded-t-[178px] md:rounded-t-[218px] rounded-b-[22px] border border-[#C5A059]/30 z-1" />
+          {/* Inner Architectural Golden Arch Outline */}
+          <div className="pointer-events-none absolute inset-x-2.5 sm:inset-x-3.5 top-2.5 sm:top-3.5 bottom-2.5 sm:bottom-3.5 rounded-t-[130px] sm:rounded-t-[180px] md:rounded-t-[210px] rounded-b-[18px] border border-[#C5A059]/30 z-1" />
 
-          {/* 1. TOP GOLDEN ISLAMIC ROSETTE / MEDALLION EMBLEM */}
-          <div className="relative z-10 mb-2 sm:mb-3 text-[#C5A059]">
-            <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g transform="translate(20, 20)">
-                <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
-                <circle cx="0" cy="0" r="2.5" fill="#FAF6F0" />
-                <path d="M0 -9 C-2.5 -5, -2.5 -2, 0 0 C2.5 -2, 2.5 -5, 0 -9 Z" fill="#C5A059" opacity="0.9" />
-                <path d="M0 9 C-2.5 5, -2.5 2, 0 0 C2.5 2, 2.5 5, 0 9 Z" fill="#C5A059" opacity="0.9" />
-                <path d="M-9 0 C-5 -2.5, -2 -2.5, 0 0 C-2 2.5, -5 2.5, -9 0 Z" fill="#C5A059" opacity="0.9" />
-                <path d="M9 0 C5 -2.5, 2 -2.5, 0 0 C2 2.5, 5 2.5, 9 0 Z" fill="#C5A059" opacity="0.9" />
-                <path d="M-6 -6 C-4 -2, -2 -4, 0 0 C-4 -2, -2 -4, -6 -6 Z" fill="#C5A059" opacity="0.75" />
-                <path d="M6 -6 C4 -2, 2 -4, 0 0 C4 -2, 2 -4, 6 -6 Z" fill="#C5A059" opacity="0.75" />
-                <path d="M-6 6 C-4 2, -2 4, 0 0 C-4 2, -2 4, -6 6 Z" fill="#C5A059" opacity="0.75" />
-                <path d="M6 6 C4 2, 2 4, 0 0 C4 2, 2 4, 6 6 Z" fill="#C5A059" opacity="0.75" />
-                <circle cx="0" cy="-14" r="1.5" fill="#C5A059" />
-                <circle cx="0" cy="14" r="1.5" fill="#C5A059" />
-                <circle cx="-14" cy="0" r="1.5" fill="#C5A059" />
-                <circle cx="14" cy="0" r="1.5" fill="#C5A059" />
-              </g>
-            </svg>
-          </div>
-
-          {/* 2. EYEBROW TEXT */}
-          <p className="relative z-10 text-xs sm:text-sm font-cairo font-semibold text-[#5A4638] tracking-wide mb-1">
-            يسرنا دعوتكم لحضور حفل زفاف
-          </p>
-
-          {/* 3. ROYAL COUPLE NAMES (Arabic Calligraphy matching Reference 100%) */}
-          <h1 className="relative z-10 text-4xl sm:text-5xl md:text-[54px] font-ruqaa font-bold text-[#2A1B12] leading-[1.25] my-1 sm:my-2 flex items-center justify-center gap-2 sm:gap-3">
-            <span>{wedding.groomAr}</span>
-            <span className="text-[#C5A059] font-cormorant font-normal text-3xl sm:text-4xl leading-none pt-1">
-              &amp;
-            </span>
-            <span>{wedding.brideAr}</span>
-          </h1>
-
-          {/* 4. DATE (Prominently placed right below names as in Reference) */}
-          <p className="relative z-10 text-sm sm:text-base font-cairo font-bold text-[#5A4638] mb-2 sm:mb-3">
-            14 أكتوبر 2026
-          </p>
-
-          {/* 5. BLESSING DU'AA (Exact phrasing from Reference) */}
-          <div className="relative z-10 max-w-sm mx-auto mb-5 sm:mb-6">
-            <p className="text-xs sm:text-sm font-amiri font-bold text-[#4A3B30] leading-relaxed">
-              اللهم بارك لهما وبارك عليهما
-              <br className="block sm:hidden" />
-              <span className="hidden sm:inline"> </span>
-              واجمع بينهما في خير
-            </p>
-          </div>
-
-          {/* 6. EVENT SUMMARY CARD (Exact replica of Reference Card) */}
-          <div className="relative z-10 w-full max-w-[290px] xs:max-w-xs sm:max-w-sm rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/40 px-4 py-3.5 sm:py-4 mb-2 space-y-2.5 text-xs sm:text-sm font-cairo text-[#2A1F18] shadow-[0_6px_20px_rgba(46,35,28,0.06)] backdrop-blur-xs">
-            {/* Date Row */}
-            <div className="flex items-center justify-center gap-2">
-              <Calendar className="w-4 h-4 text-[#8C6D3B] shrink-0" />
-              <span className="font-bold text-[#2A1F18]">الأربعاء 14 أكتوبر 2026</span>
-            </div>
-
-            {/* Time Row */}
-            <div className="flex items-center justify-center gap-2">
-              <Clock className="w-4 h-4 text-[#8C6D3B] shrink-0" />
-              <span className="font-bold text-[#2A1F18]">7:00 مساءً</span>
-            </div>
-
-            {/* Venue Row */}
-            <div className="flex items-center justify-center gap-2 text-center">
-              <MapPin className="w-4 h-4 text-[#8C6D3B] shrink-0 mt-0.5" />
-              <div>
-                <p className="font-bold text-[#2A1F18]">{wedding.venueAr}</p>
-                <p className="text-[11px] font-medium text-[#7A6A5D]">شبين القناطر، القليوبية، مصر</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* ═══════════════════════════════════════════════════════════════════
-            COUNTDOWN TIMER SECTION (Directly below Arch in Reference)
-            ═══════════════════════════════════════════════════════════════════ */}
-        <div className="w-full mt-7 sm:mt-9 text-center">
-          {/* Section Title with Horizontal Wings */}
-          <div className="flex items-center justify-center gap-3 mb-4 select-none">
-            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
-            <p className="text-xs sm:text-sm font-cairo font-bold text-[#5A4638] tracking-wider">
-              باقي علي ليلة العمر
-            </p>
-            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
-          </div>
-
-          {/* 4 Countdown Ivory Cards */}
-          {mounted && (
-            <div className="grid grid-cols-4 gap-2 sm:gap-3.5 max-w-xs sm:max-w-sm mx-auto">
-              {/* Days */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
-                  {timeLeft.days}
-                </span>
-                <span className="text-[11px] sm:text-xs font-cairo text-[#6E5D4F] mt-1.5 font-bold">
-                  يوم
-                </span>
-              </div>
-
-              {/* Hours */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
-                  {timeLeft.hours}
-                </span>
-                <span className="text-[11px] sm:text-xs font-cairo text-[#6E5D4F] mt-1.5 font-bold">
-                  ساعة
-                </span>
-              </div>
-
-              {/* Minutes */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
-                  {timeLeft.minutes}
-                </span>
-                <span className="text-[11px] sm:text-xs font-cairo text-[#6E5D4F] mt-1.5 font-bold">
-                  دقيقة
-                </span>
-              </div>
-
-              {/* Seconds */}
-              <div className="py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                <span className="text-2xl sm:text-3xl font-bold font-cormorant text-[#2A1F18] leading-none">
-                  {timeLeft.seconds}
-                </span>
-                <span className="text-[11px] sm:text-xs font-cairo text-[#6E5D4F] mt-1.5 font-bold">
-                  ثانية
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Down Chevron Indicator */}
-          <button
-            type="button"
-            onClick={scrollToNext}
-            className="mt-4 inline-flex items-center justify-center text-[#C5A059] hover:text-[#8C6D3B] transition-colors cursor-pointer"
-            aria-label="الانتقال إلى تفاصيل المناسبة"
-          >
-            <ChevronDown className="w-5 h-5 animate-bounce" />
-          </button>
-        </div>
-
-        {/* ═══════════════════════════════════════════════════════════════════
-            EVENT DETAILS SECTION (تفاصيل المناسبة - 3 Cards in Reference)
-            ═══════════════════════════════════════════════════════════════════ */}
-        <div id="event-details" className="mt-8 sm:mt-12 flex flex-col items-center text-center">
-          {/* Islamic Rosette Ornament Divider */}
-          <div className="mb-3 text-[#C5A059]">
+          {/* Top Golden Islamic Rosette Emblem */}
+          <div className="relative z-10 mb-2 sm:mb-2.5 text-[#C5A059]">
             <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g transform="translate(20, 20)">
                 <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
@@ -325,43 +139,188 @@ export default function HeroSection() {
             </svg>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-amiri font-bold text-[#2A1F18] mb-6">
+          {/* Eyebrow Text */}
+          <p className="relative z-10 text-xs sm:text-sm font-cairo font-semibold text-[#5A4638] tracking-wide mb-1">
+            يسرنا دعوتكم لحضور حفل زفاف
+          </p>
+
+          {/* Couple Names (Arabic Calligraphy matching Reference) */}
+          <h1 className="relative z-10 text-4xl sm:text-5xl md:text-[52px] font-ruqaa font-bold text-[#2A170E] leading-[1.25] my-1 sm:my-1.5 flex items-center justify-center gap-2 sm:gap-3">
+            <span>{wedding.groomAr}</span>
+            <span className="text-[#C5A059] font-cormorant font-normal text-3xl sm:text-4xl leading-none pt-1">
+              &amp;
+            </span>
+            <span>{wedding.brideAr}</span>
+          </h1>
+
+          {/* Date below names (as in Reference) */}
+          <p className="relative z-10 text-sm sm:text-base font-cairo font-bold text-[#4A382C] mb-2 sm:mb-2.5">
+            14 أكتوبر 2026
+          </p>
+
+          {/* Blessing Du'aa */}
+          <div className="relative z-10 max-w-xs sm:max-w-sm mx-auto mb-4 sm:mb-5">
+            <p className="text-xs sm:text-[13px] font-amiri font-bold text-[#4A382C] leading-relaxed">
+              اللهم بارك لهما وبارك عليهما
+              <br />
+              واجمع بينهما في خير
+            </p>
+          </div>
+
+          {/* Event Summary Card (Matching Reference Card Style) */}
+          <div className="relative z-10 w-full max-w-[280px] xs:max-w-[300px] sm:max-w-[340px] rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/40 px-4 py-3 sm:py-3.5 space-y-2 text-xs sm:text-sm font-cairo text-[#2A1F18] shadow-[0_4px_16px_rgba(46,35,28,0.05)] backdrop-blur-xs">
+            {/* Date Row */}
+            <div className="flex items-center justify-center gap-2">
+              <Calendar className="w-4 h-4 text-[#8C6D3B] shrink-0" />
+              <span className="font-bold text-[#2A170E]">الأربعاء 14 أكتوبر 2026</span>
+            </div>
+
+            {/* Time Row */}
+            <div className="flex items-center justify-center gap-2">
+              <Clock className="w-4 h-4 text-[#8C6D3B] shrink-0" />
+              <span className="font-bold text-[#2A170E]">7:00 مساءً</span>
+            </div>
+
+            {/* Venue Row */}
+            <div className="flex items-center justify-center gap-1.5 text-center">
+              <MapPin className="w-4 h-4 text-[#8C6D3B] shrink-0 mt-0.5" />
+              <div>
+                <p className="font-bold text-[#2A170E]">{wedding.venueAr}</p>
+                <p className="text-[10.5px] sm:text-[11px] font-medium text-[#7A6A5D]">شبين القناطر، القليوبية، مصر</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═════════════════════════════════════════════════════════════════
+            2. COUNTDOWN TIMER SECTION (Directly below Arch)
+            ═════════════════════════════════════════════════════════════════ */}
+        <div className="w-full mt-6 sm:mt-8 text-center">
+          {/* Section Title with Horizontal Wings */}
+          <div className="flex items-center justify-center gap-3 mb-3.5 select-none">
+            <span className="h-[1px] w-8 sm:w-14 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+            <p className="text-xs sm:text-sm font-cairo font-bold text-[#5A4638] tracking-wider">
+              باقي علي ليلة العمر
+            </p>
+            <span className="h-[1px] w-8 sm:w-14 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+          </div>
+
+          {/* 4 Countdown Ivory Cards (Using bold, crisp Cairo sans numbers) */}
+          {mounted && (
+            <div className="grid grid-cols-4 gap-2 sm:gap-2.5 max-w-[320px] sm:max-w-[360px] mx-auto">
+              {/* Days */}
+              <div className="py-2.5 sm:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                <span className="text-xl sm:text-2xl font-bold font-cairo text-[#2A170E] leading-none">
+                  {timeLeft.days}
+                </span>
+                <span className="text-[10px] sm:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                  يوم
+                </span>
+              </div>
+
+              {/* Hours */}
+              <div className="py-2.5 sm:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                <span className="text-xl sm:text-2xl font-bold font-cairo text-[#2A170E] leading-none">
+                  {timeLeft.hours}
+                </span>
+                <span className="text-[10px] sm:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                  ساعة
+                </span>
+              </div>
+
+              {/* Minutes */}
+              <div className="py-2.5 sm:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                <span className="text-xl sm:text-2xl font-bold font-cairo text-[#2A170E] leading-none">
+                  {timeLeft.minutes}
+                </span>
+                <span className="text-[10px] sm:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                  دقيقة
+                </span>
+              </div>
+
+              {/* Seconds */}
+              <div className="py-2.5 sm:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
+                <span className="text-xl sm:text-2xl font-bold font-cairo text-[#2A170E] leading-none">
+                  {timeLeft.seconds}
+                </span>
+                <span className="text-[10px] sm:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                  ثانية
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Down Chevron Indicator */}
+          <button
+            type="button"
+            onClick={scrollToNext}
+            className="mt-3.5 inline-flex items-center justify-center text-[#C5A059] hover:text-[#8C6D3B] transition-colors cursor-pointer"
+            aria-label="الانتقال إلى تفاصيل المناسبة"
+          >
+            <ChevronDown className="w-5 h-5 animate-bounce" />
+          </button>
+        </div>
+
+        {/* ═════════════════════════════════════════════════════════════════
+            3. EVENT DETAILS SECTION (تفاصيل المناسبة - 3 Cards)
+            ═════════════════════════════════════════════════════════════════ */}
+        <div id="event-details" className="w-full mt-7 sm:mt-10 flex flex-col items-center text-center">
+          {/* Islamic Rosette Ornament Divider */}
+          <div className="mb-2.5 text-[#C5A059]">
+            <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g transform="translate(20, 20)">
+                <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
+                <circle cx="0" cy="0" r="2.5" fill="#FAF6F0" />
+                <path d="M0 -9 C-2.5 -5, -2.5 -2, 0 0 C2.5 -2, 2.5 -5, 0 -9 Z" fill="#C5A059" opacity="0.9" />
+                <path d="M0 9 C-2.5 5, -2.5 2, 0 0 C2.5 2, 2.5 5, 0 9 Z" fill="#C5A059" opacity="0.9" />
+                <path d="M-9 0 C-5 -2.5, -2 -2.5, 0 0 C-2 2.5, -5 2.5, -9 0 Z" fill="#C5A059" opacity="0.9" />
+                <path d="M9 0 C5 -2.5, 2 -2.5, 0 0 C2 2.5, 5 2.5, 9 0 Z" fill="#C5A059" opacity="0.9" />
+                <circle cx="0" cy="-14" r="1.5" fill="#C5A059" />
+                <circle cx="0" cy="14" r="1.5" fill="#C5A059" />
+                <circle cx="-14" cy="0" r="1.5" fill="#C5A059" />
+                <circle cx="14" cy="0" r="1.5" fill="#C5A059" />
+              </g>
+            </svg>
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-amiri font-bold text-[#2A170E] mb-4 sm:mb-5">
             تفاصيل المناسبة
           </h2>
 
-          {/* 3 Detail Cards (Matching Reference Exactly) */}
-          <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+          {/* 3 Detail Cards in Grid */}
+          <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-3.5">
             {/* Card 1: التاريخ */}
-            <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_16px_rgba(46,35,28,0.04)] flex flex-col items-center text-center hover:border-[#C5A059] transition-all">
-              <div className="w-10 h-10 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center text-base mb-3 shadow-2xs">
+            <div className="p-4 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_12px_rgba(46,35,28,0.04)] flex flex-col items-center text-center hover:border-[#C5A059] transition-all">
+              <div className="w-9 h-9 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center mb-2 shadow-2xs">
                 <Calendar className="w-4 h-4 text-[#8C6D3B]" />
               </div>
-              <span className="text-xs font-bold font-cairo text-[#6E5D4F] mb-1">التاريخ</span>
-              <h3 className="text-base font-amiri font-bold text-[#2A1F18]">الأربعاء</h3>
+              <span className="text-[11px] font-bold font-cairo text-[#6E5D4F] mb-0.5">التاريخ</span>
+              <h3 className="text-sm sm:text-base font-amiri font-bold text-[#2A170E]">الأربعاء</h3>
               <p className="text-xs font-cairo text-[#8C6D3B] font-bold mt-0.5">14 أكتوبر 2026</p>
             </div>
 
             {/* Card 2: الوقت */}
-            <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_16px_rgba(46,35,28,0.04)] flex flex-col items-center text-center hover:border-[#C5A059] transition-all">
-              <div className="w-10 h-10 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center text-base mb-3 shadow-2xs">
+            <div className="p-4 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_12px_rgba(46,35,28,0.04)] flex flex-col items-center text-center hover:border-[#C5A059] transition-all">
+              <div className="w-9 h-9 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center mb-2 shadow-2xs">
                 <Clock className="w-4 h-4 text-[#8C6D3B]" />
               </div>
-              <span className="text-xs font-bold font-cairo text-[#6E5D4F] mb-1">الوقت</span>
-              <h3 className="text-base font-amiri font-bold text-[#2A1F18]">7:00</h3>
+              <span className="text-[11px] font-bold font-cairo text-[#6E5D4F] mb-0.5">الوقت</span>
+              <h3 className="text-sm sm:text-base font-amiri font-bold text-[#2A170E]">7:00</h3>
               <p className="text-xs font-cairo text-[#8C6D3B] font-bold mt-0.5">مساءً</p>
             </div>
 
             {/* Card 3: المكان */}
-            <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_4px_16px_rgba(46,35,28,0.04)] flex flex-col items-center text-center hover:border-[#C5A059] transition-all">
-              <div className="w-10 h-10 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center text-base mb-3 shadow-2xs">
+            <div className="p-4 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_12px_rgba(46,35,28,0.04)] flex flex-col items-center text-center hover:border-[#C5A059] transition-all">
+              <div className="w-9 h-9 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center mb-2 shadow-2xs">
                 <MapPin className="w-4 h-4 text-[#8C6D3B]" />
               </div>
-              <span className="text-xs font-bold font-cairo text-[#6E5D4F] mb-1">المكان</span>
-              <h3 className="text-base font-amiri font-bold text-[#2A1F18]">{wedding.venueAr}</h3>
-              <p className="text-[11px] font-cairo text-[#6E5D4F] font-medium mt-0.5">شبين القناطر، القليوبية، مصر</p>
+              <span className="text-[11px] font-bold font-cairo text-[#6E5D4F] mb-0.5">المكان</span>
+              <h3 className="text-sm sm:text-base font-amiri font-bold text-[#2A170E]">{wedding.venueAr}</h3>
+              <p className="text-[10px] sm:text-[11px] font-cairo text-[#6E5D4F] font-medium mt-0.5">شبين القناطر، القليوبية، مصر</p>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
