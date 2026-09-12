@@ -271,10 +271,12 @@ export default function HeroSection() {
           </div>
 
           {/* ══════════════════════════════════════════════════════════════
-              Upper Palace Arch Container (Reference 02 Desktop Top Arch)
+              Upper Palace Arch Container with Background Image
+              Extends ALL THE WAY DOWN to include the countdown section
+              just above 'تفاصيل المناسبة' matching Figma design
               ══════════════════════════════════════════════════════════════ */}
-          <div className="relative w-full rounded-t-[190px] lg:rounded-t-[230px] rounded-b-[20px] border border-[#D8C29D]/50 shadow-[0_4px_16px_rgba(46,35,28,0.03)] pt-5 md:pt-6 lg:pt-8 pb-3 px-4 flex flex-col items-center text-center overflow-hidden z-10">
-            {/* Desktop Palace Arch Background */}
+          <div className="relative w-full rounded-t-[200px] lg:rounded-t-[240px] rounded-b-[22px] border border-[#D8C29D]/50 shadow-[0_4px_16px_rgba(46,35,28,0.03)] pt-5 md:pt-6 lg:pt-7 pb-3.5 md:pb-4 px-4 flex flex-col items-center text-center overflow-hidden z-10">
+            {/* Desktop Palace Arch Background covering all the way to details section */}
             <div className="absolute inset-0 z-0">
               <Image
                 src="/images/hero-bg-desktop.jpg"
@@ -284,17 +286,17 @@ export default function HeroSection() {
                 className="object-cover object-top"
                 sizes="640px"
               />
-              {/* Radial gradient for clean typography contrast */}
+              {/* Radial gradient for clean typography contrast while preserving floral columns */}
               <div
                 className="absolute inset-0"
                 style={{
-                  background: "radial-gradient(ellipse at 50% 45%, rgba(255,253,249,0.85) 0%, rgba(253,250,244,0.50) 65%, rgba(248,242,230,0.15) 100%)",
+                  background: "radial-gradient(ellipse at 50% 40%, rgba(255,253,249,0.88) 0%, rgba(253,250,244,0.52) 65%, rgba(248,242,230,0.18) 100%)",
                 }}
               />
             </div>
 
-            {/* Inner Arch Line Molding */}
-            <div className="pointer-events-none absolute inset-x-2 top-2 bottom-2 rounded-t-[182px] lg:rounded-t-[222px] rounded-b-[16px] border border-[#C5A059]/30 z-1" />
+            {/* Inner Arch Line Molding wrapping typography and countdown */}
+            <div className="pointer-events-none absolute inset-x-2 top-2 bottom-2 rounded-t-[192px] lg:rounded-t-[232px] rounded-b-[18px] border border-[#C5A059]/30 z-1" />
 
             {/* Top Golden Rosette Ornament */}
             <div className="relative z-10 mb-1 text-[#C5A059] flex items-center justify-center gap-2">
@@ -327,11 +329,11 @@ export default function HeroSection() {
             </h1>
 
             {/* Du'aa */}
-            <p className="relative z-10 text-xs md:text-sm font-amiri font-bold text-[#3A281C] leading-snug max-w-sm mx-auto mb-2">
+            <p className="relative z-10 text-xs md:text-sm font-amiri font-bold text-[#3A281C] leading-snug max-w-sm mx-auto mb-1.5">
               اللهم بارك لهما وبارك عليهما واجمع بينهما في خير
             </p>
 
-            {/* Event Summary Lines Directly On Arch Floor (Clean, No Box - Exactly As In Design Reference) */}
+            {/* Event Summary Lines Directly On Arch Floor */}
             <div className="relative z-10 w-full flex flex-col items-center gap-1 text-xs md:text-[13px] font-cairo text-[#2A1F18] my-1">
               {/* Date */}
               <div className="flex items-center justify-center gap-2">
@@ -352,63 +354,61 @@ export default function HeroSection() {
                 <MapPin className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#8C5828] shrink-0 mt-0.5" />
               </div>
             </div>
-          </div>
 
-          {/* ══════════════════════════════════════════════════════════════
-              Middle Countdown Section (Reference 02 Desktop Countdown)
-              ══════════════════════════════════════════════════════════════ */}
-          <div className="w-full my-1.5 md:my-2 text-center z-10">
-            {/* Countdown Title with Diamond Accent */}
-            <div className="flex items-center justify-center gap-2 mb-1.5 md:mb-2 select-none">
-              <span className="h-[1px] w-8 md:w-12 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
-              <span className="text-[#C5A059] text-xs">⋄</span>
-              <p className="text-xs md:text-sm font-cairo font-bold text-[#4A3525] tracking-wider px-1">
-                باقي علي ليلة العمر
-              </p>
-              <span className="text-[#C5A059] text-xs">⋄</span>
-              <span className="h-[1px] w-8 md:w-12 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
-            </div>
-
-            {/* 4 Cards (LTR order matching design: Days, Hours, Minutes, Seconds) */}
-            {mounted && (
-              <div className="grid grid-cols-4 gap-2 md:gap-3 max-w-[420px] md:max-w-[460px] mx-auto" dir="ltr">
-                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                    {timeLeft.days}
-                  </span>
-                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                    يوم
-                  </span>
-                </div>
-
-                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                    {timeLeft.hours}
-                  </span>
-                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                    ساعة
-                  </span>
-                </div>
-
-                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                    {timeLeft.minutes}
-                  </span>
-                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                    دقيقة
-                  </span>
-                </div>
-
-                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
-                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
-                    {timeLeft.seconds}
-                  </span>
-                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
-                    ثانية
-                  </span>
-                </div>
+            {/* Middle Countdown Section - NOW INSIDE THE ARCH BACKGROUND */}
+            <div className="relative z-10 w-full mt-2.5 md:mt-3 text-center">
+              {/* Countdown Title with Diamond Accent */}
+              <div className="flex items-center justify-center gap-2 mb-1.5 md:mb-2 select-none">
+                <span className="h-[1px] w-8 md:w-12 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+                <span className="text-[#C5A059] text-xs">⋄</span>
+                <p className="text-xs md:text-sm font-cairo font-bold text-[#4A3525] tracking-wider px-1">
+                  باقي علي ليلة العمر
+                </p>
+                <span className="text-[#C5A059] text-xs">⋄</span>
+                <span className="h-[1px] w-8 md:w-12 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
               </div>
-            )}
+
+              {/* 4 Cards (LTR order matching design: Days, Hours, Minutes, Seconds) */}
+              {mounted && (
+                <div className="grid grid-cols-4 gap-2 md:gap-3 max-w-[420px] md:max-w-[460px] mx-auto" dir="ltr">
+                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                      {timeLeft.days}
+                    </span>
+                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                      يوم
+                    </span>
+                  </div>
+
+                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                      {timeLeft.hours}
+                    </span>
+                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                      ساعة
+                    </span>
+                  </div>
+
+                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                      {timeLeft.minutes}
+                    </span>
+                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                      دقيقة
+                    </span>
+                  </div>
+
+                  <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 shadow-[0_4px_14px_rgba(46,35,28,0.06)] backdrop-blur-xs flex flex-col items-center justify-center">
+                    <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
+                      {timeLeft.seconds}
+                    </span>
+                    <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
+                      ثانية
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* ══════════════════════════════════════════════════════════════
