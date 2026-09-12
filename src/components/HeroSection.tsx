@@ -232,17 +232,39 @@ export default function HeroSection() {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          2. DESKTOP VERSION - FULL 100dvh HEIGHT
+          2. DESKTOP VERSION - FULL 100dvh HEIGHT & EXACT FIGMA DESIGN
           ═══════════════════════════════════════════════════════════════════ */}
-      <div className="hidden sm:flex flex-col items-center w-full h-full max-h-[96dvh] max-w-[500px] md:max-w-[520px] mx-auto z-10">
+      <div className="hidden sm:flex flex-col items-center justify-center w-full h-full max-w-[600px] lg:max-w-[640px] mx-auto z-10 py-1 md:py-2">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative w-full h-full rounded-[28px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_20px_50px_rgba(46,35,28,0.1)] bg-[#FAF7F2] p-4 md:p-5 flex flex-col justify-between items-center text-center overflow-hidden"
+          className="relative w-full h-full max-h-[97dvh] rounded-[32px] border-[1.5px] border-[#D8C29D]/70 shadow-[0_20px_50px_rgba(46,35,28,0.1)] bg-[#FAF7F2] p-3.5 md:p-4 lg:p-5 flex flex-col justify-between items-center text-center overflow-hidden"
         >
-          {/* Top Palace Arch Container */}
-          <div className="relative w-full rounded-t-[170px] md:rounded-t-[190px] rounded-b-[18px] border border-[#D8C29D]/50 shadow-[0_6px_20px_rgba(46,35,28,0.04)] pt-8 md:pt-10 pb-4 px-4 flex flex-col items-center text-center overflow-hidden">
+          {/* Decorative Corner Golden Leaves (Left & Right) */}
+          <div className="pointer-events-none absolute -bottom-4 -left-4 w-28 h-28 opacity-40 z-0">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 90 Q30 70 50 80 T80 50" stroke="#C5A059" strokeWidth="1.5" fill="none" />
+              <ellipse cx="30" cy="72" rx="10" ry="5" transform="rotate(-30 30 72)" fill="#D8C29D" opacity="0.6" />
+              <ellipse cx="48" cy="65" rx="11" ry="5" transform="rotate(35 48 65)" fill="#C5A059" opacity="0.5" />
+              <ellipse cx="65" cy="52" rx="12" ry="6" transform="rotate(-20 65 52)" fill="#D8C29D" opacity="0.7" />
+              <ellipse cx="78" cy="40" rx="10" ry="5" transform="rotate(40 78 40)" fill="#C5A059" opacity="0.6" />
+            </svg>
+          </div>
+          <div className="pointer-events-none absolute -bottom-4 -right-4 w-28 h-28 opacity-40 z-0 transform scale-x-[-1]">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 90 Q30 70 50 80 T80 50" stroke="#C5A059" strokeWidth="1.5" fill="none" />
+              <ellipse cx="30" cy="72" rx="10" ry="5" transform="rotate(-30 30 72)" fill="#D8C29D" opacity="0.6" />
+              <ellipse cx="48" cy="65" rx="11" ry="5" transform="rotate(35 48 65)" fill="#C5A059" opacity="0.5" />
+              <ellipse cx="65" cy="52" rx="12" ry="6" transform="rotate(-20 65 52)" fill="#D8C29D" opacity="0.7" />
+              <ellipse cx="78" cy="40" rx="10" ry="5" transform="rotate(40 78 40)" fill="#C5A059" opacity="0.6" />
+            </svg>
+          </div>
+
+          {/* ══════════════════════════════════════════════════════════════
+              Upper Palace Arch Container (Reference 02 Desktop Top Arch)
+              ══════════════════════════════════════════════════════════════ */}
+          <div className="relative w-full rounded-t-[190px] lg:rounded-t-[230px] rounded-b-[20px] border border-[#D8C29D]/50 shadow-[0_4px_16px_rgba(46,35,28,0.03)] pt-5 md:pt-6 lg:pt-8 pb-3 px-4 flex flex-col items-center text-center overflow-hidden z-10">
             {/* Desktop Palace Arch Background */}
             <div className="absolute inset-0 z-0">
               <Image
@@ -251,22 +273,23 @@ export default function HeroSection() {
                 fill
                 priority
                 className="object-cover object-top"
-                sizes="520px"
+                sizes="640px"
               />
+              {/* Radial gradient for clean typography contrast */}
               <div
                 className="absolute inset-0"
                 style={{
-                  background: "radial-gradient(circle at 50% 45%, rgba(255,253,249,0.82) 0%, rgba(253,250,244,0.45) 60%, transparent 100%)",
+                  background: "radial-gradient(ellipse at 50% 45%, rgba(255,253,249,0.85) 0%, rgba(253,250,244,0.50) 65%, rgba(248,242,230,0.15) 100%)",
                 }}
               />
             </div>
 
-            {/* Inner Architectural Molding */}
-            <div className="pointer-events-none absolute inset-x-2 top-2 bottom-2 rounded-t-[164px] md:rounded-t-[184px] rounded-b-[14px] border border-[#C5A059]/30 z-1" />
+            {/* Inner Arch Line Molding */}
+            <div className="pointer-events-none absolute inset-x-2 top-2 bottom-2 rounded-t-[182px] lg:rounded-t-[222px] rounded-b-[16px] border border-[#C5A059]/30 z-1" />
 
-            {/* Top Golden Rosette */}
-            <div className="relative z-10 mb-1.5 text-[#C5A059] flex items-center justify-center gap-2">
-              <span className="w-5 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+            {/* Top Golden Rosette Ornament */}
+            <div className="relative z-10 mb-1 text-[#C5A059] flex items-center justify-center gap-2">
+              <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/70" />
               <svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(20, 20)">
                   <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
@@ -277,93 +300,101 @@ export default function HeroSection() {
                   <path d="M9 0 C5 -2.5, 2 -2.5, 0 0 C2 2.5, 5 2.5, 9 0 Z" fill="#C5A059" opacity="0.9" />
                 </g>
               </svg>
-              <span className="w-5 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+              <span className="w-6 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/70" />
             </div>
 
             {/* Eyebrow */}
-            <p className="relative z-10 text-xs font-cairo font-semibold text-[#4A3525] tracking-wide mb-0.5">
+            <p className="relative z-10 text-xs md:text-sm font-cairo font-semibold text-[#4A3525] tracking-wide mb-0.5">
               يسرنا دعوتكم لحضور حفل زفاف
             </p>
 
-            {/* Names */}
-            <h1 className="relative z-10 text-3xl md:text-4xl font-ruqaa font-bold text-[#24150C] leading-[1.25] my-0.5 flex items-center justify-center gap-2">
+            {/* Couple Names */}
+            <h1 className="relative z-10 text-3xl md:text-4xl lg:text-5xl font-ruqaa font-bold text-[#24150C] leading-[1.25] my-0.5 flex items-center justify-center gap-2">
               <span>{wedding.groomAr}</span>
-              <span className="text-[#C5A059] font-cormorant font-normal text-2xl md:text-3xl leading-none pt-1">
+              <span className="text-[#C5A059] font-cormorant font-normal text-2xl md:text-3xl lg:text-4xl leading-none pt-1">
                 &amp;
               </span>
               <span>{wedding.brideAr}</span>
             </h1>
 
             {/* Du'aa */}
-            <p className="relative z-10 text-xs font-amiri font-bold text-[#3A281C] leading-snug max-w-sm mx-auto mb-2">
+            <p className="relative z-10 text-xs md:text-sm font-amiri font-bold text-[#3A281C] leading-snug max-w-sm mx-auto mb-2">
               اللهم بارك لهما وبارك عليهما واجمع بينهما في خير
             </p>
 
-            {/* Event Summary Card */}
-            <div className="relative z-10 w-full max-w-[300px] rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/40 px-3.5 py-2 space-y-1.5 text-xs font-cairo text-[#2A1F18] shadow-[0_4px_16px_rgba(46,35,28,0.05)] backdrop-blur-xs">
+            {/* Event Summary Lines Directly On Arch Floor (Clean, No Box - Exactly As In Design Reference) */}
+            <div className="relative z-10 w-full flex flex-col items-center gap-1 text-xs md:text-[13px] font-cairo text-[#2A1F18] my-1">
+              {/* Date */}
               <div className="flex items-center justify-center gap-2">
-                <Calendar className="w-3.5 h-3.5 text-[#8C6D3B] shrink-0" />
-                <span className="font-bold text-[#24150C] text-[11px]">الأربعاء 14 أكتوبر 2026</span>
+                <span className="font-bold text-[#24150C]">الأربعاء 14 أكتوبر 2026</span>
+                <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#8C5828]" />
               </div>
+              {/* Time */}
               <div className="flex items-center justify-center gap-2">
-                <Clock className="w-3.5 h-3.5 text-[#8C6D3B] shrink-0" />
-                <span className="font-bold text-[#24150C] text-[11px]">7:00 مساءً</span>
+                <span className="font-bold text-[#24150C]">7:00 مساءً</span>
+                <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#8C5828]" />
               </div>
-              <div className="flex items-center justify-center gap-1.5 text-center">
-                <MapPin className="w-3.5 h-3.5 text-[#8C6D3B] shrink-0 mt-0.5" />
+              {/* Venue */}
+              <div className="flex items-center justify-center gap-2 text-center">
                 <div>
-                  <p className="font-bold text-[#24150C] text-[11px]">{wedding.venueAr}</p>
-                  <p className="text-[9.5px] font-medium text-[#7A6A5D]">شبين القناطر، القليوبية، مصر</p>
+                  <p className="font-bold text-[#24150C]">{wedding.venueAr}</p>
+                  <p className="text-[10px] md:text-[11px] font-medium text-[#6E5D4F]">شبين القناطر، القليوبية، مصر</p>
                 </div>
+                <MapPin className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#8C5828] shrink-0 mt-0.5" />
               </div>
             </div>
           </div>
 
-          {/* Desktop Countdown */}
-          <div className="w-full my-2 text-center">
-            <div className="flex items-center justify-center gap-2.5 mb-2 select-none">
-              <span className="h-[1px] w-10 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
-              <p className="text-xs font-cairo font-bold text-[#4A3525] tracking-wider">
+          {/* ══════════════════════════════════════════════════════════════
+              Middle Countdown Section (Reference 02 Desktop Countdown)
+              ══════════════════════════════════════════════════════════════ */}
+          <div className="w-full my-1.5 md:my-2 text-center z-10">
+            {/* Countdown Title with Diamond Accent */}
+            <div className="flex items-center justify-center gap-2 mb-1.5 md:mb-2 select-none">
+              <span className="h-[1px] w-8 md:w-12 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+              <span className="text-[#C5A059] text-xs">⋄</span>
+              <p className="text-xs md:text-sm font-cairo font-bold text-[#4A3525] tracking-wider px-1">
                 باقي علي ليلة العمر
               </p>
-              <span className="h-[1px] w-10 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+              <span className="text-[#C5A059] text-xs">⋄</span>
+              <span className="h-[1px] w-8 md:w-12 bg-gradient-to-l from-transparent to-[#C5A059]/60" />
             </div>
 
-            {/* 4 Cards (LTR: Days, Hours, Minutes, Seconds) */}
+            {/* 4 Cards (LTR order matching design: Days, Hours, Minutes, Seconds) */}
             {mounted && (
-              <div className="grid grid-cols-4 gap-2 max-w-[320px] mx-auto" dir="ltr">
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg md:text-xl font-bold font-cairo text-[#24150C] leading-none">
+              <div className="grid grid-cols-4 gap-2 md:gap-3 max-w-[420px] md:max-w-[460px] mx-auto" dir="ltr">
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.days}
                   </span>
-                  <span className="text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
                     يوم
                   </span>
                 </div>
 
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg md:text-xl font-bold font-cairo text-[#24150C] leading-none">
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.hours}
                   </span>
-                  <span className="text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
                     ساعة
                   </span>
                 </div>
 
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg md:text-xl font-bold font-cairo text-[#24150C] leading-none">
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.minutes}
                   </span>
-                  <span className="text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
                     دقيقة
                   </span>
                 </div>
 
-                <div className="py-2 px-1 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
-                  <span className="text-lg md:text-xl font-bold font-cairo text-[#24150C] leading-none">
+                <div className="py-2.5 md:py-3 px-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_14px_rgba(46,35,28,0.05)] flex flex-col items-center justify-center">
+                  <span className="text-xl md:text-2xl lg:text-3xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.seconds}
                   </span>
-                  <span className="text-[10px] font-cairo text-[#6E5D4F] mt-0.5 font-bold">
+                  <span className="text-[11px] md:text-xs font-cairo text-[#6E5D4F] mt-1 font-bold">
                     ثانية
                   </span>
                 </div>
@@ -371,10 +402,14 @@ export default function HeroSection() {
             )}
           </div>
 
-          {/* Desktop Event Details 3 Cards */}
-          <div id="event-details" className="w-full pt-1 flex flex-col items-center text-center">
-            <div className="mb-1 text-[#C5A059]">
-              <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* ══════════════════════════════════════════════════════════════
+              Bottom Event Details 3 Cards (Reference 02 Desktop Cards)
+              ══════════════════════════════════════════════════════════════ */}
+          <div id="event-details" className="w-full pt-1 flex flex-col items-center text-center z-10">
+            {/* Middle Golden Rosette Accent */}
+            <div className="mb-1 text-[#C5A059] flex items-center justify-center gap-2">
+              <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+              <svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(20, 20)">
                   <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
                   <circle cx="0" cy="0" r="2.5" fill="#FAF6F0" />
@@ -384,38 +419,44 @@ export default function HeroSection() {
                   <path d="M9 0 C5 -2.5, 2 -2.5, 0 0 C2 2.5, 5 2.5, 9 0 Z" fill="#C5A059" opacity="0.9" />
                 </g>
               </svg>
+              <span className="w-6 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/60" />
             </div>
 
             <h2 className="text-base md:text-lg font-amiri font-bold text-[#24150C] mb-2">
               تفاصيل المناسبة
             </h2>
 
-            <div className="w-full grid grid-cols-3 gap-2">
-              <div className="p-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_2px_8px_rgba(46,35,28,0.03)] flex flex-col items-center text-center">
-                <div className="w-7 h-7 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center mb-1">
-                  <Calendar className="w-3 h-3 text-[#8C6D3B]" />
+            {/* 3 Large Cards (RTL: Date, Time, Location) with Cognac Badges matching Figma reference */}
+            <div className="w-full grid grid-cols-3 gap-2.5 max-w-[480px] md:max-w-[520px] mx-auto">
+              {/* 01. Date Card */}
+              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center text-center">
+                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#8C5828] text-white flex items-center justify-center mb-1.5 shadow-xs">
+                  <Calendar className="w-4 h-4 text-[#FFFDF9]" />
                 </div>
-                <span className="text-[9px] font-bold font-cairo text-[#6E5D4F]">التاريخ</span>
-                <h3 className="text-[11px] font-amiri font-bold text-[#24150C]">الأربعاء</h3>
-                <p className="text-[9px] font-cairo text-[#8C6D3B] font-bold">14 أكتوبر 2026</p>
+                <span className="text-[10px] md:text-[11px] font-bold font-cairo text-[#6E5D4F]">التاريخ</span>
+                <h3 className="text-xs md:text-sm font-amiri font-bold text-[#24150C] mt-0.5">الأربعاء</h3>
+                <p className="text-[10px] md:text-[11px] font-cairo text-[#8C5828] font-bold mt-0.5">14 أكتوبر 2026</p>
               </div>
 
-              <div className="p-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_2px_8px_rgba(46,35,28,0.03)] flex flex-col items-center text-center">
-                <div className="w-7 h-7 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center mb-1">
-                  <Clock className="w-3 h-3 text-[#8C6D3B]" />
+              {/* 02. Time Card */}
+              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center text-center">
+                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#8C5828] text-white flex items-center justify-center mb-1.5 shadow-xs">
+                  <Clock className="w-4 h-4 text-[#FFFDF9]" />
                 </div>
-                <span className="text-[9px] font-bold font-cairo text-[#6E5D4F]">الوقت</span>
-                <h3 className="text-[11px] font-amiri font-bold text-[#24150C]">7:00</h3>
-                <p className="text-[9px] font-cairo text-[#8C6D3B] font-bold">مساءً</p>
+                <span className="text-[10px] md:text-[11px] font-bold font-cairo text-[#6E5D4F]">الوقت</span>
+                <h3 className="text-xs md:text-sm font-amiri font-bold text-[#24150C] mt-0.5">7:00</h3>
+                <p className="text-[10px] md:text-[11px] font-cairo text-[#8C5828] font-bold mt-0.5">مساءً</p>
               </div>
 
-              <div className="p-2 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_2px_8px_rgba(46,35,28,0.03)] flex flex-col items-center text-center">
-                <div className="w-7 h-7 rounded-full bg-[#FAF5EC] border border-[#C5A059]/40 flex items-center justify-center mb-1">
-                  <MapPin className="w-3 h-3 text-[#8C6D3B]" />
+              {/* 03. Venue Card */}
+              <div className="p-2.5 md:p-3 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/35 shadow-[0_3px_10px_rgba(46,35,28,0.04)] flex flex-col items-center text-center">
+                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#8C5828] text-white flex items-center justify-center mb-1.5 shadow-xs">
+                  <MapPin className="w-4 h-4 text-[#FFFDF9]" />
                 </div>
-                <span className="text-[9px] font-bold font-cairo text-[#6E5D4F]">المكان</span>
-                <h3 className="text-[10px] font-amiri font-bold text-[#24150C] line-clamp-1">{wedding.venueAr}</h3>
-                <p className="text-[8.5px] font-cairo text-[#6E5D4F] font-medium line-clamp-1">شبين القناطر</p>
+                <span className="text-[10px] md:text-[11px] font-bold font-cairo text-[#6E5D4F]">المكان</span>
+                <h3 className="text-[11px] md:text-xs font-amiri font-bold text-[#24150C] mt-0.5 line-clamp-1">{wedding.venueAr}</h3>
+                <p className="text-[9px] md:text-[10px] font-cairo text-[#6E5D4F] font-medium mt-0.5 line-clamp-1">شبين القناطر، القليوبية</p>
+                <p className="text-[9px] md:text-[10px] font-cairo text-[#8C5828] font-bold">مصر</p>
               </div>
             </div>
           </div>
