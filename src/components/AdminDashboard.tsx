@@ -1269,7 +1269,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Bottom Section - Raised to sit gracefully in the margin above the bottom border */}
-                  <div className="absolute bottom-[10.5%] left-0 right-0 text-center z-10">
+                  <div className="absolute bottom-[11%] left-0 right-0 text-center z-10 pointer-events-none">
                     <p className="font-amiri font-bold text-[11px] sm:text-xs text-[#432C1E]">
                       شكراً لكل من شاركنا فرحتنا
                     </p>
@@ -1358,7 +1358,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Bottom Section - Raised to sit gracefully in the margin above the bottom border */}
-              <div className="absolute bottom-[10.5%] left-0 right-0 text-center z-10">
+              <div className="absolute bottom-[11%] left-0 right-0 text-center z-10">
                 <p className="font-amiri font-bold text-lg text-[#432C1E]">
                   شكراً لكل من شاركنا فرحتنا
                 </p>
