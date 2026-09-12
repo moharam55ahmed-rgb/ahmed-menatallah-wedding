@@ -8,7 +8,7 @@ import { useAudio } from "./AudioContext";
 import { MailOpen, Sparkles } from "lucide-react";
 
 interface OpeningExperienceProps {
-  onOpen: () => void;
+  onOpen?: () => void;
 }
 
 export default function OpeningExperience({ onOpen }: OpeningExperienceProps) {
@@ -16,6 +16,7 @@ export default function OpeningExperience({ onOpen }: OpeningExperienceProps) {
   const [guestName, setGuestName] = useState<string | null>(null);
   const { startAudioExperience } = useAudio();
 
+  // Read guest name from URL
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -24,13 +25,27 @@ export default function OpeningExperience({ onOpen }: OpeningExperienceProps) {
     }
   }, []);
 
+  // Prevent body scroll while the overlay is visible
+  useEffect(() => {
+    if (phase !== "done") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [phase]);
+
   const handleOpen = () => {
     if (phase !== "idle") return;
     setPhase("opening");
     startAudioExperience();
     setTimeout(() => {
       setPhase("done");
-      setTimeout(onOpen, 600);
+      // Scroll to top so the first section is visible
+      window.scrollTo({ top: 0, behavior: "instant" });
+      if (onOpen) setTimeout(onOpen, 600);
     }, 1200);
   };
 

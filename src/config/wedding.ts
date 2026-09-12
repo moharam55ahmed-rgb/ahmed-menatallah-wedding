@@ -4,6 +4,7 @@ export interface GuestWish {
   message: string;
   timestamp: string;
   isHidden?: boolean;
+  recipient?: "groom" | "bride" | "both";
 }
 
 export interface WeddingConfig {

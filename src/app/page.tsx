@@ -12,14 +12,13 @@ import RomanticMoments from "@/components/RomanticMoments";
 import VenueSection from "@/components/VenueSection";
 import RSVPSection from "@/components/RSVPSection";
 import ZaghareetButton from "@/components/ZaghareetButton";
-import WishesWall, { loadWishes, saveWishes } from "@/components/WishesWall";
+import WishesWall, { loadWishes } from "@/components/WishesWall";
 import FinalScene from "@/components/FinalScene";
 import FloatingControls from "@/components/FloatingControls";
 import CelebrationSparkles from "@/components/CelebrationSparkles";
 import { GuestWish } from "@/config/wedding";
 
 export default function WeddingPage() {
-  const [invitationOpened, setInvitationOpened] = useState(false);
   const [wishes, setWishes] = useState<GuestWish[]>([]);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ export default function WeddingPage() {
         <CelebrationSparkles />
 
         {/* Opening envelope experience */}
-        <OpeningExperience onOpen={() => setInvitationOpened(true)} />
+        <OpeningExperience />
 
         {/* Main invitation experience */}
         <div>

@@ -124,7 +124,7 @@ export default function Countdown() {
             transition={{ duration: 0.9, delay: 0.2 }}
             className="w-full grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
           >
-            {units.map((unit, index) => (
+            {units.map((unit) => (
               <div
                 key={unit.label}
                 className="relative flex flex-col items-center justify-center p-6 sm:p-8 rounded-2xl bg-white/70 backdrop-blur-md border border-[#C5A46D]/30 shadow-[0_8px_30px_rgba(197,164,109,0.08)] hover:border-[#C5A46D]/60 transition-all duration-300 group"

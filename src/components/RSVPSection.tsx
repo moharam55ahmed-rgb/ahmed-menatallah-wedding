@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { wedding } from "@/config/wedding";
-import { CheckCircle2, Heart, Send, Sparkles, UserCheck, MessageSquare } from "lucide-react";
+import { CheckCircle2, Heart, Send, UserCheck } from "lucide-react";
 
 export default function RSVPSection() {
   const [name, setName] = useState("");
@@ -15,12 +14,12 @@ export default function RSVPSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Check if user has already RSVP'd
+    // Restore local UX state so same-device users see their previous answer
     const savedRSVP = localStorage.getItem("wedding_rsvp_status");
     if (savedRSVP) {
       try {
         const data = JSON.parse(savedRSVP);
-        if (data && data.name) {
+        if (data?.name) {
           setName(data.name);
           setAttendance(data.attendance);
           setGuestsCount(data.guestsCount || "0");
@@ -33,36 +32,42 @@ export default function RSVPSection() {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      // Save locally
-      const rsvpData = {
-        name: name.trim(),
-        attendance,
-        guestsCount,
-        message: message.trim(),
-        submittedAt: new Date().toISOString(),
-      };
-      localStorage.setItem("wedding_rsvp_status", JSON.stringify(rsvpData));
+    const rsvpData = {
+      name: name.trim(),
+      attendance,
+      guestsCount,
+      message: message.trim(),
+      submittedAt: new Date().toISOString(),
+    };
 
-      setIsSubmitting(false);
-      setSubmitted(true);
+    try {
+      await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rsvpData),
+      });
+    } catch {
+      // Silent fail — local UX still works
+    }
 
-      // Trigger celebratory golden confetti
-      if (attendance === "attending") {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.7 },
-          colors: ["#C5A46D", "#EAD7D1", "#FAF5EE", "#B58A48"],
-        });
-      }
-    }, 600);
+    // Always save locally for same-device UX
+    localStorage.setItem("wedding_rsvp_status", JSON.stringify(rsvpData));
+    setIsSubmitting(false);
+    setSubmitted(true);
+
+    if (attendance === "attending") {
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.7 },
+        colors: ["#C5A46D", "#EAD7D1", "#FAF5EE", "#B58A48"],
+      });
+    }
   };
 
   const handleResetRSVP = () => {

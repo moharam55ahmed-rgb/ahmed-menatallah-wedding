@@ -2,42 +2,54 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GuestWish, wedding, WeddingConfig } from "@/config/wedding";
-import { loadWishes, saveWishes } from "@/components/WishesWall";
+import { GuestWish, wedding } from "@/config/wedding";
+import Link from "next/link";
 import {
   Trash2, Eye, EyeOff, MessageSquare, Users, Settings,
-  Save, RotateCcw, ChevronDown, ChevronUp, LogOut, Lock,
-  Edit3, Heart, X, Check, AlertTriangle, BarChart3
+  Save, RotateCcw, LogOut, Lock,
+  Heart, X, AlertTriangle, BarChart3, RefreshCw, Loader2, Check
 } from "lucide-react";
 
-const DASHBOARD_PASSWORD = "ahmed2026";
-
+// ─────────────────────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────────────────────
 type Tab = "wishes" | "rsvp" | "settings" | "stats";
+type RecipientFilter = "all" | "groom" | "bride" | "both";
 
 interface RSVPEntry {
+  id: string;
   name: string;
-  attendance: string;
+  attendance: "attending" | "not_attending";
   guestsCount: string;
   message: string;
   submittedAt: string;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Component
+// ─────────────────────────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("wishes");
 
-  // Wishes state
+  // Wishes
   const [wishes, setWishes] = useState<GuestWish[]>([]);
   const [wishesSearch, setWishesSearch] = useState("");
+  const [recipientFilter, setRecipientFilter] = useState<RecipientFilter>("all");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [wishesLoading, setWishesLoading] = useState(false);
 
-  // RSVP state
-  const [rsvpEntry, setRsvpEntry] = useState<RSVPEntry | null>(null);
+  // RSVP
+  const [rsvpEntries, setRsvpEntries] = useState<RSVPEntry[]>([]);
+  const [rsvpLoading, setRsvpLoading] = useState(false);
+  const [daysUntilWedding, setDaysUntilWedding] = useState(0);
 
-  // Settings state — editable wedding content
+  // Settings
   const [config, setConfig] = useState({
     groomAr: wedding.groomAr,
     brideAr: wedding.brideAr,
@@ -52,65 +64,117 @@ export default function AdminDashboard() {
   });
   const [configSaved, setConfigSaved] = useState(false);
 
+  // ── Data fetching ──────────────────────────────────────────────────────────
+  const fetchWishes = useCallback(async () => {
+    setWishesLoading(true);
+    try {
+      // No need to send a secret — the HttpOnly cookie is sent automatically
+      const res = await fetch("/api/wishes");
+      if (res.ok) {
+        const data = await res.json();
+        setWishes(data.wishes ?? []);
+      }
+    } catch {
+      // silent
+    } finally {
+      setWishesLoading(false);
+    }
+  }, []);
+
+  const fetchRSVP = useCallback(async () => {
+    setRsvpLoading(true);
+    try {
+      const res = await fetch("/api/rsvp");
+      if (res.ok) {
+        const data = await res.json();
+        setRsvpEntries(data.entries ?? []);
+      }
+    } catch {
+      // silent
+    } finally {
+      setRsvpLoading(false);
+    }
+  }, []);
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
+  // On mount, probe /api/rsvp — if we get 200 the cookie is valid, else 401 = not logged in
   useEffect(() => {
-    const stored = localStorage.getItem("dashboard_auth");
-    if (stored === DASHBOARD_PASSWORD) setAuthenticated(true);
+    const weddingDate = new Date("2026-10-14").getTime();
+    setDaysUntilWedding(Math.max(0, Math.floor((weddingDate - Date.now()) / 86400000)));
+
+    fetch("/api/rsvp")
+      .then((r) => {
+        if (r.ok) setAuthenticated(true);
+      })
+      .catch(() => {})
+      .finally(() => setAuthChecked(true));
   }, []);
 
   useEffect(() => {
     if (!authenticated) return;
-    setWishes(loadWishes());
-    const rsvpRaw = localStorage.getItem("wedding_rsvp_status");
-    if (rsvpRaw) {
-      try { setRsvpEntry(JSON.parse(rsvpRaw)); } catch {}
-    }
-    // Load any saved config overrides
+    fetchWishes();
+    fetchRSVP();
     const savedConfig = localStorage.getItem("wedding_config_override");
     if (savedConfig) {
       try { setConfig(JSON.parse(savedConfig)); } catch {}
     }
-  }, [authenticated]);
+  }, [authenticated, fetchWishes, fetchRSVP]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === DASHBOARD_PASSWORD) {
-      localStorage.setItem("dashboard_auth", DASHBOARD_PASSWORD);
-      setAuthenticated(true);
-      setPasswordError(false);
-    } else {
-      setPasswordError(true);
+    setPasswordError("");
+    setLoginLoading(true);
+    try {
+      const res = await fetch("/api/admin/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      if (res.ok) {
+        setAuthenticated(true);
+      } else {
+        setPasswordError("كلمة المرور غير صحيحة");
+      }
+    } catch {
+      setPasswordError("تعذّر الاتصال، حاول مجدداً");
+    } finally {
+      setLoginLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("dashboard_auth");
+  const handleLogout = async () => {
+    await fetch("/api/admin/verify", { method: "DELETE" });
     setAuthenticated(false);
     setPassword("");
   };
 
-  const handleToggleHide = (id: string) => {
-    const updated = wishes.map((w) =>
-      w.id === id ? { ...w, isHidden: !w.isHidden } : w
-    );
-    setWishes(updated);
-    saveWishes(updated);
+  // ── Wish actions ───────────────────────────────────────────────────────────
+  const handleToggleHide = async (id: string) => {
+    try {
+      const res = await fetch(`/api/wishes/${id}`, { method: "PATCH" });
+      if (res.ok) {
+        const data = await res.json();
+        setWishes((prev) => prev.map((w) => (w.id === id ? data.wish : w)));
+      }
+    } catch { /* silent */ }
   };
 
-  const handleDeleteWish = (id: string) => {
-    if (confirmDeleteId !== id) {
-      setConfirmDeleteId(id);
-      return;
-    }
+  const handleDeleteWish = async (id: string) => {
+    if (confirmDeleteId !== id) { setConfirmDeleteId(id); return; }
     setDeletingId(id);
-    setTimeout(() => {
-      const updated = wishes.filter((w) => w.id !== id);
-      setWishes(updated);
-      saveWishes(updated);
+    try {
+      await fetch(`/api/wishes/${id}`, { method: "DELETE" });
+      setTimeout(() => {
+        setWishes((prev) => prev.filter((w) => w.id !== id));
+        setDeletingId(null);
+        setConfirmDeleteId(null);
+      }, 300);
+    } catch {
       setDeletingId(null);
-      setConfirmDeleteId(null);
-    }, 300);
+    }
   };
 
+  // ── Settings ───────────────────────────────────────────────────────────────
   const handleSaveConfig = () => {
     localStorage.setItem("wedding_config_override", JSON.stringify(config));
     setConfigSaved(true);
@@ -118,33 +182,49 @@ export default function AdminDashboard() {
   };
 
   const handleResetConfig = () => {
-    const defaultConfig = {
-      groomAr: wedding.groomAr,
-      brideAr: wedding.brideAr,
-      dayAr: wedding.dayAr,
-      venueAr: wedding.venueAr,
-      cityAr: wedding.cityAr,
-      inviteText: wedding.heroText.inviteText,
+    setConfig({
+      groomAr: wedding.groomAr, brideAr: wedding.brideAr,
+      dayAr: wedding.dayAr, venueAr: wedding.venueAr,
+      cityAr: wedding.cityAr, inviteText: wedding.heroText.inviteText,
       introLine: wedding.heroText.intro,
       invitationBody: wedding.invitationMessage.body,
       invitationClosing: wedding.invitationMessage.closing,
       romanticMomentsTitle: wedding.romanticMoments.title,
-    };
-    setConfig(defaultConfig);
+    });
     localStorage.removeItem("wedding_config_override");
   };
 
-  const filteredWishes = wishes.filter(
-    (w) =>
+  // ── Derived data ───────────────────────────────────────────────────────────
+  const filteredWishes = wishes.filter((w) => {
+    const matchSearch =
       w.name.toLowerCase().includes(wishesSearch.toLowerCase()) ||
-      w.message.toLowerCase().includes(wishesSearch.toLowerCase())
-  );
+      w.message.toLowerCase().includes(wishesSearch.toLowerCase());
+    const matchRecipient =
+      recipientFilter === "all" || (w.recipient ?? "both") === recipientFilter;
+    return matchSearch && matchRecipient;
+  });
   const visibleCount = wishes.filter((w) => !w.isHidden).length;
   const hiddenCount = wishes.filter((w) => w.isHidden).length;
+  const attendingCount = rsvpEntries.filter((e) => e.attendance === "attending").length;
 
-  // ========================
+  const recipientLabel = (r?: string) => {
+    if (r === "groom") return "🤵 للعريس";
+    if (r === "bride") return "👰 للعروسة";
+    return "💑 للعروسين";
+  };
+
+  // ── Loading skeleton while checking auth ───────────────────────────────────
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-[#151311] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#C5A46D] animate-spin" />
+      </div>
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // LOGIN SCREEN
-  // ========================
+  // ═══════════════════════════════════════════════════════════════════════════
   if (!authenticated) {
     return (
       <div className="min-h-screen bg-[#151311] flex items-center justify-center px-4">
@@ -170,44 +250,48 @@ export default function AdminDashboard() {
                 id="dash-password"
                 type="password"
                 value={password}
-                onChange={(e) => { setPassword(e.target.value); setPasswordError(false); }}
+                onChange={(e) => { setPassword(e.target.value); setPasswordError(""); }}
                 placeholder="أدخل كلمة المرور..."
+                autoComplete="current-password"
                 className={`w-full px-4 py-3 rounded-xl bg-white/10 border text-white font-cairo text-sm outline-none transition-all ${
                   passwordError ? "border-red-500 focus:border-red-400" : "border-white/20 focus:border-[#C5A46D]"
                 }`}
               />
               {passwordError && (
-                <p className="text-xs text-red-400 font-cairo mt-1">كلمة المرور غير صحيحة</p>
+                <p className="text-xs text-red-400 font-cairo mt-1">{passwordError}</p>
               )}
             </div>
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] font-bold font-cairo shadow-lg hover:shadow-xl transition-all cursor-pointer touch-target"
+              disabled={loginLoading}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] font-bold font-cairo shadow-lg hover:shadow-xl transition-all cursor-pointer touch-target flex items-center justify-center gap-2 disabled:opacity-60"
             >
-              دخول
+              {loginLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "دخول"}
             </button>
           </form>
           <p className="text-center text-xs font-cairo text-white/30 mt-6">
-            هذه الصفحة للإدارة فقط • <a href="/" className="text-[#C5A46D] hover:underline">العودة للدعوة</a>
+            هذه الصفحة للإدارة فقط •{" "}
+            <Link href="/" className="text-[#C5A46D] hover:underline">العودة للدعوة</Link>
           </p>
         </motion.div>
       </div>
     );
   }
 
-  // ========================
+  // ═══════════════════════════════════════════════════════════════════════════
   // DASHBOARD
-  // ========================
+  // ═══════════════════════════════════════════════════════════════════════════
   const tabs: { id: Tab; label: string; icon: React.ReactNode; badge?: number }[] = [
-    { id: "wishes", label: "التهاني", icon: <Heart className="w-4 h-4" />, badge: wishes.length },
-    { id: "rsvp", label: "الحضور", icon: <Users className="w-4 h-4" /> },
-    { id: "stats", label: "الإحصائيات", icon: <BarChart3 className="w-4 h-4" /> },
-    { id: "settings", label: "الإعدادات", icon: <Settings className="w-4 h-4" /> },
+    { id: "wishes",   label: "التهاني",       icon: <Heart className="w-4 h-4" />,    badge: wishes.length },
+    { id: "rsvp",     label: "الحضور",         icon: <Users className="w-4 h-4" />,    badge: rsvpEntries.length },
+    { id: "stats",    label: "الإحصائيات",    icon: <BarChart3 className="w-4 h-4" /> },
+    { id: "settings", label: "الإعدادات",     icon: <Settings className="w-4 h-4" /> },
   ];
 
   return (
     <div className="min-h-screen bg-[#F8F2EA] font-cairo" dir="rtl">
-      {/* Header */}
+
+      {/* ── Header ──────────────────────────────────────────────────────── */}
       <header className="bg-[#151311] border-b border-[#C5A46D]/30 sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
@@ -215,12 +299,9 @@ export default function AdminDashboard() {
             <p className="text-[11px] text-white/40 font-cairo">أحمد ومنة الله • 14 أكتوبر 2026</p>
           </div>
           <div className="flex items-center gap-3">
-            <a
-              href="/"
-              className="text-xs text-[#DFCBA8] hover:text-white transition-colors font-cairo px-3 py-1.5 rounded-lg border border-white/10 hover:border-white/20"
-            >
+            <Link href="/" className="text-xs text-[#DFCBA8] hover:text-white transition-colors font-cairo px-3 py-1.5 rounded-lg border border-white/10 hover:border-white/20">
               الدعوة ←
-            </a>
+            </Link>
             <button
               type="button"
               onClick={handleLogout}
@@ -261,15 +342,15 @@ export default function AdminDashboard() {
 
       <div className="max-w-5xl mx-auto px-4 py-6">
 
-        {/* ==================== WISHES TAB ==================== */}
+        {/* ══════════════════════════ WISHES TAB ══════════════════════════ */}
         {activeTab === "wishes" && (
           <div className="space-y-4">
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="grid grid-cols-3 gap-3">
               {[
                 { label: "إجمالي التهاني", value: wishes.length, color: "text-[#231F1A]" },
-                { label: "ظاهرة", value: visibleCount, color: "text-green-700" },
-                { label: "مخفية", value: hiddenCount, color: "text-orange-600" },
+                { label: "ظاهرة",           value: visibleCount,  color: "text-green-700" },
+                { label: "مخفية",            value: hiddenCount,   color: "text-orange-600" },
               ].map((s) => (
                 <div key={s.label} className="p-4 rounded-2xl bg-white border border-[#C5A46D]/20 text-center shadow-sm">
                   <p className={`text-2xl font-bold font-cormorant ${s.color}`}>{s.value}</p>
@@ -278,21 +359,44 @@ export default function AdminDashboard() {
               ))}
             </div>
 
-            {/* Search */}
-            <div className="relative">
+            {/* Search + filter */}
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={wishesSearch}
                 onChange={(e) => setWishesSearch(e.target.value)}
                 placeholder="ابحث في التهاني..."
-                className="w-full px-4 py-3 rounded-xl bg-white border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D]"
+                className="flex-1 px-4 py-3 rounded-xl bg-white border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D]"
               />
+              <select
+                value={recipientFilter}
+                onChange={(e) => setRecipientFilter(e.target.value as RecipientFilter)}
+                className="px-4 py-3 rounded-xl bg-white border border-[#C5A46D]/30 text-sm font-cairo outline-none focus:border-[#C5A46D] cursor-pointer"
+              >
+                <option value="all">الكل</option>
+                <option value="both">💑 للعروسين</option>
+                <option value="groom">🤵 للعريس</option>
+                <option value="bride">👰 للعروسة</option>
+              </select>
+              <button
+                type="button"
+                onClick={fetchWishes}
+                className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white border border-[#C5A46D]/30 text-sm font-cairo text-[#A07F47] hover:border-[#C5A46D] transition-all cursor-pointer"
+              >
+                <RefreshCw className={`w-4 h-4 ${wishesLoading ? "animate-spin" : ""}`} />
+                <span>تحديث</span>
+              </button>
             </div>
 
-            {/* Wishes List */}
+            {/* Wishes list */}
             <div className="space-y-3">
               <AnimatePresence>
-                {filteredWishes.length === 0 && (
+                {wishesLoading && (
+                  <div className="text-center py-10">
+                    <Loader2 className="w-6 h-6 text-[#C5A46D] animate-spin mx-auto" />
+                  </div>
+                )}
+                {!wishesLoading && filteredWishes.length === 0 && (
                   <div className="text-center py-10 text-[#70735F] text-sm">
                     <MessageSquare className="w-8 h-8 text-[#C5A46D]/30 mx-auto mb-2" />
                     <p>لا توجد تهاني بعد</p>
@@ -303,13 +407,15 @@ export default function AdminDashboard() {
                     key={wish.id}
                     layout
                     initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: deletingId === wish.id ? 0 : 1, y: 0, scale: deletingId === wish.id ? 0.95 : 1 }}
+                    animate={{
+                      opacity: deletingId === wish.id ? 0 : 1,
+                      y: 0,
+                      scale: deletingId === wish.id ? 0.95 : 1,
+                    }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                     className={`p-5 rounded-2xl bg-white border shadow-sm transition-all ${
-                      wish.isHidden
-                        ? "border-orange-200 bg-orange-50/50 opacity-70"
-                        : "border-[#C5A46D]/25"
+                      wish.isHidden ? "border-orange-200 bg-orange-50/50 opacity-70" : "border-[#C5A46D]/25"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -319,12 +425,17 @@ export default function AdminDashboard() {
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-bold text-[#231F1A] truncate">{wish.name}</p>
-                          <p className="text-[10px] text-[#70735F]">
-                            {new Date(wish.timestamp).toLocaleDateString("ar-EG", {
-                              year: "numeric", month: "long", day: "numeric",
-                              hour: "2-digit", minute: "2-digit"
-                            })}
-                          </p>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="text-[10px] text-[#70735F]">
+                              {new Date(wish.timestamp).toLocaleDateString("ar-EG", {
+                                year: "numeric", month: "long", day: "numeric",
+                                hour: "2-digit", minute: "2-digit",
+                              })}
+                            </p>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#C5A46D]/10 text-[#A07F47] border border-[#C5A46D]/20">
+                              {recipientLabel(wish.recipient)}
+                            </span>
+                          </div>
                         </div>
                       </div>
 
@@ -334,7 +445,6 @@ export default function AdminDashboard() {
                         </span>
                       )}
 
-                      {/* Actions */}
                       <div className="flex items-center gap-1.5 shrink-0">
                         <button
                           type="button"
@@ -348,7 +458,6 @@ export default function AdminDashboard() {
                         >
                           {wish.isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                         </button>
-
                         <button
                           type="button"
                           onClick={() => handleDeleteWish(wish.id)}
@@ -359,13 +468,10 @@ export default function AdminDashboard() {
                               : "bg-red-100 text-red-500 hover:bg-red-200"
                           }`}
                         >
-                          {confirmDeleteId === wish.id ? (
-                            <AlertTriangle className="w-4 h-4" />
-                          ) : (
-                            <Trash2 className="w-4 h-4" />
-                          )}
+                          {confirmDeleteId === wish.id
+                            ? <AlertTriangle className="w-4 h-4" />
+                            : <Trash2 className="w-4 h-4" />}
                         </button>
-
                         {confirmDeleteId === wish.id && (
                           <button
                             type="button"
@@ -394,76 +500,106 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* ==================== RSVP TAB ==================== */}
+        {/* ═══════════════════════════ RSVP TAB ═══════════════════════════ */}
         {activeTab === "rsvp" && (
           <div className="space-y-4">
-            <h2 className="text-xl font-amiri font-bold text-[#231F1A]">بيانات التأكيد</h2>
-            {rsvpEntry ? (
-              <div className="p-6 rounded-2xl bg-white border border-[#C5A46D]/25 shadow-sm space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#DFCBA8] to-[#C5A46D] flex items-center justify-center font-bold text-lg text-[#151311] font-cormorant">
-                    {rsvpEntry.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-bold text-[#231F1A]">{rsvpEntry.name}</p>
-                    <p className="text-[11px] text-[#70735F]">
-                      {new Date(rsvpEntry.submittedAt).toLocaleDateString("ar-EG", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                    </p>
-                  </div>
-                </div>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-amiri font-bold text-[#231F1A]">
+                بيانات التأكيد ({rsvpEntries.length} ضيف)
+              </h2>
+              <button
+                type="button"
+                onClick={fetchRSVP}
+                className="flex items-center gap-1.5 text-xs font-cairo text-[#A07F47] hover:text-[#231F1A] cursor-pointer"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${rsvpLoading ? "animate-spin" : ""}`} />
+                <span>تحديث</span>
+              </button>
+            </div>
 
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="p-3 rounded-xl bg-[#F8F2EA]">
-                    <p className="text-[11px] text-[#70735F] mb-0.5">الحضور</p>
-                    <p className={`font-semibold ${rsvpEntry.attendance === "attending" ? "text-green-700" : "text-red-500"}`}>
-                      {rsvpEntry.attendance === "attending" ? "✅ سيحضر" : "❌ لن يحضر"}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-[#F8F2EA]">
-                    <p className="text-[11px] text-[#70735F] mb-0.5">المرافقون</p>
-                    <p className="font-semibold text-[#231F1A]">{rsvpEntry.guestsCount} مرافقين</p>
-                  </div>
-                </div>
-
-                {rsvpEntry.message && (
-                  <div className="p-4 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/20">
-                    <p className="text-[11px] text-[#70735F] mb-1">رسالة:</p>
-                    <p className="text-sm text-[#231F1A]/90 leading-relaxed">{rsvpEntry.message}</p>
-                  </div>
-                )}
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    localStorage.removeItem("wedding_rsvp_status");
-                    setRsvpEntry(null);
-                  }}
-                  className="flex items-center gap-2 text-xs text-red-500 hover:text-red-700 cursor-pointer font-cairo mt-2"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>مسح بيانات الحضور</span>
-                </button>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-4 rounded-2xl bg-white border border-green-200 text-center shadow-sm">
+                <p className="text-2xl font-bold font-cormorant text-green-700">{attendingCount}</p>
+                <p className="text-xs text-[#70735F] mt-1">✅ سيحضرون</p>
               </div>
-            ) : (
+              <div className="p-4 rounded-2xl bg-white border border-red-200 text-center shadow-sm">
+                <p className="text-2xl font-bold font-cormorant text-red-500">
+                  {rsvpEntries.length - attendingCount}
+                </p>
+                <p className="text-xs text-[#70735F] mt-1">❌ لن يحضروا</p>
+              </div>
+            </div>
+
+            {rsvpLoading ? (
+              <div className="text-center py-10">
+                <Loader2 className="w-6 h-6 text-[#C5A46D] animate-spin mx-auto" />
+              </div>
+            ) : rsvpEntries.length === 0 ? (
               <div className="text-center py-10 text-[#70735F] text-sm">
                 <Users className="w-8 h-8 text-[#C5A46D]/30 mx-auto mb-2" />
                 <p>لم يتم تأكيد الحضور بعد</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {[...rsvpEntries].reverse().map((entry) => (
+                  <div key={entry.id} className="p-5 rounded-2xl bg-white border border-[#C5A46D]/25 shadow-sm">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#DFCBA8] to-[#C5A46D] flex items-center justify-center font-bold text-lg text-[#151311] font-cormorant shrink-0">
+                        {entry.name.charAt(0)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-[#231F1A] truncate">{entry.name}</p>
+                        <p className="text-[11px] text-[#70735F]">
+                          {new Date(entry.submittedAt).toLocaleDateString("ar-EG", {
+                            year: "numeric", month: "long", day: "numeric",
+                            hour: "2-digit", minute: "2-digit",
+                          })}
+                        </p>
+                      </div>
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold font-cairo ${
+                        entry.attendance === "attending"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-600"
+                      }`}>
+                        {entry.attendance === "attending" ? "✅ سيحضر" : "❌ لن يحضر"}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 mt-3 text-sm">
+                      <div className="p-3 rounded-xl bg-[#F8F2EA] w-fit">
+                        <p className="text-[11px] text-[#70735F] mb-0.5">المرافقون</p>
+                        <p className="font-semibold text-[#231F1A]">
+                          {entry.guestsCount === "0" ? "بدون مرافقين" : `${entry.guestsCount} مرافق`}
+                        </p>
+                      </div>
+                      {entry.message && (
+                        <div className="p-3 rounded-xl bg-[#F8F2EA]">
+                          <p className="text-[11px] text-[#70735F] mb-0.5">رسالة</p>
+                          <p className="text-sm text-[#231F1A]/90 leading-relaxed">{entry.message}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
         )}
 
-        {/* ==================== STATS TAB ==================== */}
+        {/* ═══════════════════════════ STATS TAB ══════════════════════════ */}
         {activeTab === "stats" && (
           <div className="space-y-4">
             <h2 className="text-xl font-amiri font-bold text-[#231F1A]">الإحصائيات</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {[
-                { label: "إجمالي التهاني", value: wishes.length, icon: "💌" },
-                { label: "تهاني ظاهرة", value: visibleCount, icon: "👁️" },
-                { label: "تهاني مخفية", value: hiddenCount, icon: "🙈" },
-                { label: "تأكيد الحضور", value: rsvpEntry ? 1 : 0, icon: "✅" },
-                { label: "أيام للزفاف", value: Math.max(0, Math.floor((new Date("2026-10-14").getTime() - Date.now()) / 86400000)), icon: "📅" },
+                { label: "إجمالي التهاني",   value: wishes.length,                                                   icon: "💌" },
+                { label: "تهاني ظاهرة",      value: visibleCount,                                                    icon: "👁️" },
+                { label: "تهاني مخفية",      value: hiddenCount,                                                     icon: "🙈" },
+                { label: "سيحضرون",          value: attendingCount,                                                  icon: "✅" },
+                { label: "إجمالي الردود",    value: rsvpEntries.length,                                              icon: "📝" },
+                { label: "أيام للزفاف",      value: daysUntilWedding,                                                icon: "📅" },
+                { label: "للعروسين معاً",    value: wishes.filter((w) => (w.recipient ?? "both") === "both").length, icon: "💑" },
+                { label: "للعريس فقط",       value: wishes.filter((w) => w.recipient === "groom").length,            icon: "🤵" },
+                { label: "للعروسة فقط",      value: wishes.filter((w) => w.recipient === "bride").length,            icon: "👰" },
               ].map((stat) => (
                 <div key={stat.label} className="p-5 rounded-2xl bg-white border border-[#C5A46D]/20 shadow-sm text-center">
                   <div className="text-2xl mb-1">{stat.icon}</div>
@@ -475,7 +611,7 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* ==================== SETTINGS TAB ==================== */}
+        {/* ═════════════════════════ SETTINGS TAB ═════════════════════════ */}
         {activeTab === "settings" && (
           <div className="space-y-5">
             <div className="flex items-center justify-between">
@@ -492,13 +628,12 @@ export default function AdminDashboard() {
 
             <div className="p-5 rounded-2xl bg-white border border-[#C5A46D]/20 shadow-sm space-y-4">
               <h3 className="text-sm font-bold text-[#231F1A] border-b border-[#C5A46D]/20 pb-2">معلومات العروسين</h3>
-
               {[
-                { key: "groomAr", label: "اسم العريس (عربي)" },
-                { key: "brideAr", label: "اسم العروسة (عربي)" },
-                { key: "dayAr", label: "اليوم بالعربية" },
-                { key: "venueAr", label: "اسم القاعة" },
-                { key: "cityAr", label: "المدينة" },
+                { key: "groomAr",  label: "اسم العريس (عربي)" },
+                { key: "brideAr",  label: "اسم العروسة (عربي)" },
+                { key: "dayAr",    label: "اليوم بالعربية" },
+                { key: "venueAr",  label: "اسم القاعة" },
+                { key: "cityAr",   label: "المدينة" },
               ].map((field) => (
                 <div key={field.key}>
                   <label className="block text-xs font-semibold text-[#70735F] mb-1">{field.label}</label>
@@ -514,13 +649,12 @@ export default function AdminDashboard() {
 
             <div className="p-5 rounded-2xl bg-white border border-[#C5A46D]/20 shadow-sm space-y-4">
               <h3 className="text-sm font-bold text-[#231F1A] border-b border-[#C5A46D]/20 pb-2">نصوص الدعوة</h3>
-
               {[
-                { key: "introLine", label: "النص التمهيدي (Hero)", multiline: false },
-                { key: "inviteText", label: "جملة الدعوة الرئيسية", multiline: false },
-                { key: "invitationBody", label: "نص الدعوة الرسمية", multiline: true },
-                { key: "invitationClosing", label: "الجملة الختامية للدعوة", multiline: true },
-                { key: "romanticMomentsTitle", label: "عنوان القصة الرومانسية", multiline: false },
+                { key: "introLine",            label: "النص التمهيدي (Hero)",       multiline: false },
+                { key: "inviteText",           label: "جملة الدعوة الرئيسية",       multiline: false },
+                { key: "invitationBody",       label: "نص الدعوة الرسمية",          multiline: true },
+                { key: "invitationClosing",    label: "الجملة الختامية للدعوة",     multiline: true },
+                { key: "romanticMomentsTitle", label: "عنوان القصة الرومانسية",     multiline: false },
               ].map((field) => (
                 <div key={field.key}>
                   <label className="block text-xs font-semibold text-[#70735F] mb-1">{field.label}</label>
@@ -548,21 +682,13 @@ export default function AdminDashboard() {
               onClick={handleSaveConfig}
               className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#B58A48] to-[#DFCBA8] text-[#151311] font-bold font-cairo shadow-md hover:shadow-lg transition-all cursor-pointer touch-target flex items-center justify-center gap-2"
             >
-              {configSaved ? (
-                <>
-                  <Check className="w-4 h-4" />
-                  <span>تم الحفظ!</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  <span>حفظ التغييرات</span>
-                </>
-              )}
+              {configSaved
+                ? <><Check className="w-4 h-4" /><span>تم الحفظ!</span></>
+                : <><Save className="w-4 h-4" /><span>حفظ التغييرات</span></>}
             </button>
 
             <p className="text-center text-[11px] text-[#70735F] font-cairo">
-              ملاحظة: التغييرات تُحفظ محلياً في المتصفح. لتطبيق التغييرات على جميع الزوار، يجب تعديل ملف{" "}
+              ملاحظة: التغييرات تُحفظ محلياً في المتصفح. لتطبيق التغييرات على جميع الزوار يجب تعديل ملف{" "}
               <code className="text-[#A07F47] bg-[#FAF6F0] px-1 rounded">wedding.ts</code>
             </p>
           </div>
