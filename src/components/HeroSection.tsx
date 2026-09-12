@@ -103,11 +103,11 @@ export default function HeroSection() {
           </div>
 
           {/* Top Group: Ornament + Titles + Names + Date + Du'aa */}
-          <div className="relative z-10 w-full flex flex-col items-center">
+          <div className="relative z-10 w-full flex flex-col items-center pt-4 xs:pt-6">
             {/* Top Golden Islamic Rosette */}
-            <div className="mb-1.5 text-[#C5A059] flex items-center justify-center gap-2">
-              <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/70" />
-              <svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className="mb-2 text-[#C5A059] flex items-center justify-center gap-2">
+              <span className="w-7 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/70" />
+              <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(20, 20)">
                   <rect x="-3" y="-3" width="6" height="6" fill="#C5A059" transform="rotate(45)" />
                   <circle cx="0" cy="0" r="2.5" fill="#FAF6F0" />
@@ -117,16 +117,16 @@ export default function HeroSection() {
                   <path d="M9 0 C5 -2.5, 2 -2.5, 0 0 C2 2.5, 5 2.5, 9 0 Z" fill="#C5A059" opacity="0.9" />
                 </g>
               </svg>
-              <span className="w-6 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/70" />
+              <span className="w-7 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/70" />
             </div>
 
-            {/* Eyebrow */}
-            <p className="text-xs xs:text-sm font-cairo font-semibold text-[#4A3525] tracking-wide mb-0.5">
+            {/* Eyebrow - Larger font with breathing room */}
+            <p className="text-sm xs:text-base font-cairo font-bold text-[#3D281C] tracking-wide mb-1">
               يسرنا دعوتكم لحضور حفل زفاف
             </p>
 
-            {/* Couple Names - Larger and Bolder as requested */}
-            <h1 className="text-4xl xs:text-[42px] font-ruqaa font-bold text-[#24150C] leading-[1.25] my-0.5 flex items-center justify-center gap-2">
+            {/* Couple Names - Noticeably larger and bolder */}
+            <h1 className="text-[44px] xs:text-[50px] font-ruqaa font-bold text-[#24150C] leading-[1.2] my-0.5 flex items-center justify-center gap-2">
               <span>{wedding.groomAr}</span>
               <span className="text-[#C5A059] font-cormorant font-normal text-3xl xs:text-4xl leading-none pt-1">
                 &amp;
@@ -134,28 +134,28 @@ export default function HeroSection() {
               <span>{wedding.brideAr}</span>
             </h1>
 
-            {/* Date below names */}
-            <p className="text-sm xs:text-base font-cairo font-bold text-[#3D2B1F] mb-1">
+            {/* Date below names - Larger and bolder */}
+            <p className="text-base xs:text-lg font-cairo font-bold text-[#2E1D12] mb-1.5">
               14 أكتوبر 2026
             </p>
 
-            {/* Du'aa */}
-            <p className="text-xs xs:text-[13px] font-amiri font-bold text-[#3A281C] leading-relaxed max-w-[280px]">
+            {/* Du'aa - Larger and elegant */}
+            <p className="text-sm xs:text-[15px] font-amiri font-bold text-[#2E1D12] leading-relaxed max-w-[300px]">
               اللهم بارك لهما وبارك عليهما
               <br />
               واجمع بينهما في خير
             </p>
 
             {/* Small golden accent knot under Du'aa */}
-            <div className="mt-1.5 text-[#C5A059] flex items-center justify-center gap-1.5">
-              <span className="w-5 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
-              <span className="text-[10px]">❖</span>
-              <span className="w-5 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/60" />
+            <div className="mt-2 text-[#C5A059] flex items-center justify-center gap-1.5">
+              <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]/60" />
+              <span className="text-[11px]">❖</span>
+              <span className="w-6 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]/60" />
             </div>
           </div>
 
-          {/* Middle Group: Event Summary Card - Wider with clearer fonts */}
-          <div className="relative z-10 w-full max-w-[310px] xs:max-w-[330px] rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 px-4 py-3 xs:py-3.5 space-y-2 text-xs xs:text-[13px] font-cairo text-[#2A1F18] shadow-[0_6px_20px_rgba(46,35,28,0.06)] backdrop-blur-xs my-1">
+          {/* Middle Group: Event Summary Card */}
+          <div className="relative z-10 w-full max-w-[315px] xs:max-w-[335px] rounded-2xl bg-[#FFFDF9]/95 border border-[#C5A059]/45 px-4 py-3 xs:py-3.5 space-y-2 text-xs xs:text-[13px] font-cairo text-[#2A1F18] shadow-[0_6px_20px_rgba(46,35,28,0.06)] backdrop-blur-xs my-1">
             <div className="flex items-center justify-center gap-2">
               <Calendar className="w-4 h-4 text-[#8C5828] shrink-0" />
               <span className="font-bold text-[#24150C]">الأربعاء 14 أكتوبر 2026</span>
@@ -173,8 +173,8 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Bottom Group: Countdown Section + Down Chevron - Raised up to give room for bottom artwork */}
-          <div className="relative z-10 w-full flex flex-col items-center">
+          {/* Bottom Group: Countdown Section + Down Chevron - Raised UP significantly with mb-8 xs:mb-10 */}
+          <div className="relative z-10 w-full flex flex-col items-center mb-8 xs:mb-10 sm:mb-12">
             {/* Title with Diamond Accents */}
             <div className="flex items-center justify-center gap-2 mb-2 select-none">
               <span className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#C5A059]/60" />
@@ -188,7 +188,7 @@ export default function HeroSection() {
 
             {/* 4 Cards (LTR: Days, Hours, Minutes, Seconds) */}
             {mounted && (
-              <div className="grid grid-cols-4 gap-2 xs:gap-2.5 w-full max-w-[310px] xs:max-w-[330px] mx-auto" dir="ltr">
+              <div className="grid grid-cols-4 gap-2 xs:gap-2.5 w-full max-w-[315px] xs:max-w-[335px] mx-auto" dir="ltr">
                 <div className="py-2.5 xs:py-3 px-1.5 rounded-2xl bg-[#FFFDF9] border border-[#C5A059]/40 shadow-[0_4px_12px_rgba(46,35,28,0.04)] flex flex-col items-center justify-center">
                   <span className="text-xl xs:text-2xl font-bold font-cairo text-[#24150C] leading-none">
                     {timeLeft.days}
