@@ -378,7 +378,7 @@ export default function ShowcaseScreens() {
               </div>
 
               {/* Inner Box Section */}
-              <div className="absolute top-[40%] bottom-[16%] left-[13%] right-[13%] flex flex-col items-center justify-center text-center px-4 z-10">
+              <div className="absolute top-[44%] bottom-[22%] left-[13%] right-[13%] flex flex-col items-center justify-center text-center px-4 z-10">
                 <h4 className="font-cairo font-bold text-xs sm:text-sm text-[#241710] mb-1.5">
                   {activePrintWish.name}
                 </h4>
@@ -394,8 +394,8 @@ export default function ShowcaseScreens() {
                 </div>
               </div>
 
-              {/* Bottom Section - Raised above the bottom border line */}
-              <div className="absolute bottom-[11.5%] left-0 right-0 text-center z-10 pointer-events-none">
+              {/* Bottom Text - Sits safely inside the white box above the bottom border line */}
+              <div className="absolute bottom-[17%] left-0 right-0 text-center z-10 pointer-events-none">
                 <p className="font-amiri font-bold text-[11px] sm:text-xs text-[#432C1E]">
                   شكراً لكل من شاركنا فرحتنا
                 </p>
