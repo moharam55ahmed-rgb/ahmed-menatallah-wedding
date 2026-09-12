@@ -395,7 +395,7 @@ export default function ShowcaseScreens() {
               </div>
 
               {/* Bottom Section - Raised above the bottom border line */}
-              <div className="absolute bottom-[11%] left-0 right-0 text-center z-10 pointer-events-none">
+              <div className="absolute bottom-[11.5%] left-0 right-0 text-center z-10 pointer-events-none">
                 <p className="font-amiri font-bold text-[11px] sm:text-xs text-[#432C1E]">
                   شكراً لكل من شاركنا فرحتنا
                 </p>
