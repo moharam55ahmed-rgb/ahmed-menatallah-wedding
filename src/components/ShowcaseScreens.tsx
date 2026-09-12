@@ -352,74 +352,54 @@ export default function ShowcaseScreens() {
         <div className="flex flex-col items-center">
           <div className="w-full bg-[#FFFDF9] rounded-[28px] border border-[#E8DFC8] p-5 sm:p-6 shadow-[0_10px_30px_rgba(50,40,30,0.05)] text-center relative flex flex-col items-center">
             
-            {/* Top Certificate Card with Baroque Gold Frame & Laurels */}
-            <div className="w-full aspect-[1/1.38] rounded-2xl border-[1.5px] border-[#D4C3A3] p-4 sm:p-5 relative flex flex-col justify-between items-center text-center bg-[#FFFDF9] overflow-hidden">
-              
-              {/* Ornate Corner Flourishes */}
-              <div className="absolute top-2 right-2 text-[#C5A059] text-xs select-none">❖</div>
-              <div className="absolute top-2 left-2 text-[#C5A059] text-xs select-none">❖</div>
-              <div className="absolute bottom-2 right-2 text-[#C5A059] text-xs select-none">❖</div>
-              <div className="absolute bottom-2 left-2 text-[#C5A059] text-xs select-none">❖</div>
+            {/* Top Certificate Card with Authentic Blank Background */}
+            <div className="relative aspect-[682/1024] w-full max-w-[340px] sm:max-w-[360px] mx-auto rounded-2xl overflow-hidden shadow-xl border border-[#E8DFC8] bg-[#FFFDF9]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/wish-print-bg.png"
+                alt="كارت طباعة التهنئة"
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0"
+              />
 
-              {/* Symmetrical Laurel Branches on Left & Right */}
-              <div className="absolute top-8 bottom-8 right-1 w-3.5 flex flex-col justify-between text-[#C5A059]/60 select-none text-[9px] pointer-events-none">
-                <span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span>
-              </div>
-              <div className="absolute top-8 bottom-8 left-1 w-3.5 flex flex-col justify-between text-[#C5A059]/60 select-none text-[9px] pointer-events-none scale-x-[-1]">
-                <span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span><span>🌿</span>
-              </div>
-
-              {/* Certificate Header */}
-              <div className="pt-1">
-                <h3 className="font-amiri font-bold text-sm sm:text-base text-[#241710]">
+              {/* Top Section */}
+              <div className="absolute top-[13%] left-[12%] right-[12%] text-center z-10">
+                <p className="font-amiri font-bold text-xs sm:text-sm text-[#241710] tracking-wide">
                   كلمات من القلب
-                </h3>
-                <p className="font-cairo text-[10px] text-[#9B8C7E] mt-0.5">
+                </p>
+                <p className="font-cairo text-[9px] sm:text-[10px] text-[#8C7A6B] mt-0.5 font-medium">
                   دعوة فرح زفاف
                 </p>
-              </div>
-
-              {/* Calligraphic Couple Names */}
-              <div className="my-1 text-center">
-                <h2 className="text-2xl sm:text-3xl font-bold font-ruqaa text-[#241710] tracking-wide">
-                  أحمد <span className="font-cormorant font-normal text-xl text-[#C5A059]">&amp;</span> منة الله
-                </h2>
-                <p className="font-cairo text-[11px] font-bold text-[#5C4533] mt-0.5">
+                <h3 className="text-2xl sm:text-3xl font-bold font-ruqaa text-[#241710] my-0.5 sm:my-1">
+                  أحمد <span className="font-cormorant font-normal text-lg text-[#C5A059]">&amp;</span> منة الله
+                </h3>
+                <p className="font-cairo text-[10px] sm:text-xs font-bold text-[#432C1E]">
                   14 أكتوبر 2026
                 </p>
               </div>
 
-              {/* Rosette Divider */}
-              <div className="flex items-center justify-center gap-1.5 text-[#C5A059] text-[10px] my-0.5 select-none">
-                <span className="w-6 h-[1px] bg-gradient-to-r from-transparent to-[#C5A059]" />
-                <span>✦</span>
-                <span>❖</span>
-                <span>✦</span>
-                <span className="w-6 h-[1px] bg-gradient-to-l from-transparent to-[#C5A059]" />
-              </div>
-
-              {/* Inner Wish Card */}
-              <div className="w-full max-w-[250px] p-3 rounded-xl bg-[#FAF7F2] border border-[#E8DFC8] shadow-2xs my-1 text-center">
-                <h4 className="font-cairo font-bold text-xs sm:text-sm text-[#241710]">
+              {/* Inner Box Section */}
+              <div className="absolute top-[40%] bottom-[16%] left-[13%] right-[13%] flex flex-col items-center justify-center text-center px-4 z-10">
+                <h4 className="font-cairo font-bold text-xs sm:text-sm text-[#241710] mb-1.5">
                   {activePrintWish.name}
                 </h4>
-                {activePrintWish.fullLines.map((line, idx) => (
-                  <p key={idx} className="font-cairo text-[10px] sm:text-[11px] text-[#2E2016] mt-0.5 leading-snug">
-                    {line}
-                  </p>
-                ))}
-                <div className="text-center mt-1 text-xs">
-                  <span className="text-red-500 select-none">{activePrintWish.printHearts}</span>
+                <div className="space-y-0.5 mb-2 max-w-[220px]">
+                  {activePrintWish.fullLines.map((line, idx) => (
+                    <p key={idx} className="font-cairo font-semibold text-[10px] sm:text-[11px] text-[#2E2016] leading-relaxed">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+                <div className="text-xs sm:text-sm">
+                  <span className="text-red-500 select-none">❤️❤️</span>
                 </div>
               </div>
 
-              {/* Certificate Footer Note */}
-              <div className="pb-1 text-center">
-                <p className="font-amiri font-bold text-xs text-[#432C1E]">
+              {/* Bottom Section - Raised above the bottom border line */}
+              <div className="absolute bottom-[10.5%] left-0 right-0 text-center z-10">
+                <p className="font-amiri font-bold text-[11px] sm:text-xs text-[#432C1E]">
                   شكراً لكل من شاركنا فرحتنا
                 </p>
               </div>
-
             </div>
 
             {/* Print Trigger Button */}
