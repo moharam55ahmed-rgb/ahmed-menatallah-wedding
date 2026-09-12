@@ -43,7 +43,7 @@ export default function AdminDashboard() {
   const [wishesSearch, setWishesSearch] = useState("");
   const [recipientFilter, setRecipientFilter] = useState<RecipientFilter>("all");
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [wishToDelete, setWishToDelete] = useState<GuestWish | null>(null);
   const [wishesLoading, setWishesLoading] = useState(false);
 
   // Print Wall State
@@ -178,17 +178,18 @@ export default function AdminDashboard() {
     } catch { /* silent */ }
   };
 
-  const handleDeleteWish = async (id: string) => {
-    if (confirmDeleteId !== id) { setConfirmDeleteId(id); return; }
-    setDeletingId(id);
+  const handleConfirmDelete = async () => {
+    if (!wishToDelete) return;
+    setDeletingId(wishToDelete.id);
     try {
-      await fetch(`/api/wishes/${id}`, { method: "DELETE" });
-      setTimeout(() => {
-        setWishes((prev) => prev.filter((w) => w.id !== id));
-        setDeletingId(null);
-        setConfirmDeleteId(null);
-      }, 300);
+      const res = await fetch(`/api/wishes/${wishToDelete.id}`, { method: "DELETE" });
+      if (res.ok) {
+        setWishes((prev) => prev.filter((w) => w.id !== wishToDelete.id));
+        setWishToDelete(null);
+      }
     } catch {
+      // silent
+    } finally {
       setDeletingId(null);
     }
   };
@@ -550,27 +551,12 @@ export default function AdminDashboard() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleDeleteWish(wish.id)}
-                          title="حذف"
-                          className={`p-2 rounded-lg transition-colors cursor-pointer touch-target ${
-                            confirmDeleteId === wish.id
-                              ? "bg-red-500 text-white hover:bg-red-600"
-                              : "bg-red-100 text-red-500 hover:bg-red-200"
-                          }`}
+                          onClick={() => setWishToDelete(wish)}
+                          title="حذف التهنئة"
+                          className="p-2 rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition-colors cursor-pointer touch-target"
                         >
-                          {confirmDeleteId === wish.id
-                            ? <AlertTriangle className="w-4 h-4" />
-                            : <Trash2 className="w-4 h-4" />}
+                          <Trash2 className="w-4 h-4" />
                         </button>
-                        {confirmDeleteId === wish.id && (
-                          <button
-                            type="button"
-                            onClick={() => setConfirmDeleteId(null)}
-                            className="p-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200 cursor-pointer touch-target"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        )}
                       </div>
                     </div>
 
@@ -583,12 +569,6 @@ export default function AdminDashboard() {
                     <p className="mt-2 text-sm text-[#231F1A]/90 leading-relaxed border-r-2 border-[#C5A46D]/40 pr-3 break-words">
                       {wish.message}
                     </p>
-
-                    {confirmDeleteId === wish.id && (
-                      <div className="mt-3 p-2 rounded-lg bg-red-50 border border-red-200 text-xs text-red-600 font-cairo text-center">
-                        اضغط على زر الحذف مرة أخرى للتأكيد
-                      </div>
-                    )}
                   </motion.div>
                 ))}
               </AnimatePresence>
@@ -987,6 +967,65 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
+      {/* ══════════════════════════ DELETE CONFIRMATION MODAL ══════════════════════════ */}
+      <AnimatePresence>
+        {wishToDelete && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs print:hidden">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-[#FBF8F1] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#C9A96A]/35 text-[#241D18] font-cairo"
+              dir="rtl"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                  <AlertTriangle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-amiri font-bold text-[#241D18]">
+                    هل أنت متأكد من حذف هذه التهنئة؟
+                  </h3>
+                  <p className="text-xs font-cairo text-[#5C5146] mt-0.5">
+                    المرسِل: {wishToDelete.name}
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-xs font-cairo text-[#5C5146] bg-white p-3 rounded-xl border border-[#C9A96A]/20 mb-5 leading-relaxed line-clamp-3">
+                &ldquo;{wishToDelete.message}&rdquo;
+              </p>
+
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setWishToDelete(null)}
+                  disabled={deletingId !== null}
+                  className="px-5 py-2.5 rounded-xl border border-[#C9A96A]/30 text-xs font-cairo font-semibold text-[#5C5146] hover:bg-[#F7F1E6] transition-colors cursor-pointer"
+                >
+                  إلغاء
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmDelete}
+                  disabled={deletingId !== null}
+                  className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-cairo font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {deletingId ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>جاري الحذف...</span>
+                    </>
+                  ) : (
+                    <span>حذف</span>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* ══════════════════════════ PRINT FILTER MODAL ══════════════════════════ */}
       <AnimatePresence>
         {showPrintModal && (
@@ -1142,9 +1181,9 @@ export default function AdminDashboard() {
             ✦ حائط التهاني التذكاري ✦
           </div>
           <h1 className="text-3xl font-bold text-[#231F1A] mb-1 font-amiri">
-            تهانينا للعروسين
+            كلمات من القلب
           </h1>
-          <h2 className="text-2xl font-bold text-[#A07F47] mb-2 font-cormorant">
+          <h2 className="text-2xl font-bold text-[#A07F47] mb-2 font-amiri">
             أحمد &amp; منة الله
           </h2>
           <p className="text-sm text-[#70735F] tracking-wide font-amiri">

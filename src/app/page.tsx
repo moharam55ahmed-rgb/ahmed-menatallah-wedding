@@ -6,12 +6,14 @@ import OpeningExperience from "@/components/OpeningExperience";
 import HeroSection from "@/components/HeroSection";
 import PersonalizedGreeting from "@/components/PersonalizedGreeting";
 import InvitationMessage from "@/components/InvitationMessage";
+import Countdown from "@/components/Countdown";
 import SaveTheDate from "@/components/SaveTheDate";
 import VenueSection from "@/components/VenueSection";
-import Countdown from "@/components/Countdown";
+import RSVPSection from "@/components/RSVPSection";
+import ContactSection from "@/components/ContactSection";
+import ShareSection from "@/components/ShareSection";
 import RomanticMoments from "@/components/RomanticMoments";
 import WishesWall from "@/components/WishesWall";
-import RSVPSection from "@/components/RSVPSection";
 import ZaghareetButton from "@/components/ZaghareetButton";
 import FinalScene from "@/components/FinalScene";
 import FloatingControls from "@/components/FloatingControls";
@@ -20,47 +22,51 @@ import CelebrationSparkles from "@/components/CelebrationSparkles";
 export default function WeddingPage() {
   return (
     <AudioProvider>
-      <main className="relative min-h-screen bg-[#F8F2EA] text-[#231F1A] overflow-x-hidden selection:bg-[#C5A46D]/30">
+      <main className="relative min-h-screen bg-[#F7F1E6] text-[#241D18] overflow-x-hidden selection:bg-[#C9A96A]/30">
 
         {/* Ambient celebratory sparkles across viewport */}
         <CelebrationSparkles />
 
-        {/* 1. Cinematic Opening Envelope & Royal Seal Experience */}
+        {/* 1. Opening Experience (Envelope, couple names, date, افتح الدعوة ✨) */}
         <OpeningExperience />
 
         {/* Main invitation storytelling flow */}
         <div>
-          {/* 2. Hero: The Royal Announcement & Couple Names */}
+          {/* 2. Main Hero (Couple names, wedding blessing, concise date/time/venue) */}
           <HeroSection />
 
-          {/* 3. Personalized Guest Greeting */}
+          {/* 3. Personalized Guest Greeting & Formal Invitation Letter */}
           <PersonalizedGreeting />
-
-          {/* 4. Formal Arabic Royal Invitation Letter */}
           <InvitationMessage />
 
-          {/* 5. Wedding Date & Calendar Integration */}
-          <SaveTheDate />
-
-          {/* 6. Venue & Transportation Guide */}
-          <VenueSection />
-
-          {/* 7. Live Wedding Countdown */}
+          {/* 4. Live Wedding Countdown (باقي على ليلة العمر) */}
           <Countdown />
 
-          {/* 8. Romantic Moments & Evening Program Timeline */}
-          <RomanticMoments />
+          {/* 5. Event Details & Add to Calendar (تفاصيل المناسبة / احفظوا الموعد) */}
+          <SaveTheDate />
 
-          {/* 9. Global Wishes & Blessings Wall */}
-          <WishesWall />
+          {/* 6. Location & Ride Options (الوصول إلى القاعة / افتح الخريطة) */}
+          <VenueSection />
 
-          {/* 10. RSVP Attendance Confirmation */}
+          {/* 7. RSVP Attendance (يشرفنا حضوركم / نعم، بإذن الله ❤️ / أعتذر عن الحضور) */}
           <RSVPSection />
 
-          {/* 11. Cultural Zaghareet Sound Effect Celebration */}
+          {/* 8. Family Contact & Assistance (محتاج مساعدة؟ / اتصل الآن) */}
+          <ContactSection />
+
+          {/* 9. Share Invitation (شارك فرحتنا / مشاركة الدعوة) */}
+          <ShareSection />
+
+          {/* 10. Evening Timeline & Romantic Moments */}
+          <RomanticMoments />
+
+          {/* 11. Wishes Wall & Guestbook (كلمات من القلب / أرسل تهنئتك ❤️) */}
+          <WishesWall />
+
+          {/* 12. Cultural Zaghareet Sound Effect Celebration */}
           <ZaghareetButton />
 
-          {/* 12. Emotional Closing Royal Blessing */}
+          {/* 13. Minimal Elegant Footer */}
           <FinalScene />
         </div>
 

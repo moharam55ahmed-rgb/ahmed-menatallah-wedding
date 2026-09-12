@@ -15,57 +15,57 @@ export interface StickerCategory {
 
 export const WEDDING_STICKERS: StickerCategory[] = [
   {
-    nameAr: "قلوب",
+    nameAr: "❤️ حب",
     stickers: [
-      { id: "heart-red", emoji: "❤️", labelAr: "قلب أحمر" },
-      { id: "heart-white", emoji: "🤍", labelAr: "قلب أبيض" },
-      { id: "heart-sparkle", emoji: "💖", labelAr: "قلب متألق" },
-      { id: "heart-ribbon", emoji: "💝", labelAr: "هدية محبة" },
+      { id: "heart-red", emoji: "❤️", labelAr: "حب دائم" },
+      { id: "heart-white", emoji: "🤍", labelAr: "نقاء ومحبة" },
+      { id: "love-hands", emoji: "🫶", labelAr: "من القلب" },
+      { id: "love-smile", emoji: "🥰", labelAr: "سعادة غامرة" },
     ],
   },
   {
-    nameAr: "حب",
+    nameAr: "💍 زفاف",
     stickers: [
-      { id: "love-hands", emoji: "🫶", labelAr: "قلب باليدين" },
-      { id: "love-smile", emoji: "🥰", labelAr: "محبة وسعادة" },
-      { id: "love-couple", emoji: "💑", labelAr: "عريسان" },
-      { id: "love-dove", emoji: "🕊️", labelAr: "حمامة سلام" },
-    ],
-  },
-  {
-    nameAr: "زفاف",
-    stickers: [
-      { id: "wedding-ring", emoji: "💍", labelAr: "خاتم الزفاف" },
-      { id: "wedding-bride", emoji: "👰", labelAr: "عروسة" },
-      { id: "wedding-groom", emoji: "🤵", labelAr: "عريس" },
+      { id: "wedding-ring", emoji: "💍", labelAr: "دبلة العمر" },
+      { id: "wedding-bride", emoji: "👰", labelAr: "أجمل عروسة" },
+      { id: "wedding-groom", emoji: "🤵", labelAr: "أغلى عريس" },
       { id: "wedding-bells", emoji: "💒", labelAr: "قصر الفرح" },
     ],
   },
   {
-    nameAr: "تهنئة",
+    nameAr: "💐 ورود",
     stickers: [
-      { id: "congrats-popper", emoji: "🎉", labelAr: "احتفال" },
-      { id: "congrats-confetti", emoji: "🎊", labelAr: "أفراح" },
-      { id: "congrats-cheers", emoji: "🥂", labelAr: "نخب الفرحة" },
-      { id: "congrats-clap", emoji: "👏", labelAr: "تحية ومباركة" },
-    ],
-  },
-  {
-    nameAr: "ورود",
-    stickers: [
-      { id: "flower-rose", emoji: "🌹", labelAr: "وردة جورية" },
+      { id: "flower-rose", emoji: "🌹", labelAr: "وردة محبة" },
       { id: "flower-bouquet", emoji: "💐", labelAr: "باقة ورد" },
-      { id: "flower-blossom", emoji: "🌸", labelAr: "زهر ربيعي" },
-      { id: "flower-tulip", emoji: "🌷", labelAr: "توليب أنيق" },
+      { id: "flower-blossom", emoji: "🌸", labelAr: "زهر وريحان" },
+      { id: "flower-tulip", emoji: "🌷", labelAr: "توليب فاخر" },
     ],
   },
   {
-    nameAr: "احتفال",
+    nameAr: "✨ تهنئة",
     stickers: [
-      { id: "sparkle-magic", emoji: "✨", labelAr: "بريق ذهبي" },
-      { id: "sparkle-star", emoji: "⭐", labelAr: "نجمة متلألئة" },
-      { id: "crescent-moon", emoji: "🌙", labelAr: "هلال الخير" },
-      { id: "crown-royal", emoji: "👑", labelAr: "تاج ملكي" },
+      { id: "sparkle-magic", emoji: "✨", labelAr: "ألف مبروك" },
+      { id: "sparkle-star", emoji: "⭐", labelAr: "نجمة الفرح" },
+      { id: "crown-royal", emoji: "👑", labelAr: "زفاف ملكي" },
+      { id: "love-dove", emoji: "🕊️", labelAr: "سلام ومودة" },
+    ],
+  },
+  {
+    nameAr: "🎉 احتفال",
+    stickers: [
+      { id: "congrats-popper", emoji: "🎉", labelAr: "فرحة الليلة" },
+      { id: "congrats-confetti", emoji: "🎊", labelAr: "أجمل ليالينا" },
+      { id: "congrats-cheers", emoji: "🥂", labelAr: "نخب السعادة" },
+      { id: "congrats-clap", emoji: "👏", labelAr: "مباركة وفرح" },
+    ],
+  },
+  {
+    nameAr: "🕊️ دعوات",
+    stickers: [
+      { id: "dua-peace", emoji: "🕊️", labelAr: "بارك الله لكما" },
+      { id: "dua-hands", emoji: "🤲", labelAr: "دعاء مستجاب" },
+      { id: "dua-crescent", emoji: "🌙", labelAr: "هلال الخير" },
+      { id: "dua-heart", emoji: "💖", labelAr: "أدام الله الفرح" },
     ],
   },
 ];

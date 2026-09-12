@@ -65,10 +65,10 @@ export default function Countdown() {
   }
 
   const units = [
-    { label: "أيام", value: timeLeft.days, sub: "Days" },
-    { label: "ساعات", value: timeLeft.hours, sub: "Hours" },
-    { label: "دقائق", value: timeLeft.minutes, sub: "Minutes" },
-    { label: "ثوانٍ", value: timeLeft.seconds, sub: "Seconds" },
+    { label: "يوم", value: timeLeft.days, sub: "Days" },
+    { label: "ساعة", value: timeLeft.hours, sub: "Hours" },
+    { label: "دقيقة", value: timeLeft.minutes, sub: "Minutes" },
+    { label: "ثانية", value: timeLeft.seconds, sub: "Seconds" },
   ];
 
   return (
@@ -94,7 +94,7 @@ export default function Countdown() {
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-amiri font-bold text-[#231F1A]">
-            العد التنازلي لليلة العمر
+            باقي على ليلة العمر
           </h2>
           <p className="text-sm font-cairo text-[#70735F] mt-2">
             كل لحظة تقرّبنا من مشاركتكم أجمل فرحة

@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CalendarPlus, Check, Clock } from "lucide-react";
+import { CalendarPlus, Check, CalendarDays, ExternalLink } from "lucide-react";
 import { wedding } from "@/config/wedding";
 
 export default function SaveTheDate() {
   const [downloaded, setDownloaded] = useState(false);
 
   const handleDownloadICS = () => {
-    // Generate valid iCalendar (.ics) file
+    // Generate valid iCalendar (.ics) file with UTF-8
     const icsContent = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
@@ -17,19 +17,19 @@ export default function SaveTheDate() {
       "CALSCALE:GREGORIAN",
       "METHOD:PUBLISH",
       "BEGIN:VEVENT",
-      `SUMMARY:حفل زفاف أحمد ومنة الله 💍`,
+      "SUMMARY:زفاف أحمد & منة الله",
       `DESCRIPTION:يسعدنا حضوركم ومشاركتنا فرحة زفافنا في قاعة قصر كازبلانكا بشبين القناطر.\\nالعنوان: ${wedding.location.addressAr}`,
       `LOCATION:${wedding.location.addressAr}`,
       "DTSTART:20261014T170000Z", // 19:00 Cairo time (UTC+2)
       "DTEND:20261014T220000Z",   // 24:00 Cairo time
       "STATUS:CONFIRMED",
       "BEGIN:VALARM",
-      "TRIGGER:-P1D", // 1 day before reminder
+      "TRIGGER:-P1D",
       "DESCRIPTION:تذكير: حفل زفاف أحمد ومنة الله غدًا!",
       "ACTION:DISPLAY",
       "END:VALARM",
       "BEGIN:VALARM",
-      "TRIGGER:-PT3H", // 3 hours before reminder
+      "TRIGGER:-PT3H",
       "DESCRIPTION:تذكير: حفل زفاف أحمد ومنة الله يبدأ بعد 3 ساعات!",
       "ACTION:DISPLAY",
       "END:VALARM",
@@ -49,101 +49,94 @@ export default function SaveTheDate() {
     setTimeout(() => setDownloaded(false), 4000);
   };
 
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+    "زفاف أحمد & منة الله"
+  )}&dates=20261014T170000Z/20261014T220000Z&details=${encodeURIComponent(
+    `يسعدنا حضوركم ومشاركتنا فرحة زفافنا في ${wedding.venueAr}`
+  )}&location=${encodeURIComponent(wedding.location.addressAr)}`;
+
   return (
-    <section className="py-20 px-4 relative overflow-hidden text-center">
-      <div className="max-w-3xl mx-auto flex flex-col items-center">
+    <section id="event-details" className="py-20 px-4 relative overflow-hidden text-center bg-[#FBF8F1]" dir="rtl">
+      {/* Delicate background ambiance */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle,#C5A46D_1px,transparent_1px)] [background-size:24px_24px]" />
+
+      <div className="max-w-4xl mx-auto flex flex-col items-center relative z-10">
         
-        {/* Subtle Decorative Arch Header */}
+        {/* Section Header: تفاصيل المناسبة */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col items-center mb-8"
+          className="flex flex-col items-center mb-10"
         >
-          <div className="w-16 h-[1.5px] bg-[#C5A46D] mb-4" />
-          <h3 className="text-sm md:text-base font-cormorant uppercase tracking-[0.4em] text-[#70735F]">
-            SAVE THE DATE
-          </h3>
-          <span className="text-2xl md:text-3xl font-amiri text-[#C5A46D] mt-2">
-            احفظوا الموعد
-          </span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#C5A46D]/15 border border-[#C5A46D]/30 mb-3">
+            <CalendarDays className="w-3.5 h-3.5 text-[#A07F47]" />
+            <span className="text-xs uppercase tracking-[0.3em] text-[#70735F] font-cormorant font-semibold">
+              Event Details &amp; Calendar
+            </span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-amiri font-bold text-[#241D18]">
+            تفاصيل المناسبة
+          </h2>
+          <p className="text-xs sm:text-sm font-cairo text-[#70735F] mt-2">
+            احفظوا الموعد لتشاركونا أجمل ليالي العمر
+          </p>
         </motion.div>
 
-        {/* Large Editorial Typographic Date Composition */}
+        {/* 3 Clear Event Details Cards */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.2 }}
-          className="w-full flex items-center justify-center gap-4 sm:gap-8 md:gap-12 my-6"
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 mb-10"
         >
-          {/* Day */}
-          <div className="flex flex-col items-center">
-            <span className="text-6xl sm:text-7xl md:text-8xl font-cormorant font-light text-[#231F1A] tracking-tighter">
-              14
-            </span>
-            <span className="text-xs sm:text-sm font-cairo text-[#70735F] mt-1">
-              أكتوبر
-            </span>
+          {/* 1. Date */}
+          <div className="p-6 rounded-2xl bg-white/90 border border-[#C5A46D]/30 shadow-xs flex flex-col items-center text-center">
+            <div className="w-11 h-11 rounded-full bg-[#FAF5EE] border border-[#C5A46D]/30 flex items-center justify-center text-xl mb-3">
+              📅
+            </div>
+            <span className="text-xs font-semibold font-cairo text-[#70735F] mb-1">التاريخ</span>
+            <h3 className="text-lg font-amiri font-bold text-[#241D18]">الأربعاء، 14 أكتوبر 2026</h3>
+            <span className="text-[11px] font-cormorant text-[#A07F47] mt-0.5 font-bold">14 • 10 • 2026</span>
           </div>
 
-          <span className="text-4xl sm:text-5xl font-cormorant text-[#C5A46D]/50 font-light select-none">
-            /
-          </span>
-
-          {/* Month */}
-          <div className="flex flex-col items-center">
-            <span className="text-6xl sm:text-7xl md:text-8xl font-cormorant font-light text-[#231F1A] tracking-tighter">
-              10
-            </span>
-            <span className="text-xs sm:text-sm font-cairo text-[#70735F] mt-1">
-              الشهر
-            </span>
+          {/* 2. Time */}
+          <div className="p-6 rounded-2xl bg-white/90 border border-[#C5A46D]/30 shadow-xs flex flex-col items-center text-center">
+            <div className="w-11 h-11 rounded-full bg-[#FAF5EE] border border-[#C5A46D]/30 flex items-center justify-center text-xl mb-3">
+              🕖
+            </div>
+            <span className="text-xs font-semibold font-cairo text-[#70735F] mb-1">الوقت</span>
+            <h3 className="text-lg font-amiri font-bold text-[#241D18]">7:00 مساءً</h3>
+            <span className="text-[11px] font-cairo text-[#A07F47] mt-0.5">استقبال الضيوف الكرام</span>
           </div>
 
-          <span className="text-4xl sm:text-5xl font-cormorant text-[#C5A46D]/50 font-light select-none">
-            /
-          </span>
-
-          {/* Year */}
-          <div className="flex flex-col items-center">
-            <span className="text-6xl sm:text-7xl md:text-8xl font-cormorant font-light text-[#231F1A] tracking-tighter">
-              2026
-            </span>
-            <span className="text-xs sm:text-sm font-cairo text-[#70735F] mt-1">
-              السنة
-            </span>
+          {/* 3. Venue */}
+          <div className="p-6 rounded-2xl bg-white/90 border border-[#C5A46D]/30 shadow-xs flex flex-col items-center text-center">
+            <div className="w-11 h-11 rounded-full bg-[#FAF5EE] border border-[#C5A46D]/30 flex items-center justify-center text-xl mb-3">
+              📍
+            </div>
+            <span className="text-xs font-semibold font-cairo text-[#70735F] mb-1">المكان</span>
+            <h3 className="text-lg font-amiri font-bold text-[#241D18]">{wedding.venueAr}</h3>
+            <span className="text-[11px] font-cairo text-[#70735F] mt-0.5">{wedding.cityAr}</span>
           </div>
         </motion.div>
 
-        {/* Timing and Day in Arabic */}
+        {/* Action Buttons: أضف إلى التقويم */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex items-center justify-center gap-4 text-base sm:text-lg md:text-xl font-cairo text-[#231F1A]/90 mt-4 mb-8"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3"
         >
-          <span className="font-semibold text-[#A07F47]">{wedding.dayAr}</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#C5A46D]" />
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-[#C5A46D]" />
-            <span>الساعة 7:00 مساءً</span>
-          </div>
-        </motion.div>
-
-        {/* Add to Calendar CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
+          {/* Main Download ICS / Apple / Android */}
           <button
             type="button"
             onClick={handleDownloadICS}
-            className="group relative inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-full bg-[#231F1A] text-[#F8F2EA] hover:bg-[#151311] border border-[#C5A46D]/40 shadow-lg hover:shadow-xl hover:border-[#C5A46D] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer touch-target"
+            className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] border border-[#C9A96A]/40 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer touch-target"
           >
             {downloaded ? (
               <>
@@ -152,11 +145,22 @@ export default function SaveTheDate() {
               </>
             ) : (
               <>
-                <CalendarPlus className="w-4 h-4 text-[#C5A46D] transition-transform group-hover:scale-110" />
-                <span className="font-cairo text-sm font-semibold">أضفها إلى التقويم</span>
+                <CalendarPlus className="w-4 h-4 text-[#C9A96A]" />
+                <span className="font-cairo text-sm font-semibold">أضف إلى التقويم</span>
               </>
             )}
           </button>
+
+          {/* Google Calendar Direct Link */}
+          <a
+            href={googleCalendarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FAF5EE] text-[#3A2D24] border border-[#C9A96A]/35 text-sm font-cairo font-semibold shadow-2xs hover:shadow-xs transition-all cursor-pointer touch-target"
+          >
+            <span>Google Calendar</span>
+            <ExternalLink className="w-3.5 h-3.5 text-[#C9A96A]" />
+          </a>
         </motion.div>
 
       </div>

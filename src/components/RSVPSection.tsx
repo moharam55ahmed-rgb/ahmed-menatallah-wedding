@@ -94,10 +94,10 @@ export default function RSVPSection() {
             </span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-amiri font-bold text-[#231F1A]">
-            هل ستشاركونا الفرحة؟
+            يشرفنا حضوركم
           </h2>
           <p className="text-sm sm:text-base font-cairo text-[#70735F] mt-2">
-            يسعدنا تأكيد حضوركم لهذا اليوم المميز
+            يسعدنا أن تشاركونا فرحتنا
           </p>
         </motion.div>
 
@@ -121,7 +121,7 @@ export default function RSVPSection() {
               </div>
 
               <h3 className="text-3xl font-amiri font-bold text-[#231F1A]">
-                {attendance === "attending" ? "يسعدنا ويشرفنا حضوركم!" : "شكرًا لتواصلكم اللطيف"}
+                {attendance === "attending" ? "تم تأكيد حضوركم ❤️" : "شكرًا لتواصلكم اللطيف"}
               </h3>
 
               <p className="text-sm sm:text-base font-cairo text-[#231F1A]/80 leading-relaxed max-w-sm mx-auto">
@@ -176,7 +176,7 @@ export default function RSVPSection() {
                     }`}
                   >
                     <UserCheck className="w-4 h-4 text-[#C5A46D]" />
-                    <span>نعم، سأكون حاضرًا</span>
+                    <span>نعم، بإذن الله ❤️</span>
                   </button>
 
                   <button
@@ -188,7 +188,7 @@ export default function RSVPSection() {
                         : "bg-white/60 text-[#231F1A] border-[#C5A46D]/30 hover:border-[#C5A46D]"
                     }`}
                   >
-                    <span>للأسف لن أتمكن من الحضور</span>
+                    <span>أعتذر عن الحضور</span>
                   </button>
                 </div>
               </div>

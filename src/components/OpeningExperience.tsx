@@ -2,11 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import confetti from "canvas-confetti";
 import { wedding } from "@/config/wedding";
 import { useAudio } from "./AudioContext";
-import { MailOpen, Sparkles } from "lucide-react";
+import { Volume2, VolumeX, Sparkles } from "lucide-react";
 
 interface OpeningExperienceProps {
   onOpen?: () => void;
@@ -15,7 +14,7 @@ interface OpeningExperienceProps {
 export default function OpeningExperience({ onOpen }: OpeningExperienceProps) {
   const [phase, setPhase] = useState<"idle" | "opening" | "done">("idle");
   const [guestName, setGuestName] = useState<string | null>(null);
-  const { startAudioExperience } = useAudio();
+  const { isPlaying, isMuted, hasStarted, togglePlay, toggleMute, startAudioExperience, playCelebrationSound } = useAudio();
 
   // Read personalized guest name from URL (?guest=...)
   useEffect(() => {
@@ -41,224 +40,411 @@ export default function OpeningExperience({ onOpen }: OpeningExperienceProps) {
   const handleOpen = () => {
     if (phase !== "idle") return;
     setPhase("opening");
-    
-    // Start royal music experience
+
+    // Start audio experience
     startAudioExperience();
 
-    // Trigger soft gold celebration particles
+    // Gentle royal champagne celebration confetti
     confetti({
-      particleCount: 85,
-      spread: 70,
-      origin: { y: 0.5 },
-      colors: ["#C5A46D", "#EAD7D1", "#FAF5EE", "#B58A48", "#DFCBA8"],
+      particleCount: 65,
+      spread: 60,
+      origin: { y: 0.52 },
+      colors: ["#C9A96A", "#E8D6AE", "#F7F1E6", "#241D18", "#FFF8EE"],
+      ticks: 180,
+      gravity: 0.8,
     });
 
     // Smooth transition to main invitation
     setTimeout(() => {
       setPhase("done");
       window.scrollTo({ top: 0, behavior: "instant" });
-      if (onOpen) setTimeout(onOpen, 400);
-    }, 900);
+      if (onOpen) setTimeout(onOpen, 350);
+    }, 850);
+  };
+
+  const handleZaghrouda = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    playCelebrationSound();
+    confetti({
+      particleCount: 50,
+      spread: 65,
+      origin: { x: 0.15, y: 0.88 },
+      colors: ["#C9A96A", "#E8D6AE", "#F7F1E6", "#3A2D24", "#FFDF78"],
+      ticks: 150,
+    });
+  };
+
+  const handleToggleSound = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!hasStarted) {
+      togglePlay();
+    } else {
+      toggleMute();
+    }
   };
 
   return (
     <AnimatePresence>
       {phase !== "done" && (
         <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.03 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-[#0F0D0B] text-[#F8F2EA] overflow-hidden select-none w-full"
+          className="fixed inset-0 z-50 flex flex-col justify-between items-center bg-[#FBF8F1] overflow-hidden select-none w-full"
           style={{
             direction: "rtl",
             height: "100dvh",
-            minHeight: "-webkit-fill-available",
-            paddingTop: "max(env(safe-area-inset-top), 14px)",
+            maxHeight: "100dvh",
+            paddingTop: "max(env(safe-area-inset-top), 16px)",
             paddingBottom: "max(env(safe-area-inset-bottom), 16px)",
             paddingLeft: "max(env(safe-area-inset-left), 16px)",
             paddingRight: "max(env(safe-area-inset-right), 16px)",
           }}
         >
-          {/* Ambient Celestial Glow */}
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[480px] h-[340px] sm:h-[480px] rounded-full bg-[#C5A46D]/15 blur-[100px]" />
-            <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-[#EAD7D1]/10 blur-[80px]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle,#C5A46D_1px,transparent_1px)] [background-size:22px_22px] opacity-[0.05]" />
+          {/* ═══════════════════════════════════════════════════════════════════
+              SUBTLE LUXURY WATERMARK BACKGROUND PATTERN (Beige / Champagne)
+              ═══════════════════════════════════════════════════════════════════ */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.45]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='48' height='28' viewBox='0 0 48 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 14 L24 0 L48 14 L24 28 Z' fill='none' stroke='%23C9A96A' stroke-width='0.65' stroke-opacity='0.16'/%3E%3Cpath d='M-24 14 L0 0 L24 14 L0 28 Z' fill='none' stroke='%23C9A96A' stroke-width='0.65' stroke-opacity='0.16'/%3E%3Cpath d='M24 14 L48 0 L72 14 L48 28 Z' fill='none' stroke='%23C9A96A' stroke-width='0.65' stroke-opacity='0.16'/%3E%3C/svg%3E")`,
+              backgroundSize: "48px 28px",
+            }}
+          />
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              SOFT AMBIENT GLOW BEHIND ENVELOPE (Ivory / Champagne / Warm Cream)
+              ═══════════════════════════════════════════════════════════════════ */}
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div
+              className="w-[320px] sm:w-[480px] md:w-[560px] h-[320px] sm:h-[420px] rounded-full blur-[70px] sm:blur-[90px] opacity-60"
+              style={{
+                background: "radial-gradient(circle, rgba(232,214,174,0.45) 0%, rgba(247,241,230,0.2) 55%, transparent 75%)",
+              }}
+            />
+          </div>
+
+          {/* Top spacer / Guest pill */}
+          <div className="relative z-10 w-full flex justify-center items-center shrink-0 min-h-[36px]">
+            {guestName && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#F7F1E6]/90 border border-[#C9A96A]/35 shadow-xs backdrop-blur-sm"
+              >
+                <Sparkles className="w-3 h-3 text-[#C9A96A]" />
+                <span className="text-[11px] font-cairo font-medium text-[#3A2D24]">
+                  دعوة خاصة إلى {guestName}
+                </span>
+              </motion.div>
+            )}
           </div>
 
           {/* ═══════════════════════════════════════════════════════════════════
-              1. TOP HEADER SLOT: (Guaranteed zero-clipping on all viewports)
+              CENTER ENVELOPE + CTA COMPOSITION
               ═══════════════════════════════════════════════════════════════════ */}
-          <motion.header
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative z-10 w-full flex flex-col items-center text-center shrink-0 pt-0.5"
-          >
-            {/* Guest Welcome Pill */}
-            {guestName && (
-              <div className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-white/10 border border-[#C5A46D]/40 backdrop-blur-md mb-1">
-                <Sparkles className="w-2.5 h-2.5 text-[#E6D0A2]" />
-                <span className="text-[10px] sm:text-[11px] font-cairo font-medium text-[#DFCBA8] tracking-wide">
-                  دعوة خاصة إلى {guestName}
+          <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center px-4 -mt-1 sm:-mt-2">
+            {/* Above Envelope Titles as specified in Section 2 & 40 */}
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-center mb-3 sm:mb-4 flex flex-col items-center select-none"
+            >
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-0.5 rounded-full bg-[#FAF5EE]/90 border border-[#C9A96A]/35 mb-1 shadow-2xs">
+                <span className="text-[11px] sm:text-xs font-cairo font-semibold text-[#A07F47] tracking-wider">
+                  دعوة زفاف
                 </span>
               </div>
-            )}
+              <h1 className="text-2xl sm:text-3xl font-amiri font-bold text-[#241D18] leading-tight">
+                أحمد &amp; منة الله
+              </h1>
+              <p className="text-[11px] sm:text-xs font-cairo text-[#70735F] mt-0.5">
+                14 أكتوبر 2026
+              </p>
+            </motion.div>
 
-            {/* Clear, Unmistakable Title */}
-            <h1 className="text-xl sm:text-2xl font-amiri font-bold text-[#F8F2EA] tracking-wide leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-              دعوة زفاف أحمد ومنة الله
-            </h1>
-
-            <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-[#C5A46D] font-cormorant mt-0.5">
-              Royal Wedding Invitation
-            </p>
-          </motion.header>
-
-          {/* ═══════════════════════════════════════════════════════════════════
-              2. CENTER ENVELOPE / CARD SLOT: (Self-scaling, never overflows)
-              ═══════════════════════════════════════════════════════════════════ */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 8 }}
-            animate={
-              phase === "opening"
-                ? { opacity: 0, scale: 1.08, y: -12 }
-                : { opacity: 1, scale: 1, y: 0 }
-            }
-            transition={{
-              duration: phase === "opening" ? 0.5 : 0.8,
-              delay: phase === "opening" ? 0 : 0.2,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            onClick={handleOpen}
-            className="relative z-10 w-full max-w-[300px] sm:max-w-[330px] my-auto py-1 flex items-center justify-center cursor-pointer"
-          >
-            {/* Outer Luxury Metallic Border Frame */}
-            <div
-              className="w-full rounded-[20px] p-[1.5px] shadow-[0_12px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(197,164,109,0.18)] transition-transform duration-300 hover:scale-[1.01]"
-              style={{
-                background: "linear-gradient(155deg,#F3E3C3 0%,#B58A48 45%,#544026 100%)",
+            {/* Envelope Container with gentle float */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: phase === "opening" ? -10 : [0, -5, 0],
               }}
+              transition={{
+                opacity: { duration: 0.8, delay: 0.15 },
+                scale: { duration: 0.8, delay: 0.15 },
+                y: phase === "opening"
+                  ? { duration: 0.4 }
+                  : { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 },
+              }}
+              onClick={handleOpen}
+              className="relative w-full max-w-[310px] xs:max-w-[335px] sm:max-w-[375px] md:max-w-[410px] cursor-pointer group select-none"
+              style={{ perspective: "1000px" }}
             >
-              {/* Inner Ivory Stationery Card */}
+              {/* Realistic Envelope SVG Frame */}
               <div
-                className="relative rounded-[18.5px] overflow-hidden flex flex-col items-center px-4 py-3.5 sm:px-5 sm:py-4 text-center"
+                className="relative w-full aspect-[1.58/1] rounded-2xl transition-transform duration-300 group-hover:scale-[1.01]"
                 style={{
-                  background: "linear-gradient(160deg,#FCF8F2 0%,#F6EFE3 55%,#EFE1CB 100%)",
+                  filter:
+                    "drop-shadow(0 22px 35px rgba(36,29,24,0.11)) drop-shadow(0 8px 16px rgba(201,169,106,0.12)) drop-shadow(0 2px 4px rgba(0,0,0,0.03))",
                 }}
               >
-                {/* Paper texture */}
-                <div
-                  className="pointer-events-none absolute inset-0 opacity-20"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E\")",
-                    backgroundSize: "180px",
-                  }}
-                />
+                <svg
+                  viewBox="0 0 380 240"
+                  className="w-full h-full block rounded-2xl overflow-visible"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    {/* Base Ivory Paper Gradient */}
+                    <linearGradient id="ivoryPaperGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#FCFAF6" />
+                      <stop offset="60%" stopColor="#F7F1E6" />
+                      <stop offset="100%" stopColor="#EFE6D5" />
+                    </linearGradient>
 
-                {/* Delicate Gold Corner Filigree */}
-                <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#C5A46D]/50 rounded-tr" />
-                <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#C5A46D]/50 rounded-tl" />
-                <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#C5A46D]/50 rounded-br" />
-                <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#C5A46D]/50 rounded-bl" />
+                    {/* Side Flaps Gradients */}
+                    <linearGradient id="sideFlapLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#FAF5ED" />
+                      <stop offset="100%" stopColor="#EAE0CE" />
+                    </linearGradient>
 
-                {/* Bismillah Ornament */}
-                <div className="relative z-10 flex items-center gap-2 mb-1.5 w-full justify-center">
-                  <span className="h-[1px] w-6 bg-gradient-to-l from-[#C5A46D]/60 to-transparent" />
-                  <span className="text-[10px] font-amiri text-[#9A7A40] whitespace-nowrap">
-                    ✦ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ✦
-                  </span>
-                  <span className="h-[1px] w-6 bg-gradient-to-r from-[#C5A46D]/60 to-transparent" />
-                </div>
+                    <linearGradient id="sideFlapRight" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#FAF5ED" />
+                      <stop offset="100%" stopColor="#E6DCC9" />
+                    </linearGradient>
 
-                <p className="text-[8px] uppercase tracking-[0.25em] text-[#70735F] font-cormorant mb-1">
-                  Together in love
-                </p>
+                    {/* Bottom Flap Gradient */}
+                    <linearGradient id="bottomFlapGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                      <stop offset="0%" stopColor="#EFE5D3" />
+                      <stop offset="60%" stopColor="#F6EFE2" />
+                      <stop offset="100%" stopColor="#FAF6EE" />
+                    </linearGradient>
 
-                {/* Hero Couple Names in Calligraphic Arabic */}
-                <div className="my-0.5 flex flex-col items-center">
-                  <p className="text-2xl sm:text-3xl font-amiri font-bold text-[#231F1A] leading-none">
-                    {wedding.groomAr}
-                  </p>
-                  
-                  <div className="flex items-center gap-2 my-1">
-                    <span className="w-6 h-[1px] bg-[#C5A46D]/50" />
-                    <span className="text-sm font-cormorant italic text-[#C5A46D] font-bold">
-                      &amp;
-                    </span>
-                    <span className="w-6 h-[1px] bg-[#C5A46D]/50" />
-                  </div>
+                    {/* Top Triangular Flap Gradient */}
+                    <linearGradient id="topFlapGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#FDFBF7" />
+                      <stop offset="65%" stopColor="#F7F0E4" />
+                      <stop offset="100%" stopColor="#EFE4CF" />
+                    </linearGradient>
 
-                  <p className="text-2xl sm:text-3xl font-amiri font-bold text-[#231F1A] leading-none">
-                    {wedding.brideAr}
-                  </p>
-                </div>
+                    {/* Flap subtle underside shadow */}
+                    <filter id="flapShadow" x="-10%" y="-10%" width="120%" height="140%">
+                      <feDropShadow dx="0" dy="5" stdDeviation="4.5" floodColor="#241D18" floodOpacity="0.10" />
+                    </filter>
 
-                {/* Wedding Date & Venue Line */}
-                <div className="mt-2 pt-1.5 border-t border-[#C5A46D]/30 w-full flex flex-col items-center">
-                  <p className="text-xs sm:text-sm font-cormorant font-semibold tracking-wider text-[#231F1A]">
-                    14 • 10 • 2026
-                  </p>
-                  <p className="text-[10px] font-cairo text-[#70735F] mt-0.5">
-                    {wedding.dayAr} • {wedding.venueAr}
-                  </p>
-                </div>
+                    {/* Wax Seal 3D Drop Shadow */}
+                    <filter id="sealShadow" x="-30%" y="-30%" width="160%" height="160%">
+                      <feDropShadow dx="0" dy="4" stdDeviation="3.5" floodColor="#241D18" floodOpacity="0.32" />
+                    </filter>
+                  </defs>
 
-                {/* Royal Wax Seal with Monogram */}
-                <div className="relative mt-2.5 flex items-center justify-center">
-                  <motion.div
-                    animate={
-                      phase === "opening"
-                        ? { scale: [1, 1.25, 0], opacity: [1, 1, 0], rotate: [0, 10, -15] }
-                        : { scale: [1, 1.03, 1] }
-                    }
-                    transition={{
-                      scale: phase === "opening" ? { duration: 0.4 } : { duration: 2.8, repeat: Infinity, ease: "easeInOut" },
+                  {/* 1. Envelope Back Base */}
+                  <rect
+                    x="0"
+                    y="0"
+                    width="380"
+                    height="240"
+                    rx="16"
+                    fill="url(#ivoryPaperGrad)"
+                    stroke="#C9A96A"
+                    strokeWidth="1"
+                    strokeOpacity="0.3"
+                  />
+
+                  {/* Revealed Gold-Bordered Invitation Card (Slides up on Open) */}
+                  <g
+                    style={{
+                      transition: "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)",
+                      transform: phase === "opening" ? "translateY(-55px)" : "translateY(0px)",
                     }}
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-[#FFE8B3] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.35),0_0_0_2px_rgba(197,164,109,0.3)] bg-[#8A2B1D]"
                   >
-                    <Image
-                      src={wedding.waxSealImage}
-                      alt="Royal Wax Seal A & M"
-                      width={56}
-                      height={56}
-                      className="object-cover w-full h-full"
-                      priority
+                    <rect x="25" y="20" width="330" height="190" rx="10" fill="#FFFDF9" stroke="#C9A96A" strokeWidth="1.2" strokeOpacity="0.7" />
+                    <rect x="30" y="25" width="320" height="180" rx="8" fill="none" stroke="#C9A96A" strokeDasharray="3 3" strokeWidth="0.6" strokeOpacity="0.4" />
+                    <text x="190" y="82" textAnchor="middle" fill="#241D18" fontSize="18" fontFamily="Amiri, serif" fontWeight="bold">أحمد &amp; منة الله</text>
+                    <text x="190" y="106" textAnchor="middle" fill="#A07F47" fontSize="11" fontFamily="Cairo, sans-serif">14 أكتوبر 2026</text>
+                  </g>
+
+                  {/* 2. Delicate Interior Gold Corner Accents */}
+                  <path d="M 12 24 L 24 12" stroke="#C9A96A" strokeWidth="0.8" strokeOpacity="0.4" />
+                  <path d="M 368 24 L 356 12" stroke="#C9A96A" strokeWidth="0.8" strokeOpacity="0.4" />
+
+                  {/* 3. Left Side Fold */}
+                  <path
+                    d="M 0 0 L 165 125 L 0 240 Z"
+                    fill="url(#sideFlapLeft)"
+                    opacity="0.82"
+                    stroke="#C9A96A"
+                    strokeWidth="0.75"
+                    strokeOpacity="0.22"
+                  />
+
+                  {/* 4. Right Side Fold */}
+                  <path
+                    d="M 380 0 L 215 125 L 380 240 Z"
+                    fill="url(#sideFlapRight)"
+                    opacity="0.82"
+                    stroke="#C9A96A"
+                    strokeWidth="0.75"
+                    strokeOpacity="0.22"
+                  />
+
+                  {/* 5. Bottom Flap */}
+                  <path
+                    d="M 0 240 L 190 120 L 380 240 Z"
+                    fill="url(#bottomFlapGrad)"
+                    opacity="0.92"
+                    stroke="#C9A96A"
+                    strokeWidth="0.85"
+                    strokeOpacity="0.3"
+                  />
+
+                  {/* 6. Top Triangular Flap (Animated on Open) */}
+                  <g
+                    style={{
+                      transformOrigin: "190px 0px",
+                      transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+                      transform: phase === "opening" ? "rotateX(-140deg)" : "none",
+                    }}
+                  >
+                    <path
+                      d="M 0 0 L 190 134 L 380 0 Z"
+                      fill="url(#topFlapGrad)"
+                      filter="url(#flapShadow)"
+                      stroke="#C9A96A"
+                      strokeWidth="1"
+                      strokeOpacity="0.38"
                     />
-                  </motion.div>
+
+                    {/* Fine Decorative Fold Lines on Flap */}
+                    <path
+                      d="M 12 4 L 190 128 L 368 4"
+                      fill="none"
+                      stroke="#C9A96A"
+                      strokeWidth="0.6"
+                      strokeOpacity="0.25"
+                    />
+                  </g>
+
+                  {/* 7. Luxury Royal Wax Seal (Centered at Flap Tip) */}
+                  <g
+                    filter="url(#sealShadow)"
+                    style={{
+                      transformOrigin: "190px 134px",
+                      transition: "all 0.4s ease-out",
+                      transform: phase === "opening" ? "scale(0) opacity(0)" : "scale(1)",
+                    }}
+                  >
+                    {/* Outer Wax Irregular Rim in Dark Brown */}
+                    <circle cx="190" cy="134" r="28" fill="#32261E" stroke="#C9A96A" strokeWidth="1.2" strokeOpacity="0.45" />
+
+                    {/* Wax Notched Texture Ring */}
+                    <circle cx="190" cy="134" r="24" fill="#241D18" />
+
+                    {/* Fine Champagne Gold Beaded Border */}
+                    <circle
+                      cx="190"
+                      cy="134"
+                      r="20.5"
+                      fill="none"
+                      stroke="#C9A96A"
+                      strokeWidth="1"
+                      strokeDasharray="2.5 2"
+                      strokeOpacity="0.75"
+                    />
+
+                    {/* Inner Recessed Seal Center */}
+                    <circle cx="190" cy="134" r="17.5" fill="#1C1612" />
+
+                    {/* Embossed Royal Heart Emblem in Subtle Champagne Gold */}
+                    <path
+                      d="M 190 141 C 190 141 181.5 136 181.5 131 C 181.5 127.8 184 125.5 186.8 125.5 C 188.5 125.5 189.5 126.3 190 127.2 C 190.5 126.3 191.5 125.5 193.2 125.5 C 196 125.5 198.5 127.8 198.5 131 C 198.5 136 190 141 190 141 Z"
+                      fill="#E8D6AE"
+                      stroke="#C9A96A"
+                      strokeWidth="0.6"
+                    />
+
+                    {/* Micro Highlight on Seal */}
+                    <ellipse cx="186" cy="123" rx="5" ry="2.5" fill="#FFFFFF" opacity="0.12" />
+                  </g>
+                </svg>
+
+                {/* Subtle Calligraphic watermark inside envelope */}
+                <div className="pointer-events-none absolute bottom-3 inset-x-0 text-center">
+                  <span className="text-[10px] font-cormorant tracking-[0.25em] text-[#C9A96A]/60 uppercase">
+                    {wedding.groom} &amp; {wedding.bride}
+                  </span>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+
+            {/* ═══════════════════════════════════════════════════════════════════
+                MAIN CTA BUTTON: "افتح الدعوة ✨" (Directly below envelope)
+                ═══════════════════════════════════════════════════════════════════ */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="mt-6 sm:mt-7 flex flex-col items-center"
+            >
+              <button
+                type="button"
+                onClick={handleOpen}
+                disabled={phase !== "idle"}
+                className="group relative inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3 sm:py-3.5 rounded-full bg-[#241D18] hover:bg-[#3A2D24] text-[#FBF8F1] font-bold text-sm sm:text-base font-cairo shadow-[0_10px_28px_rgba(36,29,24,0.22)] hover:shadow-[0_12px_32px_rgba(36,29,24,0.3)] active:scale-[0.97] border border-[#C9A96A]/45 hover:border-[#C9A96A] transition-all duration-300 cursor-pointer touch-target overflow-hidden disabled:opacity-60"
+              >
+                {/* Subtle champagne shimmer sweep */}
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-[#C9A96A]/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+
+                <span className="relative tracking-wide font-semibold text-[#FBF8F1]">
+                  {phase === "opening" ? "جاري فتح الدعوة..." : "افتح الدعوة ✨"}
+                </span>
+              </button>
+            </motion.div>
+          </div>
 
           {/* ═══════════════════════════════════════════════════════════════════
-              3. BOTTOM CTA SLOT: (High contrast, 100% visible without scroll)
+              BOTTOM CONTROLS BAR:
+              - Left: "زغرودة! 🎉"
+              - Right: Sound control circular toggle
               ═══════════════════════════════════════════════════════════════════ */}
-          <motion.footer
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative z-10 w-full flex flex-col items-center shrink-0 pb-0.5"
-          >
-            <button
-              type="button"
-              onClick={handleOpen}
-              disabled={phase !== "idle"}
-              className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-[#B58A48] via-[#F3E3C3] to-[#B58A48] text-[#151311] font-bold text-sm sm:text-base font-cairo shadow-[0_6px_25px_rgba(197,164,109,0.45),0_0_15px_rgba(197,164,109,0.25)] hover:shadow-[0_10px_35px_rgba(197,164,109,0.65)] active:scale-[0.97] transition-all duration-300 cursor-pointer touch-target overflow-hidden disabled:opacity-60"
-            >
-              {/* Shimmer sweep */}
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
-              <MailOpen className="w-4 h-4 text-[#151311] shrink-0" />
-              <span className="relative tracking-wide">
-                {phase === "opening" ? "جاري فتح الدعوة..." : "افتح الدعوة"}
-              </span>
-            </button>
+          <div className="relative z-20 w-full flex items-center justify-between px-2 sm:px-6 py-2 shrink-0" dir="ltr">
+            {/* Bottom-left: Zaghrouda Button */}
+            <div className="flex items-center">
+              <motion.button
+                type="button"
+                onClick={handleZaghrouda}
+                whileTap={{ scale: 0.94 }}
+                whileHover={{ scale: 1.04 }}
+                dir="rtl"
+                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#3A2D24] hover:bg-[#241D18] text-[#FBF8F1] border border-[#C9A96A]/35 text-xs sm:text-sm font-cairo font-semibold shadow-sm hover:shadow transition-all cursor-pointer touch-target"
+                title="أطلق زغرودة فرح!"
+              >
+                <span>زغرودة! 🎉</span>
+              </motion.button>
+            </div>
 
-            <p className="text-[10px] font-cairo text-[#DFCBA8]/70 text-center mt-1.5">
-              اضغط للاستماع إلى أنغام الزفاف وبدء التجربة 🎵
-            </p>
-          </motion.footer>
+            {/* Bottom-right: Sound Control Button */}
+            <div className="flex items-center">
+              <motion.button
+                type="button"
+                onClick={handleToggleSound}
+                whileTap={{ scale: 0.92 }}
+                whileHover={{ scale: 1.05 }}
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#FBF8F1] hover:bg-[#F7F1E6] text-[#241D18] border border-[#C9A96A]/40 shadow-sm hover:shadow transition-all flex items-center justify-center cursor-pointer touch-target"
+                title={isMuted || (!isPlaying && hasStarted) ? "تشغيل الصوت" : "كتم الصوت"}
+              >
+                {isMuted || (!isPlaying && hasStarted) ? (
+                  <VolumeX className="w-4 h-4 text-[#70735F]" />
+                ) : (
+                  <Volume2 className="w-4 h-4 text-[#241D18]" />
+                )}
+              </motion.button>
+            </div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

@@ -97,29 +97,34 @@ export default function HeroSection() {
           {wedding.groom} & {wedding.bride}
         </motion.p>
 
-        {/* Supporting Invitation Line */}
+        {/* Required Blessing Line */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.7 }}
-          className="text-base sm:text-lg md:text-xl font-cairo text-[#F8F2EA]/90 max-w-lg mb-8 leading-relaxed"
+          className="text-lg sm:text-xl md:text-2xl font-amiri font-bold text-[#F8F2EA] max-w-lg mb-8 leading-relaxed drop-shadow-sm"
         >
-          يسرّنا دعوتكم لمشاركتنا فرحة زفافنا
+          اللهم بارك لهما وبارك عليهما واجمع بينهما في خير
         </motion.p>
 
-        {/* Date & Venue Badges */}
+        {/* Date, Time & Venue Badges */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm md:text-base font-cairo w-full"
+          className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-cairo w-full"
         >
-          <div className="flex items-center gap-2 px-5 py-2 rounded-xl bg-white/10 border border-[#C5A46D]/30 backdrop-blur-md">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-[#C5A46D]/30 backdrop-blur-md">
             <CalendarDays className="w-4 h-4 text-[#C5A46D]" />
-            <span className="text-[#F8F2EA] font-medium">14 / 10 / 2026</span>
+            <span className="text-[#F8F2EA] font-medium">14 أكتوبر 2026</span>
           </div>
 
-          <div className="flex items-center gap-2 px-5 py-2 rounded-xl bg-white/10 border border-[#C5A46D]/30 backdrop-blur-md">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-[#C5A46D]/30 backdrop-blur-md">
+            <span className="text-[#C5A46D] font-bold">🕖</span>
+            <span className="text-[#F8F2EA] font-medium">7:00 مساءً</span>
+          </div>
+
+          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-[#C5A46D]/30 backdrop-blur-md">
             <MapPin className="w-4 h-4 text-[#C5A46D]" />
             <span className="text-[#F8F2EA] font-medium">
               {wedding.venueAr} • {wedding.cityAr}

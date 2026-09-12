@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { wedding } from "@/config/wedding";
-import { MapPin, Navigation, Car, Copy, Check, ExternalLink, Sparkles } from "lucide-react";
+import { MapPin, Navigation, Car, Copy, Check, Sparkles } from "lucide-react";
 
 export default function VenueSection() {
   const [copied, setCopied] = useState(false);
@@ -54,7 +54,7 @@ export default function VenueSection() {
             </span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-amiri font-bold text-[#231F1A]">
-            مكان الحفل
+            الوصول إلى القاعة
           </h2>
           <p className="text-sm sm:text-base font-cairo text-[#70735F] mt-2 max-w-md mx-auto">
             نتشرف باستقبالكم في قاعة قصر كازبلانكا الراقية
@@ -127,8 +127,8 @@ export default function VenueSection() {
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#231F1A] hover:bg-[#151311] text-[#F8F2EA] text-xs sm:text-sm font-semibold font-cairo shadow-md hover:shadow-lg transition-all touch-target cursor-pointer"
                 >
-                  <ExternalLink className="w-4 h-4 text-[#C5A46D]" />
-                  <span>فتح الموقع</span>
+                  <MapPin className="w-4 h-4 text-[#C5A46D]" />
+                  <span>افتح الخريطة 📍</span>
                 </a>
 
                 {/* 2. Directions */}

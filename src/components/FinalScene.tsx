@@ -69,7 +69,7 @@ export default function FinalScene() {
           <span>14 / 10 / 2026</span>
         </motion.div>
 
-        {/* Emotional Closing Text */}
+        {/* Emotional Closing Text & Required Blessing */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -77,22 +77,25 @@ export default function FinalScene() {
           transition={{ duration: 0.9, delay: 0.4 }}
           className="space-y-4 max-w-md mx-auto"
         >
-          <p className="text-2xl sm:text-3xl font-amiri font-bold text-[#FAF5EE] leading-relaxed">
-            ننتظركم لتشاركونا
-            <br />
-            بداية أجمل حكاياتنا
+          <p className="text-xl sm:text-2xl font-amiri font-bold text-[#F7F1E6] leading-relaxed">
+            اللهم بارك لهما وبارك عليهما واجمع بينهما في خير
           </p>
 
-          <div className="pt-2 flex items-center justify-center gap-2 text-base font-cairo text-[#C5A46D]">
-            <Heart className="w-4 h-4 fill-[#C5A46D]" />
+          <p className="text-lg sm:text-xl font-amiri text-[#D8BC82]">
+            ننتظركم لتشاركونا بداية أجمل حكاياتنا
+          </p>
+
+          <div className="pt-2 flex items-center justify-center gap-2 text-sm font-cairo text-[#C9A96A]">
+            <Heart className="w-4 h-4 fill-[#C9A96A]" />
             <span className="font-semibold">مستنيين نفرح معاكم</span>
-            <Heart className="w-4 h-4 fill-[#C5A46D]" />
+            <Heart className="w-4 h-4 fill-[#C9A96A]" />
           </div>
         </motion.div>
 
-        {/* Bottom copyright / footer note */}
-        <div className="mt-16 pt-8 border-t border-white/10 w-full text-center text-xs font-cairo text-white/40">
-          <p>© 2026 حفل زفاف أحمد ومنة الله • جميع الحقوق محفوظة بكل حب</p>
+        {/* Minimal Footer Signature */}
+        <div className="mt-16 pt-8 border-t border-[#C9A96A]/20 w-full text-center space-y-1">
+          <p className="text-base font-amiri font-bold text-[#F7F1E6]">أحمد & منة الله</p>
+          <p className="text-xs font-cairo text-[#C9A96A]">14 أكتوبر 2026</p>
         </div>
 
       </div>

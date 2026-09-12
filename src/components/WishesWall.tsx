@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { containsProfanity, GuestWish } from "@/config/wedding";
-import { Heart, Send, AlertCircle, Loader2, Sparkles, RefreshCw, MessageCircleHeart, Smile } from "lucide-react";
+import { Heart, Send, AlertCircle, Loader2, Sparkles, RefreshCw, MessageCircleHeart } from "lucide-react";
 import { useAudio } from "./AudioContext";
 import { EmojiPicker, StickerPicker, WishStickerBadge } from "./WishEmbellishments";
 
@@ -17,9 +17,9 @@ type Recipient = "both" | "groom" | "bride";
 type FilterType = "all" | "both" | "groom" | "bride";
 
 const RECIPIENT_OPTIONS: { value: Recipient; labelAr: string; emoji: string }[] = [
-  { value: "both",  labelAr: "للعروسين معاً", emoji: "💑" },
-  { value: "groom", labelAr: "للعريس",         emoji: "🤵" },
-  { value: "bride", labelAr: "للعروسة",         emoji: "👰" },
+  { value: "both",  labelAr: "أحمد & منة الله", emoji: "💑" },
+  { value: "groom", labelAr: "أحمد",            emoji: "🤵" },
+  { value: "bride", labelAr: "منة الله",        emoji: "👰" },
 ];
 
 export default function WishesWall({ wishes: propWishes, setWishes: propSetWishes }: WishesWallProps) {
@@ -152,7 +152,7 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
         particleCount: 110,
         spread: 80,
         origin: { y: 0.65 },
-        colors: ["#C5A46D", "#EAD7D1", "#FAF5EE", "#B58A48", "#DFCBA8"],
+        colors: ["#C9A96A", "#D8BC82", "#F7F1E6", "#241D18"],
       });
 
       // Background revalidation to ensure 100% sync with all devices
@@ -174,15 +174,15 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
 
   const recipientLabel = (r?: Recipient) => {
     const opt = RECIPIENT_OPTIONS.find((o) => o.value === r);
-    return opt ? `${opt.emoji} ${opt.labelAr}` : "💑 للعروسين معاً";
+    return opt ? `${opt.emoji} ${opt.labelAr}` : "💑 أحمد & منة الله";
   };
 
   return (
-    <section id="wishes-section" className="py-24 px-4 relative overflow-hidden bg-gradient-to-b from-[#F5EEE4] via-[#FAF5EE] to-[#F3EDE3]">
+    <section id="wishes-section" className="py-24 px-4 relative overflow-hidden bg-gradient-to-b from-[#F7F1E6] via-[#FBF8F1] to-[#F7F1E6]">
       {/* Subtle ambient lighting */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-1/4 -right-20 w-80 h-80 rounded-full bg-[#C5A46D]/10 blur-[90px]" />
-        <div className="absolute bottom-1/3 -left-20 w-80 h-80 rounded-full bg-[#EAD7D1]/15 blur-[90px]" />
+        <div className="absolute top-1/4 -right-20 w-80 h-80 rounded-full bg-[#C9A96A]/10 blur-[90px]" />
+        <div className="absolute bottom-1/3 -left-20 w-80 h-80 rounded-full bg-[#D8BC82]/10 blur-[90px]" />
       </div>
 
       <div className="max-w-2xl mx-auto relative z-10">
@@ -195,25 +195,25 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
           transition={{ duration: 0.8 }}
           className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#C5A46D]/15 border border-[#C5A46D]/35 backdrop-blur-sm mb-3">
-            <MessageCircleHeart className="w-3.5 h-3.5 text-[#9A7A40]" />
-            <span className="text-xs uppercase tracking-[0.3em] text-[#70735F] font-cormorant font-semibold">
-              Global Guestbook
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#C9A96A]/15 border border-[#C9A96A]/35 backdrop-blur-sm mb-3">
+            <MessageCircleHeart className="w-3.5 h-3.5 text-[#A07D38]" />
+            <span className="text-xs uppercase tracking-[0.3em] text-[#5C5146] font-cormorant font-semibold">
+              Words From The Heart
             </span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl font-amiri font-bold text-[#231F1A]">
-            حائط التهاني والمباركات
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-amiri font-bold text-[#241D18]">
+            كلمات من القلب
           </h2>
 
           <div className="flex items-center justify-center gap-3 my-3">
-            <span className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#C5A46D]/60 to-transparent" />
-            <span className="text-xs text-[#C5A46D]">✦ 💛 ✦</span>
-            <span className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#C5A46D]/60 to-transparent" />
+            <span className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#C9A96A]/60 to-transparent" />
+            <span className="text-xs text-[#C9A96A]">✦ 💛 ✦</span>
+            <span className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#C9A96A]/60 to-transparent" />
           </div>
 
-          <p className="text-sm font-cairo text-[#5C574F] max-w-md mx-auto leading-relaxed">
-            اكتب رسالتك لتبقى ذكرى خالدة في قلب العروسين — تهنئتك تظهر مباشرة لجميع الأحباب والضيوف
+          <p className="text-sm font-cairo text-[#5C5146] max-w-md mx-auto leading-relaxed">
+            شاركونا تهانيكم ودعواتكم للعروسين
           </p>
         </motion.div>
 
@@ -223,13 +223,13 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="relative p-6 sm:p-8 rounded-3xl bg-white/90 backdrop-blur-md border border-[#C5A46D]/40 shadow-[0_10px_35px_rgba(197,164,109,0.12)] mb-10"
+          className="relative p-6 sm:p-8 rounded-3xl bg-[#FBF8F1]/95 backdrop-blur-md border border-[#C9A96A]/40 shadow-[0_10px_35px_rgba(201,169,106,0.12)] mb-10"
         >
           {/* Decorative Corner Borders */}
-          <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#C5A46D]/40 rounded-tr" />
-          <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#C5A46D]/40 rounded-tl" />
-          <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#C5A46D]/40 rounded-br" />
-          <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#C5A46D]/40 rounded-bl" />
+          <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#C9A96A]/40 rounded-tr" />
+          <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#C9A96A]/40 rounded-tl" />
+          <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#C9A96A]/40 rounded-br" />
+          <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#C9A96A]/40 rounded-bl" />
 
           <AnimatePresence mode="wait">
             {submitted ? (
@@ -240,13 +240,13 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="text-center py-8 space-y-3"
               >
-                <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-[#DFCBA8] to-[#C5A46D] flex items-center justify-center shadow-md">
-                  <Sparkles className="w-7 h-7 text-[#151311]" />
+                <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-[#D8BC82] to-[#C9A96A] flex items-center justify-center shadow-md">
+                  <Sparkles className="w-7 h-7 text-[#241D18]" />
                 </div>
-                <h3 className="text-2xl font-amiri font-bold text-[#231F1A]">
+                <h3 className="text-2xl font-amiri font-bold text-[#241D18]">
                   شكرًا على تهنئتكم الكريمة! 🎉
                 </h3>
-                <p className="text-sm font-cairo text-[#5C574F]">
+                <p className="text-sm font-cairo text-[#5C5146]">
                   أُضيفت رسالتك إلى حائط التهاني وأصبحت معروضة للجميع
                 </p>
               </motion.div>
@@ -260,8 +260,8 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
               >
                 {/* Name */}
                 <div>
-                  <label htmlFor="wish-name" className="block text-sm font-semibold font-cairo text-[#231F1A] mb-1.5">
-                    اسمك الكريم <span className="text-red-500">*</span>
+                  <label htmlFor="wish-name" className="block text-sm font-semibold font-cairo text-[#241D18] mb-1.5">
+                    الاسم <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="wish-name"
@@ -269,16 +269,16 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="مثال: أحمد عبد الله وعائلته..."
+                    placeholder="اكتب اسمك"
                     maxLength={60}
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/35 focus:border-[#B58A48] focus:bg-white focus:ring-2 focus:ring-[#C5A46D]/20 text-sm font-cairo outline-none transition-all placeholder:text-[#9E978C]"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#C9A96A]/35 focus:border-[#C9A96A] focus:bg-white focus:ring-2 focus:ring-[#C9A96A]/20 text-sm font-cairo outline-none transition-all placeholder:text-[#9E978C] text-[#241D18]"
                   />
                 </div>
 
                 {/* Recipient selector */}
                 <div>
-                  <label className="block text-sm font-semibold font-cairo text-[#231F1A] mb-2">
-                    تهنئتك موجهة إلى
+                  <label className="block text-sm font-semibold font-cairo text-[#241D18] mb-2">
+                    المستلم
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {RECIPIENT_OPTIONS.map((opt) => (
@@ -288,8 +288,8 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                         onClick={() => setRecipient(opt.value)}
                         className={`flex flex-col items-center gap-1 py-2.5 px-2 rounded-xl border text-xs font-cairo font-semibold transition-all cursor-pointer touch-target ${
                           recipient === opt.value
-                            ? "bg-[#231F1A] text-[#F8F2EA] border-[#231F1A] shadow-md scale-[1.02]"
-                            : "bg-[#FAF6F0]/80 text-[#231F1A] border-[#C5A46D]/30 hover:border-[#C5A46D] hover:bg-white"
+                            ? "bg-[#241D18] text-[#F7F1E6] border-[#241D18] shadow-md scale-[1.02]"
+                            : "bg-white/80 text-[#241D18] border-[#C9A96A]/30 hover:border-[#C9A96A] hover:bg-white"
                         }`}
                       >
                         <span className="text-base">{opt.emoji}</span>
@@ -302,10 +302,10 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                 {/* Message */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label htmlFor="wish-message" className="block text-sm font-semibold font-cairo text-[#231F1A]">
-                      كلمتك من القلب <span className="text-red-500">*</span>
+                    <label htmlFor="wish-message" className="block text-sm font-semibold font-cairo text-[#241D18]">
+                      الرسالة <span className="text-red-500">*</span>
                     </label>
-                    <span className="text-[11px] text-[#70735F] font-cairo">{message.length}/300</span>
+                    <span className="text-[11px] text-[#8C8276] font-cairo">{message.length}/300</span>
                   </div>
                   <textarea
                     id="wish-message"
@@ -313,13 +313,13 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                     rows={3}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="اكتب أطيب التمنيات والدعوات لأحمد ومنة الله في ليلة العمر..."
+                    placeholder="اكتب تهنئتك من القلب..."
                     maxLength={300}
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAF6F0] border border-[#C5A46D]/35 focus:border-[#B58A48] focus:bg-white focus:ring-2 focus:ring-[#C5A46D]/20 text-sm font-cairo outline-none transition-all resize-none placeholder:text-[#9E978C]"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#C9A96A]/35 focus:border-[#C9A96A] focus:bg-white focus:ring-2 focus:ring-[#C9A96A]/20 text-sm font-cairo outline-none transition-all resize-none placeholder:text-[#9E978C] text-[#241D18]"
                   />
 
                   {/* Emoji & Sticker Action Buttons */}
-                  <div className="relative mt-2 flex items-center justify-between flex-wrap gap-2">
+                  <div className="relative mt-2.5 flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2">
                       {/* Emoji Picker Trigger */}
                       <button
@@ -328,11 +328,11 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                           setShowEmojiPicker((prev) => !prev);
                           setShowStickerPicker(false);
                         }}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#C5A46D]/35 text-xs font-cairo text-[#5C574F] hover:border-[#C5A46D] hover:bg-[#FAF5EE] transition-all cursor-pointer shadow-2xs"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#C9A96A]/35 text-xs font-cairo text-[#5C5146] hover:border-[#C9A96A] hover:bg-[#F7F1E6] transition-all cursor-pointer shadow-xs"
                         title="إضافة رمز تعبيري"
                       >
-                        <Smile className="w-3.5 h-3.5 text-[#C5A46D]" />
-                        <span>رمز تعبيري</span>
+                        <span className="text-sm">😊</span>
+                        <span>إيموجي</span>
                       </button>
 
                       {/* Sticker Picker Trigger */}
@@ -342,15 +342,15 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                           setShowStickerPicker((prev) => !prev);
                           setShowEmojiPicker(false);
                         }}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-cairo transition-all cursor-pointer shadow-2xs ${
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-cairo transition-all cursor-pointer shadow-xs ${
                           selectedSticker
-                            ? "bg-[#FAF5EE] border-[#B58A48] text-[#8A6A32] font-semibold"
-                            : "bg-white border-[#C5A46D]/35 text-[#5C574F] hover:border-[#C5A46D] hover:bg-[#FAF5EE]"
+                            ? "bg-[#F7F1E6] border-[#C9A96A] text-[#8A6A32] font-semibold"
+                            : "bg-white border-[#C9A96A]/35 text-[#5C5146] hover:border-[#C9A96A] hover:bg-[#F7F1E6]"
                         }`}
                         title="إضافة ملصق زفاف"
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-[#C5A46D]" />
-                        <span>{selectedSticker ? `الملصق: ${selectedSticker}` : "ملصقات"}</span>
+                        <Sparkles className="w-3.5 h-3.5 text-[#C9A96A]" />
+                        <span>{selectedSticker ? `الملصق: ${selectedSticker}` : "✨ ملصقات"}</span>
                       </button>
                     </div>
 
@@ -391,17 +391,17 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#B58A48] via-[#E6D0A2] to-[#B58A48] text-[#151311] font-bold text-sm font-cairo shadow-[0_4px_15px_rgba(197,164,109,0.3)] hover:shadow-[0_6px_20px_rgba(197,164,109,0.45)] transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer touch-target flex items-center justify-center gap-2 disabled:opacity-60"
+                  className="w-full py-3.5 rounded-xl bg-[#241D18] hover:bg-[#342B24] text-[#F7F1E6] font-bold text-sm font-cairo shadow-[0_4px_15px_rgba(36,29,24,0.25)] hover:shadow-[0_6px_20px_rgba(36,29,24,0.35)] transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer touch-target flex items-center justify-center gap-2 disabled:opacity-60"
                 >
                   {submitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>جاري تسجيل التهنئة...</span>
+                      <span>جاري إرسال التهنئة...</span>
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4" />
-                      <span>أرسل تهنئتك الآن</span>
+                      <Send className="w-4 h-4 text-[#C9A96A]" />
+                      <span>أرسل تهنئتك ❤️</span>
                     </>
                   )}
                 </button>
@@ -413,14 +413,14 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
         {/* ── Recipient Filter Tabs & Refresh Bar ──────────────────────────────── */}
         <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 bg-white/70 backdrop-blur-sm p-2 rounded-2xl border border-[#C5A46D]/25 shadow-sm">
           {/* Filter Pills */}
-          <div className="flex items-center gap-1 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+          <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
             <button
               type="button"
               onClick={() => setWallFilter("all")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
                 wallFilter === "all"
-                  ? "bg-[#231F1A] text-[#F8F2EA] shadow-sm"
-                  : "text-[#5C574F] hover:bg-[#FAF6F0]"
+                  ? "bg-[#241D18] text-[#F7F1E6] shadow-sm"
+                  : "text-[#5C5146] hover:bg-[#F7F1E6]"
               }`}
             >
               الكل ({counts.all})
@@ -428,10 +428,10 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
             <button
               type="button"
               onClick={() => setWallFilter("both")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
                 wallFilter === "both"
-                  ? "bg-[#231F1A] text-[#F8F2EA] shadow-sm"
-                  : "text-[#5C574F] hover:bg-[#FAF6F0]"
+                  ? "bg-[#241D18] text-[#F7F1E6] shadow-sm"
+                  : "text-[#5C5146] hover:bg-[#F7F1E6]"
               }`}
             >
               💑 للعروسين ({counts.both})
@@ -439,10 +439,10 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
             <button
               type="button"
               onClick={() => setWallFilter("groom")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
                 wallFilter === "groom"
-                  ? "bg-[#231F1A] text-[#F8F2EA] shadow-sm"
-                  : "text-[#5C574F] hover:bg-[#FAF6F0]"
+                  ? "bg-[#241D18] text-[#F7F1E6] shadow-sm"
+                  : "text-[#5C5146] hover:bg-[#F7F1E6]"
               }`}
             >
               🤵 للعريس ({counts.groom})
@@ -450,10 +450,10 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
             <button
               type="button"
               onClick={() => setWallFilter("bride")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-cairo font-semibold transition-all shrink-0 cursor-pointer ${
                 wallFilter === "bride"
-                  ? "bg-[#231F1A] text-[#F8F2EA] shadow-sm"
-                  : "text-[#5C574F] hover:bg-[#FAF6F0]"
+                  ? "bg-[#241D18] text-[#F7F1E6] shadow-sm"
+                  : "text-[#5C5146] hover:bg-[#F7F1E6]"
               }`}
             >
               👰 للعروسة ({counts.bride})
@@ -464,7 +464,7 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
           <button
             type="button"
             onClick={fetchWishes}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-cairo text-[#8A6A32] hover:bg-[#FAF6F0] transition-colors cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-cairo text-[#8A6A32] hover:bg-[#F7F1E6] transition-colors cursor-pointer shrink-0"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>تحديث التهاني</span>
@@ -474,8 +474,8 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
         {/* ── Wishes List Display ────────────────────────────────────────────── */}
         {loading && wishesList.length === 0 ? (
           <div className="text-center py-12">
-            <Loader2 className="w-8 h-8 text-[#C5A46D] animate-spin mx-auto mb-2" />
-            <p className="text-xs font-cairo text-[#70735F]">جاري تحميل التهاني...</p>
+            <Loader2 className="w-8 h-8 text-[#C9A96A] animate-spin mx-auto mb-2" />
+            <p className="text-xs font-cairo text-[#8C8276]">جاري تحميل التهاني...</p>
           </div>
         ) : (
           <>
@@ -489,19 +489,23 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.96 }}
                       transition={{ duration: 0.4 }}
-                      className="relative p-5 sm:p-6 rounded-2xl bg-white/90 backdrop-blur-sm border border-[#C5A46D]/30 shadow-[0_4px_16px_rgba(197,164,109,0.08)] hover:border-[#C5A46D]/50 transition-all"
+                      className="relative p-5 sm:p-6 rounded-2xl bg-[#FBF8F1]/95 backdrop-blur-sm border border-[#C9A96A]/35 shadow-[0_4px_16px_rgba(201,169,106,0.08)] hover:border-[#C9A96A]/60 transition-all"
                     >
+                      {/* Decorative delicate watermark/corner ornament */}
+                      <div className="absolute top-2.5 left-2.5 text-[10px] text-[#C9A96A]/40 font-cormorant select-none">✦</div>
+                      <div className="absolute bottom-2.5 left-2.5 text-[10px] text-[#C9A96A]/40 font-cormorant select-none">✦</div>
+
                       {/* Top Row: Avatar + Name + Date & Badge */}
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E6D0A2] via-[#DFCBA8] to-[#B58A48] flex items-center justify-center shrink-0 text-base font-bold text-[#151311] font-cormorant shadow-sm">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D8BC82] to-[#C9A96A] flex items-center justify-center shrink-0 text-base font-bold text-[#241D18] font-cormorant shadow-xs">
                             {wish.name.charAt(0)}
                           </div>
                           <div>
-                            <p className="text-base font-amiri font-bold text-[#231F1A] leading-snug">
+                            <p className="text-base font-amiri font-bold text-[#241D18] leading-snug">
                               {wish.name}
                             </p>
-                            <p className="text-[10px] font-cairo text-[#70735F] mt-0.5">
+                            <p className="text-[10px] font-cairo text-[#8C8276] mt-0.5">
                               {new Date(wish.timestamp).toLocaleDateString("ar-EG", {
                                 year: "numeric",
                                 month: "long",
@@ -512,10 +516,10 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                         </div>
 
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <span className="text-[11px] px-2.5 py-1 rounded-full bg-[#FAF5EE] text-[#8A6A32] font-cairo font-semibold border border-[#C5A46D]/30 shadow-xs">
+                          <span className="text-[11px] px-2.5 py-1 rounded-full bg-[#F7F1E6] text-[#8A6A32] font-cairo font-semibold border border-[#C9A96A]/30 shadow-2xs">
                             {recipientLabel(wish.recipient as Recipient)}
                           </span>
-                          <Heart className="w-4 h-4 text-[#C5A46D] fill-[#C5A46D]/20 shrink-0" />
+                          <Heart className="w-4 h-4 text-[#C9A96A] fill-[#C9A96A]/20 shrink-0" />
                         </div>
                       </div>
 
@@ -527,8 +531,8 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                       )}
 
                       {/* Message Body with Calligraphic Border */}
-                      <div className="mt-3 pr-3.5 border-r-2 border-[#C5A46D]/50">
-                        <p className="text-sm sm:text-base font-cairo text-[#2E2822] leading-relaxed">
+                      <div className="mt-3.5 pr-3.5 border-r-2 border-[#C9A96A]/50">
+                        <p className="text-sm sm:text-base font-cairo text-[#241D18] leading-relaxed">
                           {wish.message}
                         </p>
                       </div>
@@ -537,10 +541,10 @@ export default function WishesWall({ wishes: propWishes, setWishes: propSetWishe
                 </AnimatePresence>
               </div>
             ) : (
-              <div className="text-center py-12 px-4 rounded-2xl bg-white/60 border border-dashed border-[#C5A46D]/40">
-                <Heart className="w-9 h-9 text-[#C5A46D]/40 mx-auto mb-2" />
-                <p className="font-amiri text-lg text-[#231F1A]">لا توجد رسائل في هذا القسم بعد</p>
-                <p className="text-xs font-cairo text-[#70735F] mt-1">
+              <div className="text-center py-12 px-4 rounded-2xl bg-[#FBF8F1]/70 border border-dashed border-[#C9A96A]/40">
+                <Heart className="w-9 h-9 text-[#C9A96A]/40 mx-auto mb-2" />
+                <p className="font-amiri text-lg text-[#241D18]">لا توجد رسائل في هذا القسم بعد</p>
+                <p className="text-xs font-cairo text-[#8C8276] mt-1">
                   كن أول من يكتب تهنئة مباركة للعروسين 💛
                 </p>
               </div>
